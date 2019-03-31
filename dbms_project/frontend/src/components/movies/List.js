@@ -7,7 +7,8 @@ import { Card, CardImg, CardBody, CardTitle, CardText } from "reactstrap";
 
 export class List extends Component {
   static propTypes = {
-    movies: PropTypes.array.isRequired
+    movies: PropTypes.array.isRequired,
+    getMovies: PropTypes.func.isRequired
   };
 
   componentDidMount() {

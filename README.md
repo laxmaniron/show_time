@@ -6,12 +6,12 @@ A movie booking website
 
 pull it and keep it in a python virtualenv
 
-#Install React dependencies
+#Install React dependencies--
 npm install
 
 #Python dependencies
-pip install
+pip install --
 
-django
-djangorestframework
+django,
+djangorestframework,
 Pillow

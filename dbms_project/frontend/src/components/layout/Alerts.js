@@ -12,7 +12,8 @@ export class Alerts extends Component {
     const { error, alert, message } = this.props;
     if (error !== prevProps.error) {
       if (error.msg) {
-        alert.error(`Error:${error.msg.join()}`);
+        //const JSONerror = JSON.stringify(error.msg);
+        alert.error(`Error:${error.msg}`);
       }
     }
     if (message !== prevProps.message) {

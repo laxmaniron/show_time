@@ -1,4 +1,4 @@
-from rest_framework import serializers
+from rest_framework import serializers, status
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from .models import UserProfile
@@ -59,6 +59,35 @@ class UserSerializer(serializers.ModelSerializer):
         return instance
 
 
+class NewUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'password')
+
+
+class NewUserProfileSerializer(serializers.ModelSerializer):
+    user = NewUserSerializer(required=True)
+
+    class Meta:
+        model = UserProfile
+        fields = ('user', 'city', 'phone', 'image')
+
+    def create(self, validated_data):
+
+        user_data = validated_data.pop('user')
+        user = NewUserSerializer.create(
+            UserSerializer(), validated_data=user_data)
+        newuserprofile, created = UserProfile.objects.update_or_create(user=user,
+                                                                       city=validated_data.pop(
+                                                                           'city'),
+                                                                       phone=validated_data.pop(
+                                                                           'phone'),
+                                                                       image=validated_data.pop(
+                                                                           'image'),
+                                                                       )
+        return newuserprofile
+
+
 # Register Serializer
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -87,3 +116,14 @@ class LoginSerializer(serializers.Serializer):
         if user and user.is_active:
             return user
         raise serializers.ValidationError("Incorrect Credentials")
+
+
+class FileUploadSerializer(serializers.HyperlinkedModelSerializer):
+    user = serializers.SlugRelatedField(
+        read_only=True,
+        slug_field='id'
+    )
+
+    class Meta:
+        model = UserProfile
+        read_only_fields = ('user', 'city', 'phone', 'image')

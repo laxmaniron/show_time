@@ -11,14 +11,31 @@ export class Alerts extends Component {
   componentDidUpdate(prevProps) {
     const { error, alert, message } = this.props;
     if (error !== prevProps.error) {
-      if (error.msg) {
+      if (error.msg.msg.username) {
+        alert.error(`Username:${error.msg.msg.username}`);
+      }
+      if (error.msg.msg.password) {
+        alert.error(`Password:${error.msg.msg.password}`);
+      }
+      if (error.msg.msg.non_field_errors) {
         //const JSONerror = JSON.stringify(error.msg);
-        alert.error(`Error:${error.msg}`);
+        console.log(error.msg.msg.non_field_errors);
+        alert.error(`Error:${error.msg.msg.non_field_errors}`);
       }
     }
     if (message !== prevProps.message) {
       if (message.movieLoad) {
         alert.success(message.movieLoad);
+      }
+
+      if (message.passwordNotMatch) {
+        alert.error(message.passwordNotMatch);
+      }
+      if (message.cityEmpty) {
+        alert.error(message.cityEmpty);
+      }
+      if (message.phoneEmpty) {
+        alert.error(message.phoneEmpty);
       }
     }
   }

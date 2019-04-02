@@ -2,13 +2,16 @@ from rest_framework import generics, permissions, viewsets
 from rest_framework.response import Response
 from knox.models import AuthToken
 
-from .serializers import UserSerializer, UserProfileSerializer, RegisterSerializer, LoginSerializer
+from .serializers import UserSerializer, UserProfileSerializer, RegisterSerializer, LoginSerializer, FileUploadSerializer, NewUserProfileSerializer, NewUserSerializer
 
 from .models import UserProfile
 from django.contrib.auth.models import User
 
+from rest_framework.views import APIView
+
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.parsers import FormParser, MultiPartParser
 
 
 # Register API
@@ -87,3 +90,15 @@ class UserAPI(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
+
+
+# Create user profile api
+
+class NewUserProfileRecordView(viewsets.ModelViewSet):
+
+    queryset = UserProfile.objects.all()
+    permission_classes = [
+        permissions.AllowAny,
+    ]
+
+    serializer_class = NewUserProfileSerializer

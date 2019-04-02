@@ -11,7 +11,7 @@ class UserProfile(models.Model):
         User, on_delete=models.CASCADE)  # or models.CASCADE
     city = models.CharField(max_length=100, default='', blank=False)
     phone = models.IntegerField(default=0, blank=False)
-    image = models.ImageField(upload_to='profile_image', blank=True)
+    image = models.ImageField(upload_to='profile_image', null=True)
 
     def __str__(self):
         return self.user.username

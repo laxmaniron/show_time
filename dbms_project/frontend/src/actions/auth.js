@@ -6,7 +6,10 @@ import {
   USER_LOADING,
   AUTH_ERROR,
   LOGIN_SUCCESS,
-  LOGIN_FAIL
+  LOGIN_FAIL,
+  LOGOUT_SUCCESS,
+  REGISTER_SUCCESS,
+  REGISTER_FAIL
 } from "./types";
 
 // CHECK    TOKEN & LOAD USER
@@ -16,25 +19,8 @@ export const loadUser = () => (dispatch, getState) => {
 
   dispatch({ type: USER_LOADING });
 
-  //get token from the state
-  const token = getState().auth.token;
-
-  //headers
-
-  const config = {
-    headers: {
-      "Content-Type": "application/json"
-    }
-  };
-
-  // If token, add to headers config
-
-  if (token) {
-    config.headers["Authorization"] = `Token ${token}`;
-  }
-
   axios
-    .get("/accounts/api/auth/loggedinuser", config)
+    .get("/accounts/api/auth/loggedinuser", tokenConfig(getState))
     .then(res => {
       dispatch({
         type: USER_LOADED,
@@ -77,4 +63,98 @@ export const login = (username, password) => dispatch => {
         type: LOGIN_FAIL
       });
     });
+};
+
+//REGISTER USER
+
+export const register = ({
+  username,
+  password,
+  email,
+  first_name,
+  last_name,
+  city,
+  phone,
+  image
+}) => dispatch => {
+  //headers
+
+  const config = {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+
+  //Request Body
+
+  const user = {
+    username,
+    first_name,
+    last_name,
+    email,
+    password
+  };
+  const body = JSON.stringify({
+    user,
+    city,
+    phone,
+    image
+  });
+
+  console.log(body);
+
+  axios
+    .post("/accounts/api/newuserprofile/", body, config)
+    .then(res => {
+      dispatch({
+        type: REGISTER_SUCCESS,
+        payload: res.data
+      });
+
+      console.log(res.data);
+    })
+    .catch(err => {
+      dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: REGISTER_FAIL
+      });
+    });
+};
+
+// LOGOUT USER
+
+export const logout = () => (dispatch, getState) => {
+  axios
+    .post("/accounts/api/auth/logout", null, tokenConfig(getState))
+    .then(res => {
+      dispatch({
+        type: LOGOUT_SUCCESS
+      });
+    })
+    .catch(err => {
+      dispatch(returnErrors(err.response.data, err.response.status));
+    });
+};
+
+//SetUp config with token -- helper function
+
+export const tokenConfig = getState => {
+  //get token from the state
+  const token = getState().auth.token;
+
+  //headers
+
+  const config = {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+
+  // If token, add to headers config
+
+  if (token) {
+    config.headers["Authorization"] = `Token ${token}`;
+  }
+
+  return config;
 };

@@ -2,7 +2,7 @@ from django.urls import path, include
 
 from django.conf.urls import include, url
 
-from .api import RegisterAPI, UserProfileViewSet, UserProfileUpdate, UserListView, UserView, LoginAPI, UserAPI, NewUserProfileRecordView
+from .api import *
 
 from knox import views as knox_views
 
@@ -27,6 +27,8 @@ urlpatterns = [
     url(r'^api/auth/userprofile/update/(?P<pk>\d+)/$', UserProfileUpdate.as_view()),
     path('api/auth/user', UserListView.as_view()),
     url(r'^api/auth/user/update/(?P<pk>\d+)/$', UserView.as_view()),
+    url(r'^api/newuserprofile/(?P<pk>\d+)/$', UserProfileView.as_view()),
+
     path('', include(router.urls))
 
 

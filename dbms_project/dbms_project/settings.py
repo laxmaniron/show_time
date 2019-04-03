@@ -83,10 +83,29 @@ WSGI_APPLICATION = 'dbms_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        # MySQL database engine class.
+        'ENGINE': 'mysql.connector.django',
+        # MySQL database host ip.
+        'HOST': '127.0.0.1',
+        # port number.
+        'PORT': '',
+        # database name.
+        'NAME': 'dbms_project',
+        # user name.
+        'USER': 'laxman',
+        # password
+        'PASSWORD': 'ironman3',
+        # connect options
+        'OPTIONS': {'autocommit': True, },
     }
 }
 

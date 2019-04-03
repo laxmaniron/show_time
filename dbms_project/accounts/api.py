@@ -13,6 +13,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.parsers import FormParser, MultiPartParser
 
+from django.db import connection
+
 
 # Register API
 class RegisterAPI(generics.GenericAPIView):
@@ -102,3 +104,32 @@ class NewUserProfileRecordView(viewsets.ModelViewSet):
     ]
 
     serializer_class = NewUserProfileSerializer
+
+
+class UserProfileView(generics.RetrieveUpdateDestroyAPIView):
+
+    serializer_class = NewUserProfileSerializer
+    #queryset = UserProfile.objects.all()
+
+    # def get_queryset(self):
+    #     """
+    #     This view should return a list of all the purchases
+    #     for the currently authenticated user.
+    #     """
+    #     #user = self.request.user
+    #     pk = self.kwargs['pk']
+    #     return UserProfile.objects.get(pk=pk)
+
+
+#  user_id = self.kwargs['pk']
+
+#         with connection.cursor() as cursor:
+#             cursor.execute(
+#                 "SELECT * FROM accounts_userprofile WHERE user_id=%s", [user_id])
+#             # print(cursor.fetchone())
+#             tt = cursor.fetchone()
+#             print(".....hello", tt)
+
+#             tt = UserProfile.objects.get(pk=user_id)
+#             print(".....hello", tt, type(tt))
+#         return UserProfile.objects.get(pk=user_id)

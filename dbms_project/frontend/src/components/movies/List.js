@@ -21,10 +21,10 @@ export class List extends Component {
         {this.props.movies.map(movie => (
           <div key={movie.id}>
             <Card>
-              <CardImg top width="65%" src={movie.image} />
+              <CardImg top width="65%" src={movie.image_source} />
               <CardBody>
-                <CardTitle>{movie.name}</CardTitle>
-                <CardText>{movie.message}</CardText>
+                <CardTitle>{movie.title}</CardTitle>
+                <CardText>{movie.likes}</CardText>
               </CardBody>
             </Card>
           </div>

@@ -73,6 +73,7 @@ export const register = ({
   email,
   first_name,
   last_name,
+  dob,
   city,
   phone,
   image
@@ -96,12 +97,11 @@ export const register = ({
   };
   const body = JSON.stringify({
     user,
+    dob,
     city,
     phone,
     image
   });
-
-  console.log(body);
 
   axios
     .post("/accounts/api/newuserprofile/", body, config)
@@ -110,8 +110,6 @@ export const register = ({
         type: REGISTER_SUCCESS,
         payload: res.data
       });
-
-      console.log(res.data);
     })
     .catch(err => {
       dispatch(returnErrors(err.response.data, err.response.status));

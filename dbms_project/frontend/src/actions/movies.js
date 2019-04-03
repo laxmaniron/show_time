@@ -14,6 +14,8 @@ export const getMovies = () => dispatch => {
         type: GET_MOVIES,
         payload: res.data
       });
+
+      console.log("hi iam laxman ${res.data}");
     })
     .catch(err =>
       dispatch(returnErrors(err.response.data, err.response.status))

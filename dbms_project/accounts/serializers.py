@@ -70,7 +70,7 @@ class NewUserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserProfile
-        fields = ('user', 'city', 'phone', 'image')
+        fields = ('user', 'dob', 'city', 'phone', 'image', )
 
     def create(self, validated_data):
 
@@ -84,6 +84,10 @@ class NewUserProfileSerializer(serializers.ModelSerializer):
                                                                            'phone'),
                                                                        image=validated_data.pop(
                                                                            'image'),
+                                                                       dob=validated_data.pop(
+                                                                           'dob'),
+
+
                                                                        )
         return newuserprofile
 

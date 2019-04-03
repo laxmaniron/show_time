@@ -13,6 +13,7 @@ export class Register extends Component {
     last_name: "",
     password: "",
     password2: "",
+    dob: "",
     city: "",
     phone: "",
     image: ""
@@ -30,6 +31,7 @@ export class Register extends Component {
       last_name,
       password,
       password2,
+      dob,
       city,
       phone,
       image
@@ -48,6 +50,7 @@ export class Register extends Component {
         email,
         first_name,
         last_name,
+        dob,
         city,
         phone,
         image: null
@@ -74,6 +77,7 @@ export class Register extends Component {
       last_name,
       password,
       password2,
+      dob,
       city,
       phone,
       image
@@ -145,6 +149,16 @@ export class Register extends Component {
               />
             </div>
 
+            <div className="form-group">
+              <label>Date of Birth</label>
+              <input
+                type="date"
+                className="form-control"
+                name="dob"
+                onChange={this.onChange}
+                value={dob}
+              />
+            </div>
             <div className="form-group">
               <label>City</label>
               <input

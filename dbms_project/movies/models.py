@@ -1,14 +1,8 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
+from django.contrib.auth.models import User
 
 # Create your models here.
-
-
-class movie(models.Model):
-    name = models.CharField(max_length=100)
-    directed_by = models.CharField(max_length=100)
-    message = models.CharField(max_length=500)
-    image = models.ImageField(upload_to='movie_images', blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Movies(models.Model):
@@ -27,3 +21,44 @@ class Movies(models.Model):
 
     class Meta:
         indexes = (models.Index(fields=['title']),)
+
+
+class Cast_Crew(models.Model):
+    title = models.ForeignKey(Movies, on_delete=models.CASCADE)
+    cast = models.CharField(max_length=50)
+    role = models.CharField(max_length=50)
+    image = models.URLField()
+
+    class Meta:
+        indexes = (models.Index(fields=['title']),)
+
+
+class Genre(models.Model):
+    title = models.ForeignKey(Movies, on_delete=models.CASCADE)
+    genre = models.CharField(max_length=20)
+
+    class Meta:
+        indexes = (models.Index(fields=['title']),)
+
+
+class Languages(models.Model):
+    title = models.ForeignKey(Movies, on_delete=models.CASCADE)
+    language = models.CharField(max_length=20)
+
+    class Meta:
+        indexes = (models.Index(fields=['title']),)
+
+
+class Rating(models.Model):
+    title = models.ForeignKey(Movies, on_delete=models.CASCADE)
+    rating = models.IntegerField(
+        validators=[MinValueValidator(0), MaxValueValidator(5)])
+    comment = models.CharField(max_length=1000, blank=True, null=True)
+
+    class Meta:
+        indexes = (models.Index(fields=['title']),)
+
+
+class testmodel(models.Model):
+    title = models.CharField(max_length=20)
+    genre = models.CharField(max_length=20)

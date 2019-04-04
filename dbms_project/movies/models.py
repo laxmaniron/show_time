@@ -25,9 +25,9 @@ class Movies(models.Model):
 
 class Cast_Crew(models.Model):
     title = models.ForeignKey(Movies, on_delete=models.CASCADE)
-    cast = models.CharField(max_length=50)
-    role = models.CharField(max_length=50)
-    image = models.URLField()
+    cast = models.CharField(max_length=50, null=True)
+    role = models.CharField(max_length=50, null=True)
+    image = models.URLField(null=True)
 
     class Meta:
         indexes = (models.Index(fields=['title']),)
@@ -51,8 +51,11 @@ class Languages(models.Model):
 
 class Rating(models.Model):
     title = models.ForeignKey(Movies, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    likestatus = models.BooleanField(default=False)
+    ratestatus = models.BooleanField(default=False)
     rating = models.IntegerField(
-        validators=[MinValueValidator(0), MaxValueValidator(5)])
+        validators=[MinValueValidator(0), MaxValueValidator(5)], blank=True, null=True)
     comment = models.CharField(max_length=1000, blank=True, null=True)
 
     class Meta:

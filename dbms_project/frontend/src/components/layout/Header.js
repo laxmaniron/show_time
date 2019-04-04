@@ -20,7 +20,7 @@ export class Header extends Component {
           <strong>{user ? `Hello ${user.username}` : ""}</strong>
         </span>
         <li className="nav-item">
-          <Link to="/login" className="nav-link">
+          <Link to="/pay" className="nav-link">
             Payment
           </Link>
         </li>

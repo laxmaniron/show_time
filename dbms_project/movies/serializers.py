@@ -10,7 +10,14 @@ class MoviesSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class TestSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = testmodel
-        fields = '__all__'
+class TestSerializer(serializers.Serializer):
+    title = serializers.CharField(max_length=120)
+    genre = serializers.CharField()
+
+    def update(self, instance, validated_data):
+        instance.title = validated_data.get('title', instance.title)
+        instance.genre = validated_data.get(
+            'genre', instance.genre)
+
+        instance.save()
+        return instance

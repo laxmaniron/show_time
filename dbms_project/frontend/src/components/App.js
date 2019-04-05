@@ -49,7 +49,11 @@ class App extends Component {
                   <PrivateRoute exact path="/pay" component={Payment} />
                   <Route exact path="/register" component={Register} />
                   <Route exact path="/login" component={Login} />
-                  <Route exact path="/specifics" component={SpecificMovie} />
+                  <Route
+                    exact
+                    path="/specifics/:id"
+                    component={SpecificMovie}
+                  />
                 </Switch>
               </div>
             </Fragment>

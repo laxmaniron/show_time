@@ -20,8 +20,8 @@ export class List extends Component {
       <Fragment>
         <h1>Movies</h1>
         {this.props.movies.map(movie => (
-          <Link to="/specifics">
-            <div key={movie.id}>
+          <div key={movie.id}>
+            <Link to={`/specifics/${movie.id}`}>
               <Card>
                 <CardImg top width="65%" src={movie.image_source} />
                 <CardBody>
@@ -29,8 +29,8 @@ export class List extends Component {
                   <CardText>{movie.likes}</CardText>
                 </CardBody>
               </Card>
-            </div>
-          </Link>
+            </Link>
+          </div>
         ))}
       </Fragment>
     );

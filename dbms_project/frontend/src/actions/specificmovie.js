@@ -1,17 +1,15 @@
 import axios from "axios";
+import { GET_SPECIFICMOVIE } from "./types";
 import { createMessage, returnErrors } from "./messages";
 
-import { GET_MOVIES } from "./types";
+//GET SPECIFIC MOVIE
 
-//GET_MOVIES
-
-export const getMovies = () => dispatch => {
+export const getSpecificMovie = id => dispatch => {
   axios
-    .get("/movies/api/movies/")
+    .get(`/movies/api/movies/${id}`)
     .then(res => {
-      dispatch(createMessage({ movieLoad: "movies loaded successfully" }));
       dispatch({
-        type: GET_MOVIES,
+        type: GET_SPECIFICMOVIE,
         payload: res.data
       });
     })

@@ -10,3 +10,4 @@ lib
 lib64
 
 node_modules
+__pycache__

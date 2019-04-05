@@ -17,8 +17,6 @@ from django.shortcuts import get_object_or_404
 
 class MoviesView(APIView):
     def get(self, request):
-        movies = Movies.objects.raw('SELECT * FROM movies_movies')
-
         with connection.cursor() as cursor:
             cursor.execute(
                 "SELECT * FROM movies_movies")
@@ -72,30 +70,27 @@ class MoviesCompleteView(APIView):
                  ])
 
             cursor.execute(
-                "SELECT id,cast,role,image FROM movies_cast_crew WHERE title_id = %s", [pk])
+                "SELECT movies_cast_crew.id,castname,image FROM movies_cast_crew INNER JOIN movies_cast_crew_movie on movies_cast_crew.id = movies_cast_crew_movie.cast_crew_id WHERE title_id = %s", [pk])
             tupleofcast = cursor.fetchall()
 
-            completecast = OrderedDict()
+            completecast = []
 
             for i in tupleofcast:
                 cast = OrderedDict(
                     [('id', i[0]),
                      ('cast', i[1]),
-                     ('role', i[2]),
-                     ('image', i[3])
+                     ('image', i[2])
                      ])
 
-                namer = 'cast'+str(i[0])
-
-                completecast.update({namer: cast})
+                completecast.append(cast)
 
             moviecompletedetail.update({"completecast": completecast})
 
             cursor.execute(
-                "SELECT id,genre FROM movies_genre WHERE title_id = %s", [pk])
+                "SELECT movies_genre.id,genre FROM movies_genre INNER JOIN movies_genre_movie on movies_genre.id = movies_genre_movie.movie_genre_id WHERE title_id = %s", [pk])
             tupleofgenre = cursor.fetchall()
 
-            allgenre = OrderedDict()
+            allgenre = []
 
             for i in tupleofgenre:
                 genre = OrderedDict(
@@ -103,17 +98,15 @@ class MoviesCompleteView(APIView):
                      ('genre', i[1]),
                      ])
 
-                namer = 'genre'+str(i[0])
-
-                allgenre.update({namer: genre})
+                allgenre.append(genre)
 
             moviecompletedetail.update({"allgenre": allgenre})
 
             cursor.execute(
-                "SELECT id,language FROM movies_languages WHERE title_id = %s", [pk])
+                "SELECT movies_languages.id,language FROM movies_languages INNER JOIN movies_language_movie on movies_languages.id = movies_language_movie.movie_language_id  WHERE title_id = %s", [pk])
             tupleoflanguages = cursor.fetchall()
 
-            allanguages = OrderedDict()
+            allanguages = []
 
             for i in tupleoflanguages:
                 language = OrderedDict(
@@ -121,17 +114,31 @@ class MoviesCompleteView(APIView):
                      ('language', i[1]),
                      ])
 
-                namer = 'language'+str(i[0])
-
-                allanguages.update({namer: language})
+                allanguages.append(language)
 
             moviecompletedetail.update({"allanguages": allanguages})
+
+            cursor.execute(
+                "SELECT movies_formats.id,mformat FROM movies_formats INNER JOIN movies_format_movie on movies_formats.id = movies_format_movie.movie_format_id  WHERE title_id = %s", [pk])
+            tupleofformats = cursor.fetchall()
+
+            allformats = []
+
+            for i in tupleofformats:
+                format = OrderedDict(
+                    [('id', i[0]),
+                     ('format', i[1]),
+                     ])
+
+                allformats.append(format)
+
+            moviecompletedetail.update({"allformats": allformats})
 
             cursor.execute(
                 "SELECT id,user_id,likestatus,ratestatus,rating,comment FROM movies_rating WHERE title_id = %s", [pk])
             tupleofcomment = cursor.fetchall()
 
-            allcomments = OrderedDict()
+            allcomments = []
 
             for i in tupleofcomment:
                 cursor.execute(
@@ -147,9 +154,7 @@ class MoviesCompleteView(APIView):
                      ('comment', i[5]),
                      ])
 
-                namer = 'comment'+str(i[0])
-
-                allcomments.update({namer: comment})
+                allcomments.append(comment)
 
             moviecompletedetail.update({"allcomments": allcomments})
 

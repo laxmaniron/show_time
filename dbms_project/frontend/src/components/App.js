@@ -13,6 +13,7 @@ import {
 import Header from "./layout/Header";
 import Alerts from "./layout/Alerts";
 import List from "./movies/List";
+import SpecificMovie from "./movies/SpecificMovie";
 import Login from "./accounts/Login";
 import Register from "./accounts/Register";
 import PrivateRoute from "./common/PrivateRoute";
@@ -48,6 +49,7 @@ class App extends Component {
                   <PrivateRoute exact path="/pay" component={Payment} />
                   <Route exact path="/register" component={Register} />
                   <Route exact path="/login" component={Login} />
+                  <Route exact path="/specifics" component={SpecificMovie} />
                 </Switch>
               </div>
             </Fragment>

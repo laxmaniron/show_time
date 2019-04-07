@@ -22,3 +22,5 @@ export const REGISTER_FAIL = "REGISTER_FAIL";
 export const SHOW_USER = "SHOW_USER";
 
 export const GET_SPECIFICMOVIE = "GET_SPECIFICMOVIE";
+
+export const ADD_COMMENT = "ADD_COMMENT";

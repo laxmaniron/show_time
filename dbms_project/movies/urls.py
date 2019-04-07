@@ -20,5 +20,5 @@ urlpatterns = [
     path('api/movies/test/<int:pk>', TestPutView.as_view()),
     path('api/movies/<int:pk>', MoviesCompleteView.as_view()),
     path('api/likeupdate/<int:pk>', LikeUpdateView.as_view()),
-    path('api/ratingamovie', PostRatingView.as_view()),
+    path('api/ratingamovie/', PostRatingView.as_view()),
 ]

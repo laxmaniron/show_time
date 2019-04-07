@@ -12,6 +12,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.parsers import FormParser, MultiPartParser
+from collections import OrderedDict
+
 
 from django.db import connection
 
@@ -133,3 +135,60 @@ class UserProfileView(generics.RetrieveUpdateDestroyAPIView):
 #             tt = UserProfile.objects.get(pk=user_id)
 #             print(".....hello", tt, type(tt))
 #         return UserProfile.objects.get(pk=user_id)
+
+
+class GetUserProfileViewSet(APIView):
+    def get(self, request, pk):
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "SELECT username,email,first_name,last_name FROM auth_user WHERE id=%s", [pk])
+            currentuser = cursor.fetchone()
+
+            cursor.execute(
+                "SELECT city,phone,dob,image FROM accounts_userprofile WHERE user_id=%s", [pk])
+            currentuserprofile = cursor.fetchone()
+
+            userdetails = OrderedDict(
+                [('username', currentuser[0]),
+                 ('email', currentuser[1]),
+                 ('first_name', currentuser[2]),
+                 ('last_name', currentuser[3]),
+                 ('city', currentuserprofile[0]),
+                 ('phone', currentuserprofile[1]),
+                 ('dob', currentuserprofile[2]),
+                 ('image', currentuserprofile[3]),
+                 ])
+
+        return Response(userdetails)
+
+
+class UpdateUserProfileViewSet(APIView):
+    def put(self, request, pk):
+        data = request.data.get('newdetails')
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "UPDATE  auth_user SET email=%s,first_name=%s,last_name=%s WHERE id=%s", [data['email'], data['first_name'], data['last_name'], pk])
+
+            cursor.execute(
+                "SELECT username,email,first_name,last_name FROM auth_user WHERE id=%s", [pk])
+            currentuser = cursor.fetchone()
+
+            cursor.execute(
+                "UPDATE  accounts_userprofile SET city=%s,phone=%s,dob=%s,image=%s WHERE user_id=%s", [data['city'], data['phone'], data['dob'], data['image'], pk])
+
+            cursor.execute(
+                "SELECT city,phone,dob,image FROM accounts_userprofile WHERE user_id=%s", [pk])
+            currentuserprofile = cursor.fetchone()
+
+            userdetails = OrderedDict(
+                [('username', currentuser[0]),
+                 ('email', currentuser[1]),
+                 ('first_name', currentuser[2]),
+                 ('last_name', currentuser[3]),
+                 ('city', currentuserprofile[0]),
+                 ('phone', currentuserprofile[1]),
+                 ('dob', currentuserprofile[2]),
+                 ('image', currentuserprofile[3]),
+                 ])
+
+        return Response(userdetails)

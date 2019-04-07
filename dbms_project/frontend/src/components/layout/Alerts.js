@@ -37,6 +37,14 @@ export class Alerts extends Component {
       if (message.phoneEmpty) {
         alert.error(message.phoneEmpty);
       }
+      if (message.notloggedin) {
+        alert.info(message.notloggedin);
+      }
+      if (message.alreadyReviewed) {
+        alert.info(message.alreadyReviewed);
+      } else if (message.movieReview) {
+        alert.info(message.movieReview);
+      }
     }
   }
 

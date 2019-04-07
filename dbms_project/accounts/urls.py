@@ -24,6 +24,11 @@ urlpatterns = [
     path('api/auth/logout', knox_views.LogoutView.as_view(), name='knox_logout'),
 
     path('api/auth/userprofile', UserProfileViewSet.as_view()),
+    path('api/auth/getuserprofile/<int:pk>/', GetUserProfileViewSet.as_view()),
+    path('api/auth/putuserprofile/<int:pk>/',
+         UpdateUserProfileViewSet.as_view()),
+
+
     url(r'^api/auth/userprofile/update/(?P<pk>\d+)/$', UserProfileUpdate.as_view()),
     path('api/auth/user', UserListView.as_view()),
     url(r'^api/auth/user/update/(?P<pk>\d+)/$', UserView.as_view()),

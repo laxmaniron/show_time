@@ -199,11 +199,20 @@ class PostRatingView(APIView):
 
         with connection.cursor() as cursor:
             cursor.execute(
-                "INSERT INTO movies_rating (title_id,user_id,ratestatus,likestatus,rating,comment) VALUES( %s, %s,%s,%s, %s,%s)", [data['title'], data['user'], ratestatus, ratestatus, data['rating'], data['comment']])
-            cursor.execute(
                 "SELECT * FROM movies_rating WHERE title_id = %s and  user_id= %s", [data['title'], data['user']])
 
             rating = cursor.fetchone()
+
+            if(rating):
+                type(rating)
+
+            else:
+                cursor.execute(
+                    "INSERT INTO movies_rating (title_id,user_id,ratestatus,likestatus,rating,comment) VALUES( %s, %s,%s,%s, %s,%s)", [data['title'], data['user'], ratestatus, ratestatus, data['rating'], data['comment']])
+                cursor.execute(
+                    "SELECT * FROM movies_rating WHERE title_id = %s and  user_id= %s", [data['title'], data['user']])
+
+                rating = cursor.fetchone()
 
             print(rating)
 

@@ -1,4 +1,4 @@
-import { GET_SPECIFICMOVIE } from "../actions/types";
+import { GET_SPECIFICMOVIE, ADD_COMMENT } from "../actions/types";
 
 const initialState = {
   specificmovie: {}
@@ -10,6 +10,10 @@ export default function(state = initialState, action) {
       return {
         ...state,
         specificmovie: action.payload
+      };
+    case ADD_COMMENT:
+      return {
+        ...state
       };
     default:
       return state;

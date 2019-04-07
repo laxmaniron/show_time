@@ -16,6 +16,7 @@ import List from "./movies/List";
 import SpecificMovie from "./movies/SpecificMovie";
 import Login from "./accounts/Login";
 import Register from "./accounts/Register";
+import EditProfile from "./accounts/EditProfile";
 import PrivateRoute from "./common/PrivateRoute";
 import Payment from "./pages/Payment";
 import { loadUser } from "../actions/auth";
@@ -53,6 +54,11 @@ class App extends Component {
                     exact
                     path="/specifics/:id"
                     component={SpecificMovie}
+                  />
+                  <PrivateRoute
+                    exact
+                    path="/editprofile"
+                    component={EditProfile}
                   />
                 </Switch>
               </div>

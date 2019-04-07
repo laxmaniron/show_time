@@ -24,3 +24,7 @@ export const SHOW_USER = "SHOW_USER";
 export const GET_SPECIFICMOVIE = "GET_SPECIFICMOVIE";
 
 export const ADD_COMMENT = "ADD_COMMENT";
+
+export const GET_USERPROFILE = "GET_USERPROFILE";
+
+export const EDIT_USERPROFILE = "EDIT_USERPROFILE";

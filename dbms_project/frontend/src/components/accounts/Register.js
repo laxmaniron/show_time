@@ -39,10 +39,13 @@ export class Register extends Component {
 
     if (password !== password2) {
       this.props.createMessage({ passwordNotMatch: "Passwords do not match" });
+      return;
     } else if (city === "") {
       this.props.createMessage({ cityEmpty: "City field is required" });
+      return;
     } else if (phone === "") {
       this.props.createMessage({ phoneEmpty: "Phone field is required" });
+      return;
     } else {
       const newUser = {
         username,

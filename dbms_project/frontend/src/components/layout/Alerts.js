@@ -31,6 +31,9 @@ export class Alerts extends Component {
       if (message.passwordNotMatch) {
         alert.error(message.passwordNotMatch);
       }
+      if (message.dobEmpty) {
+        alert.error(message.dobEmpty);
+      }
       if (message.cityEmpty) {
         alert.error(message.cityEmpty);
       }

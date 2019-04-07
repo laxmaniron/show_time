@@ -24,6 +24,11 @@ export class Header extends Component {
             Payment
           </Link>
         </li>
+        <li className="nav-item">
+          <Link to="/editprofile" className="nav-link">
+            EditProfile
+          </Link>
+        </li>
 
         <li className="nav-item">
           <button

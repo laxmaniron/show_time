@@ -7,7 +7,7 @@ import moviesReducer from "../../reducers/moviesReducer";
 import "./specificMovie.css";
 import StarRatings from "react-star-ratings";
 import Rating from "react-star-rating-lite";
-import InfiniteScroll from "react-infinite-scroller";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 export class SpecificMovie extends Component {
   static propTypes = {
@@ -20,7 +20,8 @@ export class SpecificMovie extends Component {
   state = {
     rating: 1,
     comment: "",
-    flag: 0
+    flag: 0,
+    hasMore: false
   };
 
   componentDidMount() {
@@ -222,16 +223,34 @@ export class SpecificMovie extends Component {
           <br />
           COMMENTS <br />
           <br />
-          {specificmovie.allcomments
-            ? specificmovie.allcomments.map(comment => (
-                <div key={comment.id}>
+          {specificmovie.allcomments ? (
+            <InfiniteScroll
+              dataLength={specificmovie.allcomments.length}
+              hasMore={this.state.hasMore}
+              loader={<h4>Loading...</h4>}
+              height={400}
+              endMessage={
+                <p style={{ textAlign: "center" }}>
+                  <b>That's all folks you have seen all the comments</b>
+                </p>
+              }
+            >
+              {specificmovie.allcomments.map(comment => (
+                <div key={comment.id} style={{ width: "70%" }}>
                   Comment <br />
-                  <p>
-                    {comment.comment} by {comment.user}
-                  </p>
+                  <div>
+                    <Rating
+                      value={String(comment.rating)}
+                      weight="20"
+                      color="yellow"
+                      readonly
+                    />
+                    {comment.comment} by {comment.user} &nbsp;&nbsp;
+                  </div>
                 </div>
-              ))
-            : null}
+              ))}
+            </InfiniteScroll>
+          ) : null}
         </div>
         <div style={{ width: "50%", paddingLeft: "10%" }}>
           Your Review

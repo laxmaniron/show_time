@@ -32,7 +32,7 @@ class MoviesView(APIView):
                      ('release_date', i[2]),
                      ('censor_rating', i[3]),
                      ('image_source', i[4]),
-                     ('synposis', i[5]),
+                     ('synopsis', i[5]),
                      ('trailer_link', i[6]),
                      ('time_duration', i[7]),
                      ('likes', i[8]),
@@ -62,7 +62,7 @@ class MoviesCompleteView(APIView):
                  ('release_date', tupleofmovie[2]),
                  ('censor_rating', tupleofmovie[3]),
                  ('image_source', tupleofmovie[4]),
-                 ('synposis', tupleofmovie[5]),
+                 ('synopsis', tupleofmovie[5]),
                  ('trailer_link', tupleofmovie[6]),
                  ('time_duration', tupleofmovie[7]),
                  ('likes', tupleofmovie[8]),
@@ -205,16 +205,16 @@ class PostRatingView(APIView):
 
             rating = cursor.fetchone()
 
-            print(rating[0])
+            print(rating)
 
             insertedrating = OrderedDict(
                 [('id', rating[0]),
-                 ('rating', rating[1]),
-                 ('comment', rating[2]),
-                 ('title', rating[3]),
-                 ('user', rating[4]),
-                 ('likestatus', rating[5]),
-                 ('ratestatus', rating[6]),
+                 ('likestatus', rating[1]),
+                 ('ratestatus', rating[2]),
+                 ('rating', rating[3]),
+                 ('comment', rating[4]),
+                 ('title_id', rating[5]),
+                 ('user_id', rating[6]),
                  ])
 
         return Response(insertedrating)

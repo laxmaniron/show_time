@@ -43,7 +43,7 @@ class App extends Component {
             <Fragment>
               <Header />
               <Alerts />
-              <div className="container">
+              <div>
                 <Switch>
                   <Route exact path="/" component={List} />
                   <PrivateRoute exact path="/pay" component={Payment} />

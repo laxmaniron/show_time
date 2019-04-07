@@ -1,0 +1,21 @@
+img.image1 {
+  max-width: 30%;
+  max-height: 10%;
+  padding-bottom: 5%;
+}
+
+img.image2 {
+  max-width: 26%;
+  max-height: 10%;
+}
+
+img.image3 {
+  max-width: 25%;
+  max-height: 30%;
+  position: absolute;
+}
+
+#contentpos {
+  position: relative;
+  bottom: 50px;
+}

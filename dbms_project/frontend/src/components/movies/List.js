@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getMovies } from "../../actions/movies";
 import { Link } from "react-router-dom";
-
+import "./specificMovie.css";
 import { Card, CardImg, CardBody, CardTitle, CardText } from "reactstrap";
 
 export class List extends Component {
@@ -16,21 +16,28 @@ export class List extends Component {
     this.props.getMovies();
   }
   render() {
+    console.log(typeof this.props.movies);
     return (
       <Fragment>
         <h1>Movies</h1>
         {this.props.movies.map(movie => (
-          <div key={movie.id}>
-            <Link to={`/specifics/${movie.id}`}>
-              <Card>
-                <CardImg top width="65%" src={movie.image_source} />
-                <CardBody>
-                  <CardTitle>{movie.title}</CardTitle>
-                  <CardText>{movie.likes}</CardText>
-                </CardBody>
-              </Card>
-            </Link>
-          </div>
+          <center key={movie.id}>
+            <div style={{ width: "50%" }}>
+              <Link to={`/specifics/${movie.id}`}>
+                <img
+                  className="image1"
+                  src={movie.image_source}
+                  style={{ border: "1px solid black", borderRadius: "20px" }}
+                />
+                <p id="contentpos">
+                  {movie.title}
+                  <br />
+                  {movie.likes}
+                  <br />
+                </p>
+              </Link>
+            </div>
+          </center>
         ))}
       </Fragment>
     );

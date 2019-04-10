@@ -28,6 +28,8 @@ urlpatterns = [
     path('api/auth/putuserprofile/<int:pk>/',
          UpdateUserProfileViewSet.as_view()),
 
+    path('api/getuserregister/', RegisterUserAPI.as_view()),
+
 
     url(r'^api/auth/userprofile/update/(?P<pk>\d+)/$', UserProfileUpdate.as_view()),
     path('api/auth/user', UserListView.as_view()),

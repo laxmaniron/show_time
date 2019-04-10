@@ -104,7 +104,7 @@ export const register = ({
   });
 
   axios
-    .post("/accounts/api/newuserprofile/", body, config)
+    .post("/accounts/api/getuserregister/", body, config)
     .then(res => {
       dispatch({
         type: REGISTER_SUCCESS,

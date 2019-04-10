@@ -111,30 +111,6 @@ class NewUserProfileRecordView(viewsets.ModelViewSet):
 class UserProfileView(generics.RetrieveUpdateDestroyAPIView):
 
     serializer_class = NewUserProfileSerializer
-    #queryset = UserProfile.objects.all()
-
-    # def get_queryset(self):
-    #     """
-    #     This view should return a list of all the purchases
-    #     for the currently authenticated user.
-    #     """
-    #     #user = self.request.user
-    #     pk = self.kwargs['pk']
-    #     return UserProfile.objects.get(pk=pk)
-
-
-#  user_id = self.kwargs['pk']
-
-#         with connection.cursor() as cursor:
-#             cursor.execute(
-#                 "SELECT * FROM accounts_userprofile WHERE user_id=%s", [user_id])
-#             # print(cursor.fetchone())
-#             tt = cursor.fetchone()
-#             print(".....hello", tt)
-
-#             tt = UserProfile.objects.get(pk=user_id)
-#             print(".....hello", tt, type(tt))
-#         return UserProfile.objects.get(pk=user_id)
 
 
 class GetUserProfileViewSet(APIView):
@@ -192,3 +168,84 @@ class UpdateUserProfileViewSet(APIView):
                  ])
 
         return Response(userdetails)
+
+
+# class RegisterUserAPI(APIView):
+#     def post(self, request):
+#         data = request.data
+
+#         print(data)
+
+#         user = User.objects.create(**data)
+# #username=data['username'], password=data['password'], email=data['email'], first_name=data['first_name'], last_name=data['last_name']
+
+#         with connection.cursor() as cursor:
+#             cursor.execute(
+#                 "SELECT username,email,first_name,last_name,password FROM auth_user WHERE username=%s", [data['username']])
+#             currentuser = cursor.fetchone()
+
+#             userdetails = OrderedDict(
+#                 [('username', currentuser[0]),
+#                  ('email', currentuser[1]),
+#                  ('first_name', currentuser[2]),
+#                  ('last_name', currentuser[3]),
+#                  ('password', currentuser[4]),
+
+#                  ])
+
+#         kp = AuthToken.objects.create(user)
+
+#         return Response({
+#             "user": userdetails,
+#             "token": kp[1]
+#         })
+
+
+class RegisterUserAPI(generics.GenericAPIView):
+    serializer_class = RegisterSerializer
+
+    def post(self, request, *args, **kwargs):
+
+        serializer = self.get_serializer(data=request.data.get('user'))
+
+        data = request.data
+
+        serializer.is_valid(raise_exception=True)
+
+        user = serializer.save()
+
+        UserProfile.objects.update_or_create(user=user,
+                                             city=data.pop(
+                                                 'city'),
+                                             phone=data.pop(
+                                                 'phone'),
+                                             image=data.pop(
+                                                 'image'),
+                                             dob=data.pop(
+                                                 'dob'),
+                                             )
+
+        kp = AuthToken.objects.create(user)
+
+        #   print(kp[0], '.....', kp[1])
+
+        return Response({
+            "user": UserSerializer(user, context=self.get_serializer_context()).data,
+            "token": kp[1]
+        })
+
+
+# {
+#     "user": {
+#         "username": "itworkedyes",
+#         "first_name": "moosa",
+#         "last_name": "mohammed",
+#         "email": "moosa@gmail.com",
+#         "password":"ironman3"
+#         },
+#          "city": "hyderabad",
+#           "dob":"2019-04-27",
+#             "phone": 1234567,
+#             "image": null
+
+#     }

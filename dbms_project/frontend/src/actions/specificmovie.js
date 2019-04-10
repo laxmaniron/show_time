@@ -7,7 +7,7 @@ import { tokenConfig } from "./auth";
 
 export const getSpecificMovie = id => dispatch => {
   axios
-    .get(`/movies/api/movies/${id}`)
+    .get(`/movies/api/movies/${id}/`)
     .then(res => {
       dispatch({
         type: GET_SPECIFICMOVIE,

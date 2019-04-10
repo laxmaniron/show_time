@@ -21,7 +21,43 @@ export class SpecificMovie extends Component {
     rating: 1,
     comment: "",
     flag: 0,
+    summary: true,
+    allreviews: false,
+    yourreview: false,
     hasMore: false
+  };
+
+  showSummary = e => {
+    this.setState({
+      summary: true,
+      allreviews: false,
+      yourreview: false
+    });
+  };
+
+  showAllReviews = e => {
+    this.setState({
+      summary: false,
+      allreviews: true,
+      yourreview: false
+    });
+  };
+
+  showYourReview = e => {
+    if (!this.props.auth.isAuthenticated) {
+      this.props.createMessage({
+        notloggedin: "Please Login to review a movie"
+      });
+      return;
+    }
+
+    this.setState({
+      summary: false,
+      allreviews: false,
+      yourreview: true
+    });
+
+    this.setState({ flag: 1 });
   };
 
   componentDidMount() {
@@ -46,19 +82,6 @@ export class SpecificMovie extends Component {
       this.props.createMessage({ notloggedin: "Please Login to comment" });
       return;
     }
-
-    console.log(this.state.flag);
-
-    // {
-    //   this.props.specificmovie.allcomments.forEach((comment, index) => {
-    //     if (this.props.auth.user.username === comment.user) {
-
-    //       flag = 1;
-
-    //       return;
-    //     }
-    //   });
-    // }
 
     let flag = 0;
     for (var i = 0; i < this.props.specificmovie.allcomments.length; i++) {
@@ -112,8 +135,6 @@ export class SpecificMovie extends Component {
       ...this.props.specificmovie.allcomments,
       currentrating
     ];
-
-    console.log(this.props.specificmovie.allcomments);
   };
 
   render() {
@@ -141,6 +162,19 @@ export class SpecificMovie extends Component {
     }
 
     avgrating = Math.round(avgrating * 100) / 100;
+
+    let currentuserreview =
+      this.props.specificmovie.allcomments && this.props.auth.user
+        ? this.props.specificmovie.allcomments.filter(
+            comment => comment.user === this.props.auth.user.username
+          )
+        : null;
+
+    console.log(currentuserreview);
+
+    if (currentuserreview) {
+      console.log(currentuserreview.length);
+    }
 
     return (
       <div className="container">
@@ -183,104 +217,195 @@ export class SpecificMovie extends Component {
           <br />
         </div>
         <div>
-          SYNOPSIS <br />
-          {specificmovie.synopsis}
-          <br />
-          <br />
-        </div>
-        <div>
-          CAST <br />
-          {specificmovie.completecast
-            ? specificmovie.completecast.map(cast => (
-                <div key={cast.id} style={{ float: "left", width: "30%" }}>
-                  {cast.cast} &nbsp; &nbsp;
-                  <br />
-                  <img
-                    className="image3"
-                    src={cast.image}
-                    style={{
-                      border: "1px solid black",
-                      borderRadius: "10%"
-                    }}
-                  />
-                  <br />
-                </div>
-              ))
-            : null}
-        </div>
-        <div style={{ marginTop: "30%" }}>
-          Average Rating :&nbsp; {avgrating} &nbsp;&nbsp; ({noofratings}) &nbsp;
-          users
-          <br />
-          <StarRatings
-            rating={avgrating}
-            starRatedColor="yellow"
-            starDimension="40px"
-            starSpacing="15px"
-          />
-        </div>
-        <div>
-          <br />
-          COMMENTS <br />
-          <br />
-          {specificmovie.allcomments ? (
-            <InfiniteScroll
-              dataLength={specificmovie.allcomments.length}
-              hasMore={this.state.hasMore}
-              loader={<h4>Loading...</h4>}
-              height={400}
-              endMessage={
-                <p style={{ textAlign: "center" }}>
-                  <b>That's all folks you have seen all the comments</b>
-                </p>
-              }
-            >
-              {specificmovie.allcomments.map(comment => (
-                <div key={comment.id} style={{ width: "70%" }}>
-                  Comment <br />
-                  <div>
-                    <Rating
-                      value={String(comment.rating)}
-                      weight="20"
-                      color="yellow"
-                      readonly
-                    />
-                    {comment.comment} by {comment.user} &nbsp;&nbsp;
-                  </div>
-                </div>
-              ))}
-            </InfiniteScroll>
+          <div
+            style={{
+              marginTop: "2%",
+              fontSize: "30px",
+              cursor: "pointer",
+              float: "left",
+              width: "25%"
+            }}
+            onClick={this.showSummary}
+          >
+            {this.state.summary ? (
+              <strong>Summary</strong>
+            ) : (
+              <span>Summary</span>
+            )}
+          </div>
+          <div
+            style={{
+              marginTop: "2%",
+              fontSize: "30px",
+              cursor: "pointer",
+              float: "left",
+              width: "25%"
+            }}
+            onClick={this.showAllReviews}
+          >
+            {this.state.allreviews ? (
+              <strong>All Reviews</strong>
+            ) : (
+              <span>All Reviews</span>
+            )}
+          </div>
+          <div
+            style={{
+              marginTop: "2%",
+              fontSize: "30px",
+              cursor: "pointer",
+              float: "left",
+              width: "25%",
+              paddingRight: "50%"
+            }}
+            onClick={this.showYourReview}
+          >
+            {this.state.yourreview ? (
+              <strong>Your Review</strong>
+            ) : (
+              <span>Your Review</span>
+            )}
+          </div>
+          {this.state.summary ? (
+            <div>
+              <div>
+                SYNOPSIS <br />
+                {specificmovie.synopsis}
+                <br />
+                <br />
+              </div>
+              <div>
+                Average Rating :&nbsp; {avgrating} &nbsp;&nbsp; ({noofratings})
+                &nbsp; users
+                <br />
+                <StarRatings
+                  rating={avgrating}
+                  starRatedColor="yellow"
+                  starDimension="40px"
+                  starSpacing="15px"
+                />
+              </div>
+              <div>
+                CAST <br />
+                {specificmovie.completecast
+                  ? specificmovie.completecast.map(cast => (
+                      <div
+                        key={cast.id}
+                        style={{ float: "left", width: "30%" }}
+                      >
+                        {cast.cast} &nbsp; &nbsp;
+                        <br />
+                        <img
+                          className="image3"
+                          src={cast.image}
+                          style={{
+                            border: "1px solid black",
+                            borderRadius: "10%"
+                          }}
+                        />
+                        <br />
+                      </div>
+                    ))
+                  : null}
+              </div>
+            </div>
           ) : null}
         </div>
-        <div style={{ width: "50%", paddingLeft: "10%" }}>
-          Your Review
-          <br />
-          <Rating
-            value="1"
-            weight="30"
-            onClick={this.rateStar}
-            color="yellow"
-          />
-          <form action="" onSubmit={this.onSubmit}>
-            <div className="form-group">
-              <label htmlFor="name"> Review </label>
-              <textarea
-                type="message"
-                name="comment"
-                style={{ height: "120px" }}
-                placeholder="Enter your review...."
-                className="form-control form-control-lg"
-                value={comment}
-                onChange={this.onChange}
-              />
-            </div>
-            <input
-              type="submit"
-              value="Post Your Review"
-              className="btn btn-dark btn-block"
+
+        {this.state.allreviews ? (
+          <div>
+            <br />
+            COMMENTS <br />
+            <br />
+            {specificmovie.allcomments ? (
+              <InfiniteScroll
+                dataLength={specificmovie.allcomments.length}
+                hasMore={this.state.hasMore}
+                loader={<h4>Loading...</h4>}
+                height={400}
+                endMessage={
+                  <p style={{ textAlign: "center" }}>
+                    <b>That's all folks you have seen all the comments</b>
+                  </p>
+                }
+              >
+                {specificmovie.allcomments.map(comment => (
+                  <div key={comment.id} style={{ width: "70%" }}>
+                    Comment <br />
+                    <div>
+                      <Rating
+                        value={String(comment.rating)}
+                        weight="20"
+                        color="yellow"
+                        readonly
+                      />
+                      {comment.comment} by <strong> {comment.user}</strong>{" "}
+                      &nbsp;&nbsp;
+                    </div>
+                  </div>
+                ))}
+              </InfiniteScroll>
+            ) : null}
+          </div>
+        ) : null}
+        {this.state.yourreview ? (
+          <div style={{ width: "50%", paddingLeft: "10%" }}>
+            Your Review
+            <br />
+            <br />
+            {currentuserreview ? (
+              currentuserreview.length ? (
+                currentuserreview.map(userreview => (
+                  <div key={userreview.id} style={{ width: "50%" }}>
+                    <div>
+                      <Rating
+                        value={String(userreview.rating)}
+                        weight="20"
+                        color="yellow"
+                        readonly
+                      />
+                      {userreview.comment} by{" "}
+                      <strong> {userreview.user}</strong> &nbsp;&nbsp;
+                    </div>
+                    <br />
+                    <br />
+                  </div>
+                ))
+              ) : (
+                <strong>
+                  You haven't reviewed yet
+                  <br />
+                  <br />
+                </strong>
+              )
+            ) : null}
+            <Rating
+              value="1"
+              weight="30"
+              onClick={this.rateStar}
+              color="yellow"
             />
-          </form>
-        </div>
+            <form action="" onSubmit={this.onSubmit}>
+              <div className="form-group">
+                <label htmlFor="name"> Review </label>
+                <textarea
+                  type="message"
+                  name="comment"
+                  style={{ height: "120px" }}
+                  placeholder="Enter your review...."
+                  className="form-control form-control-lg"
+                  value={comment}
+                  onChange={this.onChange}
+                />
+              </div>
+              <input
+                type="submit"
+                value="Post Your Review"
+                className="btn btn-dark btn-block"
+              />
+            </form>
+          </div>
+        ) : null}
       </div>
     );
   }

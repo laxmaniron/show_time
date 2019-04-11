@@ -7,14 +7,14 @@ from django.contrib.auth.models import User
 
 class Movies(models.Model):
     title = models.CharField(max_length=200, unique=True)
-    release_date = models.DateField()
+    release_date = models.CharField(max_length=30)
     censor_rating = models.CharField(max_length=10)
     image_source = models.URLField()
-    synopsis = models.CharField(max_length=1000)
-    trailer_link = models.URLField()
-    time_duration = models.CharField(max_length=10)
-    likes = models.IntegerField()
-    status = models.BooleanField()
+    synopsis = models.CharField(max_length=1500)
+    trailer_link = models.CharField(max_length=200)
+    time_duration = models.CharField(max_length=30)
+    likes = models.CharField(max_length=30)
+    status = models.IntegerField()
 
     def __str__(self):
         return self.title
@@ -128,7 +128,6 @@ class Format_Movie(models.Model):
 class Rating(models.Model):
     title = models.ForeignKey(Movies, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    likestatus = models.BooleanField(default=False)
     ratestatus = models.BooleanField(default=False)
     rating = models.IntegerField(
         validators=[MinValueValidator(0), MaxValueValidator(5)], blank=True, null=True)
@@ -140,6 +139,49 @@ class Rating(models.Model):
 
     def __str__(self):
         return str(str(self.title)+'_'+str(self.user.username))
+
+
+class City_Theatre(models.Model):
+    theatre_name = models.CharField(max_length=500)
+    city = models.ForeignKey(Cities, on_delete=models.CASCADE)
+
+    class Meta:
+        indexes = (models.Index(fields=['city', 'theatre_name']),)
+        unique_together = (('city', 'theatre_name'),)
+
+
+class Theatre_showtimings(models.Model):
+    citytheatre = models.ForeignKey(City_Theatre, on_delete=models.CASCADE)
+    date = models.CharField(max_length=50)
+    title = models.ForeignKey(Movies, on_delete=models.CASCADE)
+    language = models.ForeignKey(Languages, on_delete=models.CASCADE)
+    format = models.ForeignKey(Formats, on_delete=models.CASCADE)
+    show_timings = models.CharField(max_length=10)
+
+    class Meta:
+        indexes = (models.Index(fields=['title', 'citytheatre']),)
+
+
+class Booking_Ticket(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=60)
+    city = models.CharField(max_length=50)
+    theatre = models.CharField(max_length=50)
+    cost = models.FloatField()
+    language = models.CharField(max_length=50)
+    dimension = models.CharField(max_length=5)
+    category = models.CharField(max_length=20)
+    row_no = models.CharField(max_length=5)
+    seat_no = models.CharField(max_length=5)
+    timings = models.CharField(max_length=10)
+
+    class Meta:
+        indexes = (models.Index(fields=['user']),)
+
+
+class Theatre_Snacks(models.Model):
+    snacks = models.CharField(max_length=50)
+    image = models.URLField()
 
 
 class testmodel(models.Model):

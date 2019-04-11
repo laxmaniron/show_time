@@ -112,7 +112,11 @@ export class EditProfile extends Component {
         <div>
           <h1>
             Edit Profile View &nbsp;&nbsp;
-            <i onClick={this.onShowClick} className="fas fa-user-edit" />
+            <i
+              onClick={this.onShowClick}
+              className="fas fa-user-edit"
+              style={{ cursor: "pointer" }}
+            />
           </h1>
         </div>
         <div>

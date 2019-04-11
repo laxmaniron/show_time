@@ -26,6 +26,14 @@ class MoviesView(APIView):
 
             for i in tupleofmovies:
 
+                k = ''
+
+                for j in i[8]:
+                    if(j != ' ' and j != ','):
+                        k = k+j
+
+                # print(int(k))
+
                 listofmovies.append(OrderedDict(
                     [('id', i[0]),
                      ('title', i[1]),
@@ -35,7 +43,7 @@ class MoviesView(APIView):
                      ('synopsis', i[5]),
                      ('trailer_link', i[6]),
                      ('time_duration', i[7]),
-                     ('likes', i[8]),
+                     ('likes', int(k)),
                      ('status', i[9])
                      ]))
 
@@ -135,7 +143,7 @@ class MoviesCompleteView(APIView):
             moviecompletedetail.update({"allformats": allformats})
 
             cursor.execute(
-                "SELECT id,user_id,likestatus,ratestatus,rating,comment FROM movies_rating WHERE title_id = %s", [pk])
+                "SELECT id,user_id,ratestatus,rating,comment FROM movies_rating WHERE title_id = %s", [pk])
             tupleofcomment = cursor.fetchall()
 
             allcomments = []
@@ -148,10 +156,9 @@ class MoviesCompleteView(APIView):
                 comment = OrderedDict(
                     [('id', i[0]),
                      ('user', username[0]),
-                     ('likestatus', i[2]),
-                     ('ratestatus', i[3]),
-                     ('rating', i[4]),
-                     ('comment', i[5]),
+                     ('ratestatus', i[2]),
+                     ('rating', i[3]),
+                     ('comment', i[4]),
                      ])
 
                 allcomments.append(comment)
@@ -208,7 +215,7 @@ class PostRatingView(APIView):
 
             else:
                 cursor.execute(
-                    "INSERT INTO movies_rating (title_id,user_id,ratestatus,likestatus,rating,comment) VALUES( %s, %s,%s,%s, %s,%s)", [data['title'], data['user'], ratestatus, ratestatus, data['rating'], data['comment']])
+                    "INSERT INTO movies_rating (title_id,user_id,ratestatus,rating,comment) VALUES( %s, %s,%s,%s, %s,%s)", [data['title'], data['user'], ratestatus, data['rating'], data['comment']])
                 cursor.execute(
                     "SELECT * FROM movies_rating WHERE title_id = %s and  user_id= %s", [data['title'], data['user']])
 
@@ -218,12 +225,11 @@ class PostRatingView(APIView):
 
             insertedrating = OrderedDict(
                 [('id', rating[0]),
-                 ('likestatus', rating[1]),
-                 ('ratestatus', rating[2]),
-                 ('rating', rating[3]),
-                 ('comment', rating[4]),
-                 ('title_id', rating[5]),
-                 ('user_id', rating[6]),
+                 ('ratestatus', rating[1]),
+                 ('rating', rating[2]),
+                 ('comment', rating[3]),
+                 ('title_id', rating[4]),
+                 ('user_id', rating[5]),
                  ])
 
         return Response(insertedrating)

@@ -148,16 +148,21 @@ export class SpecificMovie extends Component {
 
     {
       this.props.specificmovie.allcomments
-        ? this.props.specificmovie.allcomments.forEach((comment, index) => {
-            totalrating = totalrating + comment.rating;
-            noofratings = noofratings + 1;
-          })
+        ? this.props.specificmovie.allcomments.length
+          ? this.props.specificmovie.allcomments.forEach((comment, index) => {
+              totalrating = totalrating + comment.rating;
+              noofratings = noofratings + 1;
+            })
+          : null
         : null;
     }
 
     let avgrating = 0;
 
-    if (this.props.specificmovie.allcomments) {
+    if (
+      this.props.specificmovie.allcomments &&
+      this.props.specificmovie.allcomments.length
+    ) {
       avgrating = totalrating / noofratings;
     }
 
@@ -291,13 +296,17 @@ export class SpecificMovie extends Component {
                   ? specificmovie.completecast.map(cast => (
                       <div
                         key={cast.id}
-                        style={{ float: "left", width: "30%" }}
+                        style={{
+                          float: "left",
+                          width: "33%"
+                        }}
                       >
                         {cast.cast} &nbsp; &nbsp;
                         <br />
                         <img
                           className="image3"
                           src={cast.image}
+                          alt={"https://i.ibb.co/vdLB6Yp/profilealt.jpg"}
                           style={{
                             border: "1px solid black",
                             borderRadius: "10%"
@@ -317,7 +326,7 @@ export class SpecificMovie extends Component {
             <br />
             COMMENTS <br />
             <br />
-            {specificmovie.allcomments ? (
+            {specificmovie.allcomments.length ? (
               <InfiniteScroll
                 dataLength={specificmovie.allcomments.length}
                 hasMore={this.state.hasMore}

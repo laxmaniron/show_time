@@ -3,6 +3,7 @@ from .api import MoviesView, TestPutView, TestView, MoviesCompleteView, LikeUpda
 
 from django.urls import path, include
 
+from .views import populating_movies
 
 router = routers.DefaultRouter()
 
@@ -21,4 +22,5 @@ urlpatterns = [
     path('api/movies/<int:pk>/', MoviesCompleteView.as_view()),
     path('api/likeupdate/<int:pk>', LikeUpdateView.as_view()),
     path('api/ratingamovie/', PostRatingView.as_view()),
+    path('view/loaddata/', populating_movies, name='load_data'),
 ]

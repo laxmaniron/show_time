@@ -28,3 +28,9 @@ export const ADD_COMMENT = "ADD_COMMENT";
 export const GET_USERPROFILE = "GET_USERPROFILE";
 
 export const EDIT_USERPROFILE = "EDIT_USERPROFILE";
+
+export const GET_GENRES = "GET_GENRES";
+
+export const GET_LANGUAGES = "GET_LANGUAGES";
+
+export const GET_FORMATS = "GET_FORMATS";

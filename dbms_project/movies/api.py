@@ -16,10 +16,18 @@ from django.shortcuts import get_object_or_404
 
 
 class MoviesView(APIView):
-    def get(self, request):
+    def get(self, request, pk):
+        if pk == 1:
+            city = "hyderabad"
+        if pk == 2:
+            city = "mumbai"
+        if pk == 3:
+            city = "chennai"
         with connection.cursor() as cursor:
             cursor.execute(
                 "SELECT * FROM movies_movies")
+            cursor.execute(
+                "select movies_movies.id,movies_movies.title,movies_movies.release_date,movies_movies.censor_rating,movies_movies.image_source,movies_movies.synopsis,movies_movies.trailer_link,movies_movies.time_duration,movies_movies.likes,movies_movies.status from movies_city_movie inner join movies_cities on movies_city_movie.city_id=movies_cities.id inner join movies_movies on movies_city_movie.movie_title_id=movies_movies.id where city=%s ", [city])
             tupleofmovies = cursor.fetchall()
 
             listofmovies = []
@@ -34,7 +42,7 @@ class MoviesView(APIView):
 
                 # print(int(k))
 
-                listofmovies.append(OrderedDict(
+                only_movie = OrderedDict(
                     [('id', i[0]),
                      ('title', i[1]),
                      ('release_date', i[2]),
@@ -45,7 +53,57 @@ class MoviesView(APIView):
                      ('time_duration', i[7]),
                      ('likes', int(k)),
                      ('status', i[9])
-                     ]))
+                     ])
+
+                cursor.execute(
+                    "SELECT movies_genre.id,genre FROM movies_genre INNER JOIN movies_genre_movie on movies_genre.id = movies_genre_movie.movie_genre_id WHERE title_id = %s", [i[0]])
+                tupleofgenre = cursor.fetchall()
+
+                allgenre = []
+
+                for j in tupleofgenre:
+                    genre = OrderedDict(
+                        [('id', j[0]),
+                         ('genre', j[1]),
+                         ])
+
+                    allgenre.append(genre)
+
+                only_movie.update({"allgenre": allgenre})
+
+                cursor.execute(
+                    "SELECT movies_languages.id,language FROM movies_languages INNER JOIN movies_language_movie on movies_languages.id = movies_language_movie.movie_language_id  WHERE title_id = %s", [i[0]])
+                tupleoflanguages = cursor.fetchall()
+
+                allanguages = []
+
+                for j in tupleoflanguages:
+                    language = OrderedDict(
+                        [('id', j[0]),
+                         ('language', j[1]),
+                         ])
+
+                    allanguages.append(language)
+
+                only_movie.update({"allanguages": allanguages})
+
+                cursor.execute(
+                    "SELECT movies_formats.id,mformat FROM movies_formats INNER JOIN movies_format_movie on movies_formats.id = movies_format_movie.movie_format_id  WHERE title_id = %s", [i[0]])
+                tupleofformats = cursor.fetchall()
+
+                allformats = []
+
+                for j in tupleofformats:
+                    format = OrderedDict(
+                        [('id', j[0]),
+                         ('format', j[1]),
+                         ])
+
+                    allformats.append(format)
+
+                only_movie.update({"allformats": allformats})
+
+                listofmovies.append(only_movie)
 
         return Response(listofmovies)
 
@@ -215,7 +273,7 @@ class PostRatingView(APIView):
 
             else:
                 cursor.execute(
-                    "INSERT INTO movies_rating (title_id,user_id,ratestatus,rating,comment) VALUES( %s, %s,%s,%s, %s,%s)", [data['title'], data['user'], ratestatus, data['rating'], data['comment']])
+                    "INSERT INTO movies_rating (title_id,user_id,ratestatus,rating,comment) VALUES( %s, %s,%s, %s,%s)", [data['title'], data['user'], ratestatus, data['rating'], data['comment']])
                 cursor.execute(
                     "SELECT * FROM movies_rating WHERE title_id = %s and  user_id= %s", [data['title'], data['user']])
 
@@ -299,3 +357,63 @@ class TestPutView(APIView):
         # if serializer.is_valid(raise_exception=True):
         #     article_saved = serializer.save()
         return Response({"success": "Article '{}' updated successfully".format(tt)})
+
+
+class allgenresView(APIView):
+    def get(self, request):
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "SELECT id,genre FROM movies_genre")
+            tupleofgenre = cursor.fetchall()
+
+            allgenre = []
+
+            for i in tupleofgenre:
+                genre = OrderedDict(
+                    [('id', i[0]),
+                     ('genre', i[1]),
+                     ])
+
+                allgenre.append(genre)
+
+        return Response(allgenre)
+
+
+class allanguagesView(APIView):
+    def get(self, request):
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "SELECT id,language FROM movies_languages")
+            tupleoflanguage = cursor.fetchall()
+
+            allanguage = []
+
+            for i in tupleoflanguage:
+                language = OrderedDict(
+                    [('id', i[0]),
+                     ('language', i[1]),
+                     ])
+
+                allanguage.append(language)
+
+        return Response(allanguage)
+
+
+class allformatsView(APIView):
+    def get(self, request):
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "SELECT id,mformat FROM movies_formats")
+            tupleofformats = cursor.fetchall()
+
+            allformats = []
+
+            for i in tupleofformats:
+                formats = OrderedDict(
+                    [('id', i[0]),
+                     ('format', i[1]),
+                     ])
+
+                allformats.append(formats)
+
+        return Response(allformats)

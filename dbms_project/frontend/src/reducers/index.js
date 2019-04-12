@@ -5,6 +5,9 @@ import errors from "./errors";
 import messages from "./messages";
 import auth from "./auth";
 import userprofile from "./userprofile";
+import genres from "./genres";
+import languages from "./languages";
+import formats from "./formats";
 
 export default combineReducers({
   movies: moviesReducer,
@@ -12,5 +15,8 @@ export default combineReducers({
   messages: messages,
   auth: auth,
   specificmovie: specificmovieReducer,
-  userprofile: userprofile
+  userprofile: userprofile,
+  genres: genres,
+  languages: languages,
+  formats: formats
 });

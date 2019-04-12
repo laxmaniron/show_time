@@ -24,9 +24,9 @@ export class Alerts extends Component {
       }
     }
     if (message !== prevProps.message) {
-      if (message.movieLoad) {
-        alert.success(message.movieLoad);
-      }
+      // if (message.movieLoad) {
+      //   alert.success(message.movieLoad);
+      // }
 
       if (message.passwordNotMatch) {
         alert.error(message.passwordNotMatch);

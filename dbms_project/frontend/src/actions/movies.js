@@ -5,9 +5,19 @@ import { GET_MOVIES } from "./types";
 
 //GET_MOVIES
 
-export const getMovies = () => dispatch => {
+export const getMovies = city => dispatch => {
+  var cityid = 1;
+
+  if (city == "hyderabad") {
+    cityid = 1;
+  } else if (city == "mumbai") {
+    cityid = 2;
+  } else if (city == "chennai") {
+    cityid = 3;
+  }
+
   axios
-    .get("/movies/api/movies/")
+    .get(`/movies/api/movies/city/${cityid}/`)
     .then(res => {
       dispatch(createMessage({ movieLoad: "movies loaded successfully" }));
       dispatch({

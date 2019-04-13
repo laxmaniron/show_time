@@ -26,5 +26,8 @@ urlpatterns = [
     path('api/movies/genre/', allgenresView.as_view()),
     path('api/movies/language/', allanguagesView.as_view()),
     path('api/movies/format/', allformatsView.as_view()),
-    path('api/movies/snacks/', allSnacksView.as_view())
+    path('api/movies/snacks/', allSnacksView.as_view()),
+    path('api/movies/city_theatre/<int:movie_id>/<int:city_id>/',
+         BookingPageCompleteView.as_view()),
+
 ]

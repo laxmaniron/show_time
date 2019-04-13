@@ -162,18 +162,25 @@ class Theatre_showtimings(models.Model):
         indexes = (models.Index(fields=['title', 'citytheatre']),)
 
 
+class theatre_seats(models.Model):
+    show_time_no = models.ForeignKey(
+        Theatre_showtimings, on_delete=models.CASCADE)
+    seatno = models.CharField(max_length=30)
+
+
 class Booking_Ticket(models.Model):
+    booking_id = models.CharField(max_length=300)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=60)
     city = models.CharField(max_length=50)
     theatre = models.CharField(max_length=50)
     cost = models.FloatField()
     language = models.CharField(max_length=50)
-    dimension = models.CharField(max_length=5)
+    dimension = models.CharField(max_length=20)
     category = models.CharField(max_length=20)
-    row_no = models.CharField(max_length=5)
-    seat_no = models.CharField(max_length=5)
+    seat_no = models.CharField(max_length=20)
     timings = models.CharField(max_length=10)
+    snacks = models.CharField(max_length=1000)
 
     class Meta:
         indexes = (models.Index(fields=['user']),)
@@ -182,6 +189,7 @@ class Booking_Ticket(models.Model):
 class Theatre_Snacks(models.Model):
     snacks = models.CharField(max_length=50)
     image = models.URLField()
+    cost = models.CharField(max_length=100)
 
 
 class testmodel(models.Model):

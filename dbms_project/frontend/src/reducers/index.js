@@ -9,6 +9,7 @@ import genres from "./genres";
 import languages from "./languages";
 import formats from "./formats";
 import snacks from "./snacks";
+import theatres from "./theatre";
 
 export default combineReducers({
   movies: moviesReducer,
@@ -20,5 +21,6 @@ export default combineReducers({
   genres: genres,
   languages: languages,
   formats: formats,
-  snacks: snacks
+  snacks: snacks,
+  theatres: theatres
 });

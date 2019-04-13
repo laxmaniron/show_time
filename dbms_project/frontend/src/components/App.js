@@ -14,6 +14,7 @@ import Header from "./layout/Header";
 import Alerts from "./layout/Alerts";
 import List from "./movies/List";
 import SpecificMovie from "./movies/SpecificMovie";
+import Seats from "./movies/Seats";
 import Snacks from "./movies/Snacks";
 import Login from "./accounts/Login";
 import Register from "./accounts/Register";
@@ -21,6 +22,7 @@ import EditProfile from "./accounts/EditProfile";
 import PrivateRoute from "./common/PrivateRoute";
 import Payment from "./pages/Payment";
 import { loadUser } from "../actions/auth";
+import TheatrePage from "./bookingpage/theatrepage";
 
 import { Provider } from "react-redux";
 
@@ -63,6 +65,12 @@ class App extends Component {
                     path="/editprofile"
                     component={EditProfile}
                   />
+                  <Route
+                    exact
+                    path="/theatre/:movie_id/:city_id"
+                    component={TheatrePage}
+                  />
+                  <Route exact path="/theatre/seats" component={Seats} />
                 </Switch>
               </div>
             </Fragment>

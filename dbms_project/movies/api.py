@@ -442,3 +442,112 @@ class allSnacksView(APIView):
                 allsnacks.append(snack)
 
         return Response(allsnacks)
+
+
+class BookingPageCompleteView(APIView):
+    def get(self, request, movie_id, city_id):
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "select m.title, m.image_source, m.time_duration from movies_movies as m where m.id=%s", [movie_id])
+            tupleofmovie = cursor.fetchone()
+
+            movie = OrderedDict(
+                [('movie', tupleofmovie[0]),
+                 ('image_source', tupleofmovie[1]),
+                 ('time_duration', tupleofmovie[2])
+                 ])
+
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    " select distinct cast.id, cast.castname, cast.image from movies_cast_crew as cast inner join movies_cast_crew_movie as castmovie on cast.id = castmovie.cast_crew_id inner join movies_movies as m on castmovie.title_id =m.id and m.id=%s", [movie_id])
+                tupleofcast = cursor.fetchall()
+                listofcasts = []
+
+                for j in tupleofcast:
+                    cast = OrderedDict(
+                        [('cast_id', j[0]),
+                         ('castname', j[1]),
+                         ('cast_image', j[2]),
+                         ])
+                    listofcasts.append(cast)
+
+            movie.update({"castDetails": listofcasts})
+
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    " select g.id, g.genre from movies_genre_movie as gm inner join movies_movies as m on gm.title_id =m.id and m.id=%s inner join movies_genre as g on g.id=gm.movie_genre_id", [movie_id])
+                tupleofgenre = cursor.fetchall()
+                listofgenres = []
+
+                for i in tupleofgenre:
+                    genre = OrderedDict(
+                        [('genre_id', i[0]),
+                         ('genre', i[1]),
+                         ])
+
+                    listofgenres.append(genre)
+
+            movie.update({"genreDetails": listofgenres})
+
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    " select distinct t.id, c.city, t.theatre_name, s.date from movies_theatre_showtimings as s inner join movies_city_theatre as t on t.id = s.citytheatre_id inner join movies_cities as c on c.id=t.city_id and c.id= %s inner join movies_movies as m on m.id = s.title_id and m.id = %s", [city_id, movie_id])
+                tupleoftheatre = cursor.fetchall()
+                theatre = []
+                finallist = []
+
+                for i in tupleoftheatre:
+                    with connection.cursor() as cursor:
+                        cursor.execute(
+                            " select l.id, l.language from movies_theatre_showtimings as s inner join movies_city_theatre as t on t.id = s.citytheatre_id inner join movies_cities as c on c.id=t.city_id and c.id= %s inner join movies_movies as m on m.id = s.title_id and m.id = %s inner join movies_languages as l on l.id=s.language_id and s.citytheatre_id=%s where  s.date=%s", [city_id, movie_id, i[0], i[3]])
+                        tupleoflanguage = cursor.fetchall()
+                        languages = []
+                        for j in tupleoflanguage:
+                            language = OrderedDict(
+                                [('id', j[0]),
+                                    ('language', j[1]),
+                                 ])
+
+                            languages.append(language)
+                    with connection.cursor() as cursor:
+                        cursor.execute(
+                            " select f.id, f.mformat from movies_theatre_showtimings as s inner join movies_city_theatre as t on t.id = s.citytheatre_id inner join movies_cities as c on c.id=t.city_id and c.id= %s inner join movies_movies as m on m.id = s.title_id and m.id = %s inner join movies_formats as f on f.id=s.format_id and s.citytheatre_id=%s where  s.date=%s", [city_id, movie_id, i[0], i[3]])
+                        tupleofformat = cursor.fetchall()
+                        formats = []
+                        for j in tupleofformat:
+                            format = OrderedDict(
+                                [('id', j[0]),
+                                    ('format', j[1]),
+                                 ])
+
+                            formats.append(format)
+
+                    with connection.cursor() as cursor:
+                        cursor.execute(
+                            " select s.show_timings from movies_theatre_showtimings as s inner join movies_city_theatre as t on t.id = s.citytheatre_id inner join movies_cities as c on c.id=t.city_id and c.id= %s inner join movies_movies as m on m.id = s.title_id and m.id = %s inner join movies_formats as f on f.id=s.format_id and s.citytheatre_id=%s where  s.date=%s", [city_id, movie_id, i[0], i[3]])
+                        tupleoftimings = cursor.fetchall()
+                        timings = []
+                        for j in tupleoftimings:
+                            timing = OrderedDict(
+                                [('time', j[0]),
+                                 ])
+
+                            timings.append(timing)
+
+                    theatre.append(OrderedDict(
+                        [('theatre_id', i[0]),
+                            ('city', i[1]),
+                            ('theatre', i[2]),
+                            #  ('timings', i[3]),
+                            # ('movie', i[3]),
+                            #  ('language', i[5]),
+                            #  ('format', i[6]),
+                            ('date', i[3]),
+                            ('language', languages),
+                            ('format', formats),
+                            ('timing', timings),
+                         ]))
+            movie.update({"theatreDetails": theatre})
+
+        return Response(movie)

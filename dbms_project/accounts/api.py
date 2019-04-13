@@ -4,7 +4,7 @@ from knox.models import AuthToken
 
 from .serializers import UserSerializer, UserProfileSerializer, RegisterSerializer, LoginSerializer, FileUploadSerializer, NewUserProfileSerializer, NewUserSerializer
 
-from .models import UserProfile, TheatreSnacks
+from .models import UserProfile
 from django.contrib.auth.models import User
 
 from rest_framework.views import APIView

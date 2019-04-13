@@ -8,6 +8,7 @@ import userprofile from "./userprofile";
 import genres from "./genres";
 import languages from "./languages";
 import formats from "./formats";
+import snacks from "./snacks";
 
 export default combineReducers({
   movies: moviesReducer,
@@ -18,5 +19,6 @@ export default combineReducers({
   userprofile: userprofile,
   genres: genres,
   languages: languages,
-  formats: formats
+  formats: formats,
+  snacks: snacks
 });

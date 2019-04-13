@@ -12,6 +12,8 @@ from collections import OrderedDict
 
 from django.shortcuts import get_object_or_404
 
+import random
+
 # movieViewset
 
 
@@ -417,3 +419,26 @@ class allformatsView(APIView):
                 allformats.append(formats)
 
         return Response(allformats)
+
+
+class allSnacksView(APIView):
+    def get(self, request):
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "SELECT id,snacks,image FROM movies_theatre_snacks")
+            tupleofsnacks = cursor.fetchall()
+
+            allsnacks = []
+
+            for i in tupleofsnacks:
+                price = random.randint(50, 500)
+                snack = OrderedDict(
+                    [('id', i[0]),
+                     ('snacks', i[1]),
+                     ('image', i[2]),
+                     ('price', price)
+                     ])
+
+                allsnacks.append(snack)
+
+        return Response(allsnacks)

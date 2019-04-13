@@ -74,6 +74,8 @@ export class List extends Component {
 
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
+
+    this.props.getMovies(this.state.city);
   };
 
   doFormatFilter = e => {
@@ -148,6 +150,22 @@ export class List extends Component {
             if (
               this.state[this.props.movies[i]["allanguages"][j]["language"]]
             ) {
+              flag = 1;
+              break;
+            }
+          }
+          if (flag) {
+            this.movie = [...this.movie, this.props.movies[i]];
+          }
+
+          flag = 0;
+        }
+      }
+
+      for (var i = 0; i < this.props.movies.length; i++) {
+        if (this.props.movies[i]["allformats"]) {
+          for (var j = 0; j < this.props.movies[i]["allformats"].length; j++) {
+            if (this.state[this.props.movies[i]["allformats"][j]["format"]]) {
               flag = 1;
               break;
             }

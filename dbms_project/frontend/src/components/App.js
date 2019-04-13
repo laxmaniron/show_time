@@ -14,6 +14,7 @@ import Header from "./layout/Header";
 import Alerts from "./layout/Alerts";
 import List from "./movies/List";
 import SpecificMovie from "./movies/SpecificMovie";
+import Snacks from "./movies/Snacks";
 import Login from "./accounts/Login";
 import Register from "./accounts/Register";
 import EditProfile from "./accounts/EditProfile";
@@ -55,6 +56,8 @@ class App extends Component {
                     path="/specifics/:id"
                     component={SpecificMovie}
                   />
+
+                  <Route exact path="/snacks" component={Snacks} />
                   <PrivateRoute
                     exact
                     path="/editprofile"

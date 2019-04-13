@@ -4,7 +4,7 @@ from knox.models import AuthToken
 
 from .serializers import UserSerializer, UserProfileSerializer, RegisterSerializer, LoginSerializer, FileUploadSerializer, NewUserProfileSerializer, NewUserSerializer
 
-from .models import UserProfile
+from .models import UserProfile, TheatreSnacks
 from django.contrib.auth.models import User
 
 from rest_framework.views import APIView
@@ -233,19 +233,3 @@ class RegisterUserAPI(generics.GenericAPIView):
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
             "token": kp[1]
         })
-
-
-# {
-#     "user": {
-#         "username": "itworkedyes",
-#         "first_name": "moosa",
-#         "last_name": "mohammed",
-#         "email": "moosa@gmail.com",
-#         "password":"ironman3"
-#         },
-#          "city": "hyderabad",
-#           "dob":"2019-04-27",
-#             "phone": 1234567,
-#             "image": null
-
-#     }

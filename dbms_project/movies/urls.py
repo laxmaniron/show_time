@@ -26,4 +26,5 @@ urlpatterns = [
     path('api/movies/genre/', allgenresView.as_view()),
     path('api/movies/language/', allanguagesView.as_view()),
     path('api/movies/format/', allformatsView.as_view()),
+    path('api/movies/snacks/', allSnacksView.as_view())
 ]

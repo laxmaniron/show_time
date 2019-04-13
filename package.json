@@ -38,6 +38,7 @@
     "react-dom": "^16.8.6",
     "react-infinite-scroll-component": "^4.5.2",
     "react-infinite-scroller": "^1.2.4",
+    "react-paypal-express-checkout": "^1.0.5",
     "react-redux": "^6.0.1",
     "react-router-dom": "^5.0.0",
     "react-star-rating-component": "^1.4.1",

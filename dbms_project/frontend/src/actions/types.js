@@ -34,3 +34,5 @@ export const GET_GENRES = "GET_GENRES";
 export const GET_LANGUAGES = "GET_LANGUAGES";
 
 export const GET_FORMATS = "GET_FORMATS";
+
+export const GET_SNACKS = "GET_SNACKS";

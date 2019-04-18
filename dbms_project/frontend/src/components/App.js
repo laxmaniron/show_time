@@ -5,6 +5,7 @@ import { Provider as AlertProvider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
 import {
   HashRouter as Router,
+  BrowserRouter as bRouter,
   Route,
   Switch,
   Redirect
@@ -12,7 +13,7 @@ import {
 
 import Header from "./layout/Header";
 import Alerts from "./layout/Alerts";
-import List from "./movies/List";
+import List from "./movies/List1";
 import SpecificMovie from "./movies/SpecificMovie";
 import Seats from "./movies/Seats";
 import Snacks from "./movies/Snacks";
@@ -22,6 +23,7 @@ import EditProfile from "./accounts/EditProfile";
 import PrivateRoute from "./common/PrivateRoute";
 import Payment from "./pages/Payment";
 import { loadUser } from "../actions/auth";
+import TicketHistoryPage from "./ticketbookinghistory/history";
 import TheatrePage from "./bookingpage/theatrepage";
 
 import { Provider } from "react-redux";
@@ -71,6 +73,11 @@ class App extends Component {
                     component={TheatrePage}
                   />
                   <Route exact path="/theatre/seats" component={Seats} />
+                  <Route
+                    exact
+                    path="/history/:user_id"
+                    component={TicketHistoryPage}
+                  />
                 </Switch>
               </div>
             </Fragment>

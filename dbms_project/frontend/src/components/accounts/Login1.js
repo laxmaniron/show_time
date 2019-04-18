@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './login.css';
 import { login } from "../../actions/auth";
 
 export class Login extends Component {
@@ -32,60 +30,42 @@ export class Login extends Component {
 
     const { username, password } = this.state;
     return (
-      <div className='background1'>
-      <div className='container' style={{paddingTop:'150px',paddingBottom:'150px'}}>
-      <div className="profile-main">
-
-          
+      <div className="col-md-6 m-auto">
+        <div className="card card-body mt-5">
+          <h2 className="text-center">Login</h2>
           <form onSubmit={this.onSubmit}>
-          <p style={{fontSize: '30px',color:'#e19536',marginLeft:'130px',marginTop:'30px',fontFamily:'open sans'}}>Log in </p> <br />
             <div className="form-group">
-              <label style={{color:" #e19536"}}>Username</label>
+              <label>Username</label>
               <input
                 type="text"
                 className="form-control"
                 name="username"
                 onChange={this.onChange}
-                value={username} 
-                style={{backgroundColor:'transparent',color:'white'}}
-                spellCheck='false'
+                value={username}
               />
             </div>
 
             <div className="form-group">
-              <label style={{color:" #e19536"}}>Password</label>
+              <label>Password</label>
               <input
                 type="password"
                 className="form-control"
                 name="password"
                 onChange={this.onChange}
                 value={password}
-                style={{backgroundColor:'transparent',color:'white'}}
-                spellCheck='false'
               />
             </div>
-            <div className="form-group form-check">
-              <label className="form-check-label">
-                <input className="form-check-input" type="checkbox" name="remember" style={{width: '20px',backgroundColor:' rgba(255,255,255,0.9)'}} /><span style={{color: '#e19536'}}>Remember me</span> 
-            </label><br /><br />
-            </div>
-            
-
-
-            <p>
-              Don't Have an account? <Link to="/register"><span style={{fontFamily:' Raleway',fontSize:'18px',fontSize:'17px',color:'#84d5d9'}}>Register</span></Link>
-            </p>
-            <p style={{marginLeft: '29%',marginTop: '2%',}}>
-              <button type="submit" className="button button-q" >
+            <div className="form-group">
+              <button type="submit" className="btn btn-primary">
                 Login
-              </button></p><br />
-            
-            
+              </button>
+            </div>
+            <p>
+              Don't Have an account? <Link to="/register">Register</Link>
+            </p>
           </form>
-          </div>
-</div>
-</div>
-
+        </div>
+      </div>
     );
   }
 }

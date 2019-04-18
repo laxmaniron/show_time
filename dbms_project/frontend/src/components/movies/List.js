@@ -2,369 +2,142 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getMovies } from "../../actions/movies";
-import { getGenres } from "../../actions/genres";
-import { getLanguages } from "../../actions/languages";
-import { getFormats } from "../../actions/formats";
 import { Link } from "react-router-dom";
-import "./specificMovie.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./list1.css";
+// import './list1.css';
 import { Card, CardImg, CardBody, CardTitle, CardText } from "reactstrap";
 
 export class List extends Component {
-  state = {
-    intheatre: 1,
-    city: "chennai",
-    Action: false,
-    Adventure: false,
-    Animation: false,
-    Biography: false,
-    Classic: false,
-    Comedy: false,
-    Crime: false,
-    Dance: false,
-    Drama: false,
-    Family: false,
-    Fantasy: false,
-    History: false,
-    Horror: false,
-    Musical: false,
-    Mystery: false,
-    Period: false,
-    Political: false,
-    Physchological: false,
-    Romance: false,
-    Satire: false,
-    SciFi: false,
-    Sports: false,
-    Suspense: false,
-    Thriller: false,
-    War: false,
-    Bengali: false,
-    Bhojpuri: false,
-    English: false,
-    Gujarati: false,
-    Hindi: false,
-    Kannada: false,
-    Malayalam: false,
-    Marathi: false,
-    Punjabi: false,
-    Tamil: false,
-    Telugu: false
-  };
-
-  movie = [];
-
   static propTypes = {
     movies: PropTypes.array.isRequired,
-    genres: PropTypes.array.isRequired,
-    languages: PropTypes.array.isRequired,
-    formats: PropTypes.array.isRequired,
-    getMovies: PropTypes.func.isRequired,
-    getGenres: PropTypes.func.isRequired,
-    getLanguages: PropTypes.func.isRequired,
-    getFormats: PropTypes.func.isRequired
-  };
-
-  showInTheatreMovies = e => {
-    this.setState({ intheatre: 1 });
-  };
-
-  showUpcomingMovies = e => {
-    this.setState({ intheatre: 0 });
-  };
-
-  onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
-
-    this.props.getMovies(this.state.city);
-  };
-
-  doFormatFilter = e => {
-    let p = false;
-    if (e.target.value == "false") {
-      p = false;
-    } else if (e.target.value == "true") {
-      p = true;
-    }
-
-    this.setState({ [e.target.name]: p });
-  };
-
-  doGenreFilter = e => {
-    let p = false;
-    if (e.target.value == "false") {
-      p = false;
-    } else if (e.target.value == "true") {
-      p = true;
-    }
-
-    this.setState({ [e.target.name]: p });
-  };
-
-  doLanguageFilter = e => {
-    let p = false;
-    if (e.target.value == "false") {
-      p = false;
-    } else if (e.target.value == "true") {
-      p = true;
-    }
-
-    this.setState({ [e.target.name]: p });
+    getMovies: PropTypes.func.isRequired
   };
 
   componentDidMount() {
-    this.props.getMovies(this.state.city);
-    this.props.getGenres();
-    this.props.getLanguages();
-    this.props.getFormats();
+    this.props.getMovies();
   }
-
   render() {
-    let movies = this.props.movies;
-
-    console.log(this.movie);
-
-    let flag = 0;
-
-    if (this.props.movies.length) {
-      //console.log(this.props.movies);
-      this.movie = [];
-      for (var i = 0; i < this.props.movies.length; i++) {
-        if (this.props.movies[i]["allgenre"]) {
-          for (var j = 0; j < this.props.movies[i]["allgenre"].length; j++) {
-            if (this.state[this.props.movies[i]["allgenre"][j]["genre"]]) {
-              flag = 1;
-              break;
-            }
-          }
-          if (flag) {
-            this.movie = [...this.movie, this.props.movies[i]];
-          }
-
-          flag = 0;
-        }
-      }
-
-      for (var i = 0; i < this.props.movies.length; i++) {
-        if (this.props.movies[i]["allanguages"]) {
-          for (var j = 0; j < this.props.movies[i]["allanguages"].length; j++) {
-            if (
-              this.state[this.props.movies[i]["allanguages"][j]["language"]]
-            ) {
-              flag = 1;
-              break;
-            }
-          }
-          if (flag) {
-            this.movie = [...this.movie, this.props.movies[i]];
-          }
-
-          flag = 0;
-        }
-      }
-
-      for (var i = 0; i < this.props.movies.length; i++) {
-        if (this.props.movies[i]["allformats"]) {
-          for (var j = 0; j < this.props.movies[i]["allformats"].length; j++) {
-            if (this.state[this.props.movies[i]["allformats"][j]["format"]]) {
-              flag = 1;
-              break;
-            }
-          }
-          if (flag) {
-            this.movie = [...this.movie, this.props.movies[i]];
-          }
-
-          flag = 0;
-        }
-      }
-    }
-
-    if (this.movie.length) {
-      movies = this.movie;
-    }
-
-    movies.sort((a, b) => b.likes - a.likes);
-
+    console.log(typeof this.props.movies);
     return (
       <Fragment>
-        <h1>Movies</h1>
-        <div className="container" style={{ textAlign: "Right" }}>
-          <div className="row ">
-            <div className="col-sm-12">
-              <select name="city" onChange={this.onChange}>
-                <option value="chennai">chennai</option>
-                <option value="hyderabad">Hyderabad</option>
-                <option value="mumbai">Mumbai</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div
-          style={{
-            float: "left",
-            marginTop: "10%",
-            width: "20%",
-            paddingLeft: "50px"
-          }}
-        >
-          <div className="row" style={{ paddingLeft: "10%" }}>
-            <div
-              className="col-sm-8"
-              style={{ border: "1px solid gray", borderRadius: "10px" }}
-            >
-              <p style={{ fontSize: "25px" }}>Genres</p>
-
-              {this.props.genres.map(genre => (
-                <span key={genre.id}>
-                  <input
-                    type="checkbox"
-                    name={genre.genre}
-                    value={!this.state[genre.genre]}
-                    onChange={this.doGenreFilter}
-                  />
-                  {genre.genre}
-                  <br />
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <div className="row" style={{ paddingLeft: "10%", marginTop: "2%" }}>
-            <div
-              className="col-sm-8"
-              style={{ border: "1px solid gray", borderRadius: "10px" }}
-            >
-              <p style={{ fontSize: "25px" }}>Languages</p>
-
-              {this.props.languages.map(language => (
-                <span key={language.id}>
-                  <input
-                    type="checkbox"
-                    name={language.language}
-                    value={!this.state[language.language]}
-                    onChange={this.doLanguageFilter}
-                  />
-                  {language.language}
-                  <br />
-                </span>
-              ))}
-            </div>
-          </div>
-          <div className="row" style={{ paddingLeft: "10%", marginTop: "2%" }}>
-            <div
-              className="col-sm-8"
-              style={{ border: "1px solid gray", borderRadius: "10px" }}
-            >
-              <p style={{ fontSize: "25px" }}>Formats</p>
-
-              {this.props.formats.map(format => (
-                <span key={format.id}>
-                  <input
-                    type="checkbox"
-                    name={format.format}
-                    value={!this.state[format.format]}
-                    onChange={this.doFormatFilter}
-                  />
-                  {format.format}
-                  <br />
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div
-          style={{
-            marginTop: "2%",
-            fontSize: "30px",
-            cursor: "pointer",
-            float: "left",
-            width: "40%",
-            marginBottom: "3%"
-          }}
-          onClick={this.showInTheatreMovies}
-        >
-          {this.state.intheatre ? (
-            <strong>Movies in theatres</strong>
-          ) : (
-            <span>Movies in Theatres</span>
-          )}
-        </div>
-        <div
-          style={{
-            marginTop: "2%",
-            fontSize: "30px",
-            cursor: "pointer",
-            float: "left",
-            width: "40%",
-            marginBottom: "3%"
-          }}
-          onClick={this.showUpcomingMovies}
-        >
-          {!this.state.intheatre ? (
-            <strong>Upcoming Movies</strong>
-          ) : (
-            <span>Upcoming Movies</span>
-          )}
-        </div>
-        <div style={{ paddingLeft: "25%" }}>
-          {this.state.intheatre
-            ? movies.map(movie =>
-                movie.status ? (
-                  <div
-                    key={movie.id}
-                    style={{ width: "33.33%", float: "left" }}
-                    className="carddiv"
-                  >
-                    <Link to={`/specifics/${movie.id}`}>
+        <div className="slider movie-items">
+          <div className="container">
+            <div className="row">
+              <div className="slick-multiItemSlider">
+                <div className="movie-item">
+                  <div className="mv-img">
+                    <Link to="#">
                       <img
-                        className="image1"
-                        src={movie.image_source}
-                        style={{
-                          border: "1px solid black",
-                          borderRadius: "20px"
-                        }}
+                        src="http://127.0.0.1:8000/media/profile_image/slider1.jpg"
+                        alt=""
+                        width="285"
+                        height="437"
                       />
-                      <p id="contentpos">
-                        {movie.title}
-                        <br />
-                        {movie.likes}
-                        <br />
-                      </p>
                     </Link>
                   </div>
-                ) : null
-              )
-            : null}
-
-          {!this.state.intheatre
-            ? movies.map(movie =>
-                !movie.status ? (
-                  <div
-                    key={movie.id}
-                    style={{ width: "33.33%", float: "left" }}
-                    className="carddiv"
-                  >
-                    <Link to={`/specifics/${movie.id}`}>
-                      <img
-                        className="image1"
-                        src={movie.image_source}
-                        style={{
-                          border: "1px solid black",
-                          borderRadius: "20px"
-                        }}
-                      />
-                      <p id="contentpos">
-                        {movie.title}
-                        <br />
-                        {movie.likes}
-                        <br />
-                      </p>
-                    </Link>
+                  <div className="title-in">
+                    <div className="cate">
+                      <span className="blue">
+                        <Link to="#">Sci-fi</Link>
+                      </span>
+                    </div>
+                    <h6>
+                      <Link to="#">Interstellar</Link>
+                    </h6>
+                    <p>
+                      <i className="ion-android-star" />
+                      <span>7.4</span> /10
+                    </p>
                   </div>
-                ) : null
-              )
-            : null}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="movie-items">
+          <div className="container">
+            <div className="row ipad-width">
+              <div className="col-md-3">
+                <div className="sidebar">
+                  <div className="ads">
+                    {/* <!-- <img src="images/uploads/ads1.png" alt="" width="336" height="296"> --> */}
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-9">
+                <div className="title-hd">
+                  <h2>in theater</h2>
+                  <a href="#" className="viewall">
+                    View all <i className="ion-ios-arrow-right" />
+                  </a>
+                </div>
+                <div className="tabs">
+                  <ul className="tab-links">
+                    <li className="active" style={{ marginRight: "18%" }}>
+                      <a href="#tab1">#Popular</a>
+                    </li>
+                    <li>
+                      <a href="#tab2"> #Coming soon</a>
+                    </li>
+                  </ul>
+                  <div className="tab-content">
+                    <div id="tab1" className="tab active">
+                      {this.props.movies.map(movie => (
+                        <div
+                          className="row"
+                          style={{
+                            width: "30%",
+                            float: "left",
+                            padding: "20px"
+                          }}
+                        >
+                          <div className="slick-multiItem">
+                            <Link to={`/specifics/${movie.id}`} key={movie.id}>
+                              <div className="slide-it">
+                                <div className="movie-item">
+                                  <div className="mv-img">
+                                    <img
+                                      src={movie.image_source}
+                                      alt=""
+                                      width="185"
+                                      height="284"
+                                    />
+
+                                    <div className="title-in">
+                                      <h6
+                                        style={{
+                                          color: "white",
+                                          fontSize: "20px"
+                                        }}
+                                      >
+                                        {movie.title}
+                                      </h6>
+                                      <p>
+                                        <i className="ion-android-star" />
+                                        <span>{movie.likes} likes</span>
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </Link>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="trailers">
+          <div className="container">
+            <div className="row ipad-width">
+              <div className="col-md-12" />
+            </div>
+          </div>
         </div>
       </Fragment>
     );
@@ -372,13 +145,10 @@ export class List extends Component {
 }
 
 const mapStateToProps = state => ({
-  movies: state.movies.movies,
-  genres: state.genres.genres,
-  formats: state.formats.formats,
-  languages: state.languages.languages
+  movies: state.movies.movies
 });
 
 export default connect(
   mapStateToProps,
-  { getMovies, getGenres, getLanguages, getFormats }
+  { getMovies }
 )(List);

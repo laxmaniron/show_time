@@ -195,3 +195,5 @@ class Theatre_Snacks(models.Model):
 class testmodel(models.Model):
     title = models.CharField(max_length=20)
     genre = models.CharField(max_length=20)
+
+# ironman3

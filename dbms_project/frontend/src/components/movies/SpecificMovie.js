@@ -3,8 +3,9 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getSpecificMovie, addComment } from "../../actions/specificmovie";
 import { createMessage } from "../../actions/messages";
+import { NavLink, Link } from "react-router-dom";
 import moviesReducer from "../../reducers/moviesReducer";
-import "./specificMovie.css";
+import "./trash.css";
 import StarRatings from "react-star-ratings";
 import Rating from "react-star-rating-lite";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -148,21 +149,16 @@ export class SpecificMovie extends Component {
 
     {
       this.props.specificmovie.allcomments
-        ? this.props.specificmovie.allcomments.length
-          ? this.props.specificmovie.allcomments.forEach((comment, index) => {
-              totalrating = totalrating + comment.rating;
-              noofratings = noofratings + 1;
-            })
-          : null
+        ? this.props.specificmovie.allcomments.forEach((comment, index) => {
+            totalrating = totalrating + comment.rating;
+            noofratings = noofratings + 1;
+          })
         : null;
     }
 
     let avgrating = 0;
 
-    if (
-      this.props.specificmovie.allcomments &&
-      this.props.specificmovie.allcomments.length
-    ) {
+    if (this.props.specificmovie.allcomments) {
       avgrating = totalrating / noofratings;
     }
 
@@ -182,239 +178,370 @@ export class SpecificMovie extends Component {
     }
 
     return (
-      <div className="container">
-        <h1> SpecificMovie Details </h1>
-        <h2 style={{ color: "red", fontSize: "50px" }}>
-          {specificmovie.title}
-        </h2>
-        <div>
-          <img
-            className="image2"
-            src={specificmovie.image_source}
-            style={{ border: "1px solid black", borderRadius: "30px" }}
-          />
-          <div style={{ float: "right", paddingRight: "20%" }}>
-            GENRE <br />
-            {specificmovie.allgenre
-              ? specificmovie.allgenre.map(genre => (
-                  <span key={genre.id}>{genre.genre} &nbsp; &nbsp;</span>
-                ))
-              : null}
-            <br />
-            Languages <br />
-            {specificmovie.allanguages
-              ? specificmovie.allanguages.map(language => (
-                  <span key={language.id}>
-                    {language.language} &nbsp; &nbsp;
-                  </span>
-                ))
-              : null}
-            <br />
-            Available in Formats
-            <br />
-            {specificmovie.allformats
-              ? specificmovie.allformats.map(format => (
-                  <span key={format.id}>{format.format} &nbsp; &nbsp;</span>
-                ))
-              : null}
-            <br />
+      <div>
+        <div className="hero mv-single-hero">
+          <div className="container">
+            <div className="row">
+              <div className="col-md-12" />
+            </div>
           </div>
-          <br />
         </div>
-        <div>
-          <div
-            style={{
-              marginTop: "2%",
-              fontSize: "30px",
-              cursor: "pointer",
-              float: "left",
-              width: "25%"
-            }}
-            onClick={this.showSummary}
-          >
-            {this.state.summary ? (
-              <strong>Summary</strong>
-            ) : (
-              <span>Summary</span>
-            )}
-          </div>
-          <div
-            style={{
-              marginTop: "2%",
-              fontSize: "30px",
-              cursor: "pointer",
-              float: "left",
-              width: "25%"
-            }}
-            onClick={this.showAllReviews}
-          >
-            {this.state.allreviews ? (
-              <strong>All Reviews</strong>
-            ) : (
-              <span>All Reviews</span>
-            )}
-          </div>
-          <div
-            style={{
-              marginTop: "2%",
-              fontSize: "30px",
-              cursor: "pointer",
-              float: "left",
-              width: "25%",
-              paddingRight: "50%"
-            }}
-            onClick={this.showYourReview}
-          >
-            {this.state.yourreview ? (
-              <strong>Your Review</strong>
-            ) : (
-              <span>Your Review</span>
-            )}
-          </div>
-          {this.state.summary ? (
-            <div>
-              <div>
-                SYNOPSIS <br />
-                {specificmovie.synopsis}
-                <br />
-                <br />
-              </div>
-              <div>
-                Average Rating :&nbsp; {avgrating} &nbsp;&nbsp; ({noofratings})
-                &nbsp; users
-                <br />
-                <StarRatings
-                  rating={avgrating}
-                  starRatedColor="yellow"
-                  starDimension="40px"
-                  starSpacing="15px"
-                />
-              </div>
-              <div>
-                CAST <br />
-                {specificmovie.completecast
-                  ? specificmovie.completecast.map(cast => (
-                      <div
-                        key={cast.id}
-                        style={{
-                          float: "left",
-                          width: "33%"
-                        }}
-                      >
-                        {cast.cast} &nbsp; &nbsp;
-                        <br />
-                        <img
-                          className="image3"
-                          src={cast.image}
-                          alt={"https://i.ibb.co/vdLB6Yp/profilealt.jpg"}
-                          style={{
-                            border: "1px solid black",
-                            borderRadius: "10%"
-                          }}
-                        />
-                        <br />
+        <div className="page-single movie-single movie_single">
+          <div className="container">
+            <div className="row ipad-width2">
+              <div className="col-md-4 col-sm-12 col-xs-12">
+                <div className="movie-img sticky-sb">
+                  <img src={specificmovie.image_source} alt="" />
+                  <div className="movie-btn">
+                    <div className="btn-transform transform-vertical red">
+                      <div>
+                        <Link to="#" className="item item-1 redbtn">
+                          {" "}
+                          <i className="ion-play" /> Watch Trailer
+                        </Link>
                       </div>
-                    ))
-                  : null}
+                      <div>
+                        <Link
+                          to="https://www.youtube.com/embed/o-0hcF97wy0"
+                          className="item item-2 redbtn fancybox-media hvr-grow"
+                        >
+                          <i className="ion-play" />
+                        </Link>
+                      </div>
+                    </div>
+                    <div className="btn-transform transform-vertical">
+                      <div>
+                        {" "}
+                        <i className="ion-card" />{" "}
+                        <a
+                          href={`http://127.0.0.1:8000/frontend/#/theatre/${
+                            specificmovie.id
+                          }/3`}
+                        >
+                          Buy ticket
+                        </a>
+                      </div>
+                      <div>
+                        <Link to="#" className="item item-2 yellowbtn">
+                          <i className="ion-card" />
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-8 col-sm-12 col-xs-12">
+                <div className="movie-single-ct main-content">
+                  <h1 className="bd-hd">
+                    {specificmovie.title} <span>2018</span>
+                  </h1>
+                  <div className="movie-rate">
+                    <div className="rate">
+                      <i className="ion-android-star" />
+                      <p>
+                        <span>{avgrating / 1}</span> /5
+                        <br />
+                        <span className="rv">{noofratings} Reviews</span>
+                      </p>
+                    </div>
+                    {specificmovie.allcomments ? (
+                      specificmovie.allcomments.length ? (
+                        <div className="rate-star">
+                          <p>Total Rating: </p>
+                          <StarRatings
+                            rating={avgrating}
+                            starRatedColor="yellow"
+                            starDimension="30px"
+                            starSpacing="5px"
+                          />
+                        </div>
+                      ) : (
+                        <div className="rate-star">
+                          <p>Total Rating: </p>
+                          <StarRatings
+                            rating={0}
+                            starRatedColor="yellow"
+                            starDimension="30px"
+                            starSpacing="5px"
+                          />
+                        </div>
+                      )
+                    ) : null}
+                  </div>
+                  <div className="movie-tabs">
+                    <div className="tabs">
+                      <ul className="tab-links tabs-mv">
+                        {this.state.summary ? (
+                          <li
+                            className="active"
+                            style={{ cursor: "pointer" }}
+                            onClick={this.showSummary}
+                          >
+                            <a style={{ textDecoration: "None" }}>overview</a>
+                          </li>
+                        ) : (
+                          <li
+                            style={{ cursor: "pointer" }}
+                            onClick={this.showSummary}
+                          >
+                            <a style={{ textDecoration: "None" }}>overview</a>
+                          </li>
+                        )}
+
+                        {this.state.allreviews ? (
+                          <li
+                            className="active"
+                            style={{ cursor: "pointer" }}
+                            onClick={this.showAllReviews}
+                          >
+                            <a style={{ textDecoration: "None" }}>Reviews</a>
+                          </li>
+                        ) : (
+                          <li
+                            style={{ cursor: "pointer" }}
+                            onClick={this.showAllReviews}
+                          >
+                            <a style={{ textDecoration: "None" }}>Reviews</a>
+                          </li>
+                        )}
+
+                        {this.state.yourreview ? (
+                          <li
+                            className="active"
+                            style={{ cursor: "pointer" }}
+                            onClick={this.showYourReview}
+                          >
+                            <a style={{ textDecoration: "None" }}>
+                              Your Review
+                            </a>
+                          </li>
+                        ) : (
+                          <li
+                            style={{ cursor: "pointer" }}
+                            onClick={this.showYourReview}
+                          >
+                            <a style={{ textDecoration: "None" }}>
+                              Your Review
+                            </a>
+                          </li>
+                        )}
+                      </ul>
+
+                      <div className="tab-content">
+                        {this.state.summary ? (
+                          <div id="overview" className="tab active">
+                            <div className="row">
+                              <div className="col-md-8 col-sm-12 col-xs-12">
+                                <div className="title-hd-sm">
+                                  <h4>synopsis</h4>
+                                </div>
+                                <p>{specificmovie.synopsis}</p>
+
+                                <div className="mvsingle-item ov-item" />
+                                <div className="title-hd-sm">
+                                  <h4>cast and crew</h4>
+                                </div>
+
+                                <div className="mvcast-item">
+                                  {specificmovie.completecast
+                                    ? specificmovie.completecast.length
+                                      ? specificmovie.completecast.map(cast => (
+                                          <div
+                                            key={cast.id}
+                                            className="cast-it"
+                                          >
+                                            <div className="cast-left">
+                                              <img
+                                                src={cast.image}
+                                                alt=""
+                                                style={{
+                                                  maxHeight: "20%",
+                                                  maxWidth: "30%"
+                                                }}
+                                              />
+                                            </div>
+                                            <p> {cast.cast}</p>
+                                          </div>
+                                        ))
+                                      : null
+                                    : null}
+                                </div>
+                              </div>
+                              <div
+                                className="col-md-4 col-xs-12 col-sm-12"
+                                style={{ fontSize: "18px" }}
+                              >
+                                <div className="sb-it">
+                                  <h6>Genre: </h6>
+                                  <p>
+                                    {specificmovie.allgenre
+                                      ? specificmovie.allgenre.map(genre => (
+                                          <span key={genre.id}>
+                                            {genre.genre} &nbsp; &nbsp;
+                                          </span>
+                                        ))
+                                      : null}
+                                  </p>
+                                </div>
+                                <div className="sb-it">
+                                  <h6>Languages: </h6>
+                                  <p>
+                                    {specificmovie.allanguages
+                                      ? specificmovie.allanguages.map(
+                                          language => (
+                                            <span key={language.id}>
+                                              {language.language} &nbsp; &nbsp;
+                                            </span>
+                                          )
+                                        )
+                                      : null}
+                                  </p>
+                                </div>
+                                <div className="sb-it">
+                                  <h6>Available in Formats: </h6>
+                                  <p>
+                                    {specificmovie.allformats
+                                      ? specificmovie.allformats.map(format => (
+                                          <span key={format.id}>
+                                            {format.format} &nbsp; &nbsp;
+                                          </span>
+                                        ))
+                                      : null}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ) : null}
+                        {this.state.allreviews ? (
+                          <div className="row">
+                            <div
+                              className="topbar-filter"
+                              style={{ width: "100%" }}
+                            >
+                              <p>Found {noofratings} reviews in total</p>
+                            </div>
+
+                            {specificmovie.allcomments ? (
+                              <InfiniteScroll
+                                dataLength={specificmovie.allcomments.length}
+                                hasMore={this.state.hasMore}
+                                loader={<h4>Loading...</h4>}
+                                height={400}
+                                style={{ width: "100%" }}
+                                endMessage={
+                                  <p style={{ textAlign: "center" }}>
+                                    <b>
+                                      That's all folks you have seen all the
+                                      comments
+                                    </b>
+                                  </p>
+                                }
+                              >
+                                {specificmovie.allcomments.map(comment => (
+                                  <div key={comment.id} className="col-sm-12">
+                                    <Rating
+                                      value={String(comment.rating)}
+                                      weight="20"
+                                      color="yellow"
+                                      readonly
+                                    />
+                                    <span style={{ color: "white" }}> by</span>{" "}
+                                    &nbsp;&nbsp;
+                                    <span
+                                      style={{
+                                        color: "white",
+                                        fontWeight: "bold"
+                                      }}
+                                    >
+                                      {comment.user}
+                                    </span>
+                                    <p style={{ wordWrap: "break-word" }}>
+                                      {comment.comment}
+                                    </p>
+                                  </div>
+                                ))}
+                              </InfiniteScroll>
+                            ) : null}
+                          </div>
+                        ) : null}
+
+                        {this.state.yourreview ? (
+                          <div
+                            style={{
+                              width: "100%",
+
+                              color: "white"
+                            }}
+                          >
+                            Your Review
+                            <br />
+                            <br />
+                            {currentuserreview ? (
+                              currentuserreview.length ? (
+                                currentuserreview.map(userreview => (
+                                  <div
+                                    key={userreview.id}
+                                    style={{ width: "50%" }}
+                                  >
+                                    <div>
+                                      <Rating
+                                        value={String(userreview.rating)}
+                                        weight="20"
+                                        color="yellow"
+                                        readonly
+                                      />
+                                      {userreview.comment} by{" "}
+                                      <strong> {userreview.user}</strong>{" "}
+                                      &nbsp;&nbsp;
+                                    </div>
+                                    <br />
+                                    <br />
+                                  </div>
+                                ))
+                              ) : (
+                                <strong>
+                                  You haven't reviewed yet
+                                  <br />
+                                  <br />
+                                </strong>
+                              )
+                            ) : null}
+                            <Rating
+                              value="1"
+                              weight="30"
+                              onClick={this.rateStar}
+                              color="yellow"
+                            />
+                            <form action="" onSubmit={this.onSubmit}>
+                              <div className="form-group">
+                                <label htmlFor="name"> Review </label>
+                                <textarea
+                                  type="message"
+                                  name="comment"
+                                  style={{ height: "120px" }}
+                                  placeholder="Enter your review...."
+                                  className="form-control form-control-lg"
+                                  value={comment}
+                                  onChange={this.onChange}
+                                />
+                              </div>
+                              <input
+                                type="submit"
+                                value="Post Your Review"
+                                className="btn btn-dark btn-block"
+                              />
+                            </form>
+                          </div>
+                        ) : null}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          ) : null}
+          </div>
         </div>
-
-        {this.state.allreviews ? (
-          <div>
-            <br />
-            COMMENTS <br />
-            <br />
-            {specificmovie.allcomments.length ? (
-              <InfiniteScroll
-                dataLength={specificmovie.allcomments.length}
-                hasMore={this.state.hasMore}
-                loader={<h4>Loading...</h4>}
-                height={400}
-                endMessage={
-                  <p style={{ textAlign: "center" }}>
-                    <b>That's all folks you have seen all the comments</b>
-                  </p>
-                }
-              >
-                {specificmovie.allcomments.map(comment => (
-                  <div key={comment.id} style={{ width: "70%" }}>
-                    Comment <br />
-                    <div>
-                      <Rating
-                        value={String(comment.rating)}
-                        weight="20"
-                        color="yellow"
-                        readonly
-                      />
-                      {comment.comment} by <strong> {comment.user}</strong>{" "}
-                      &nbsp;&nbsp;
-                    </div>
-                  </div>
-                ))}
-              </InfiniteScroll>
-            ) : null}
-          </div>
-        ) : null}
-        {this.state.yourreview ? (
-          <div style={{ width: "50%", paddingLeft: "10%" }}>
-            Your Review
-            <br />
-            <br />
-            {currentuserreview ? (
-              currentuserreview.length ? (
-                currentuserreview.map(userreview => (
-                  <div key={userreview.id} style={{ width: "50%" }}>
-                    <div>
-                      <Rating
-                        value={String(userreview.rating)}
-                        weight="20"
-                        color="yellow"
-                        readonly
-                      />
-                      {userreview.comment} by{" "}
-                      <strong> {userreview.user}</strong> &nbsp;&nbsp;
-                    </div>
-                    <br />
-                    <br />
-                  </div>
-                ))
-              ) : (
-                <strong>
-                  You haven't reviewed yet
-                  <br />
-                  <br />
-                </strong>
-              )
-            ) : null}
-            <Rating
-              value="1"
-              weight="30"
-              onClick={this.rateStar}
-              color="yellow"
-            />
-            <form action="" onSubmit={this.onSubmit}>
-              <div className="form-group">
-                <label htmlFor="name"> Review </label>
-                <textarea
-                  type="message"
-                  name="comment"
-                  style={{ height: "120px" }}
-                  placeholder="Enter your review...."
-                  className="form-control form-control-lg"
-                  value={comment}
-                  onChange={this.onChange}
-                />
-              </div>
-              <input
-                type="submit"
-                value="Post Your Review"
-                className="btn btn-dark btn-block"
-              />
-            </form>
-          </div>
-        ) : null}
       </div>
     );
   }

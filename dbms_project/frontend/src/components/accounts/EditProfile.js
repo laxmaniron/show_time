@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getUserProfile, UpdateUserProfile } from "../../actions/userprofile";
 import { createMessage } from "../../actions/messages";
+import "./editprofile.css";
 
 export class EditProfile extends Component {
   state = {
@@ -108,118 +109,129 @@ export class EditProfile extends Component {
     } = this.state;
 
     return (
-      <div style={{ width: "70%", paddingLeft: "30%" }}>
-        <div>
-          <h1>
-            Edit Profile View &nbsp;&nbsp;
-            <i
-              onClick={this.onShowClick}
-              className="fas fa-user-edit"
-              style={{ cursor: "pointer" }}
-            />
-          </h1>
-        </div>
-        <div>
-          {showProfileChangeInfo ? (
-            <ul className="list-group">
-              <li className="list-group-item">
-                Username:
-                {this.props.userprofile.username}
-              </li>
-              <li className="list-group-item">
-                Email: {this.props.userprofile.email}
-              </li>
-              <li className="list-group-item">
-                Firstname:
-                {this.props.userprofile.first_name}
-              </li>
-              <li className="list-group-item">
-                Lastname:
-                {this.props.userprofile.last_name}
-              </li>
-              <li className="list-group-item">
-                {" "}
-                Dob:{this.props.userprofile.dob}
-              </li>
-              <li className="list-group-item">
-                City: {this.props.userprofile.city}
-              </li>
+      <div className="background3">
+        <div
+          className="container"
+          style={{ paddingTop: "150px", paddingBottom: "150px" }}
+        >
+          <div className="profile-main2">
+            <h1
+              style={{
+                textAlign: "center",
+                paddingTop: "10px",
+                paddingBottom: "20px"
+              }}
+            >
+              Edit Profile &nbsp;&nbsp;
+              <i onClick={this.onShowClick} className="fas fa-user-edit" />
+            </h1>
 
-              <li className="list-group-item">
-                Phone:{this.props.userprofile.phone}
-              </li>
-              <li className="list-group-item">
-                Image:{this.props.userprofile.image}
-              </li>
-            </ul>
-          ) : (
-            <div className="card card-body mt-5">
-              <h2 className="text-center">Update Profile</h2>
-              <form onSubmit={this.onSubmit}>
-                <div className="form-group">
-                  <label>Email</label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    name="email"
-                    onChange={this.onChange}
-                    value={email}
-                  />
-                </div>
-                <div className="form-group">
-                  <label>First name</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="first_name"
-                    onChange={this.onChange}
-                    value={first_name}
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Last name</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="last_name"
-                    onChange={this.onChange}
-                    value={last_name}
-                  />
-                </div>
+            {showProfileChangeInfo ? (
+              <div className="container">
+                <div className="row">
+                  <div className="col-lg-6">
+                    <div
+                      className="profileimg"
+                      style={{ textAlign: "center", paddingTop: "12%" }}
+                    >
+                      {this.props.userprofile.image ? (
+                        <img
+                          src={`http://127.0.0.1:8000/media/${
+                            this.props.userprofile.image
+                          }`}
+                          className="avatar img-circle"
+                          style={{
+                            width: "28%",
+                            height: "150px",
+                            borderRadius: "10px"
+                          }}
+                        />
+                      ) : (
+                        <img
+                          className="avatar img-circle"
+                          style={{
+                            width: "28%",
+                            height: "150px",
+                            borderRadius: "10px"
+                          }}
+                          src="http://127.0.0.1:8000/media/profile_image/img_avatar.png"
+                        />
+                      )}
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <ul className="list-group" style={{ color: "black" }}>
+                      <li className="list-group-item">
+                        Username:
+                        {this.props.userprofile.username}
+                      </li>
+                      <li className="list-group-item">
+                        Email: {this.props.userprofile.email}
+                      </li>
+                      <li className="list-group-item">
+                        Firstname:
+                        {this.props.userprofile.first_name}
+                      </li>
+                      <li className="list-group-item">
+                        Lastname:
+                        {this.props.userprofile.last_name}
+                      </li>
+                      <li className="list-group-item">
+                        {" "}
+                        Dob:{this.props.userprofile.dob}
+                      </li>
+                      <li className="list-group-item">
+                        City: {this.props.userprofile.city}
+                      </li>
 
-                <div className="form-group">
-                  <label>Date of Birth</label>
-                  <input
-                    type="date"
-                    className="form-control"
-                    name="dob"
-                    onChange={this.onChange}
-                    value={dob}
-                  />
+                      <li className="list-group-item">
+                        Phone:{this.props.userprofile.phone}
+                      </li>
+                    </ul>
+                  </div>
                 </div>
-                <div className="form-group">
-                  <label>City</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="city"
-                    onChange={this.onChange}
-                    value={city}
-                  />
-                </div>
+              </div>
+            ) : (
+              <div className="container">
+                <form onSubmit={this.onSubmit}>
+                  <div className="row">
+                    <div className="col-sm-5" style={{ paddingLeft: "20px" }}>
+                      <div
+                        className="card card-body mt-5"
+                        style={{ background: "transparent" }}
+                      >
+                        <div class="text-center">
+                          {this.props.userprofile.image ? (
+                            <img
+                              src={`http://127.0.0.1:8000/media/${
+                                this.props.userprofile.image
+                              }`}
+                              className="avatar img-circle"
+                              style={{
+                                width: "35%",
+                                height: "150px",
+                                borderRadius: "10px"
+                              }}
+                            />
+                          ) : (
+                            <img
+                              className="avatar img-circle"
+                              style={{
+                                width: "35%",
+                                height: "150px",
+                                borderRadius: "10px"
+                              }}
+                              src="http://127.0.0.1:8000/media/profile_image/img_avatar.png"
+                            />
+                          )}
+                          <h6 style={{ marginTop: "10px" }}>
+                            Upload a different photo...
+                          </h6>
 
-                <div className="form-group">
-                  <label>Phone</label>
-                  <input
-                    type="number"
-                    className="form-control"
-                    name="phone"
-                    onChange={this.onChange}
-                    value={phone}
-                  />
-                </div>
+                          <input type="file" />
+                        </div>
 
-                <div className="form-group">
+                        {/* <div className="form-group">
                   <label>Image</label>
                   <input
                     type="file"
@@ -228,16 +240,97 @@ export class EditProfile extends Component {
                     onChange={this.onChange}
                     value={image}
                   />
-                </div>
+                </div> */}
+                      </div>
+                    </div>
+                    <div className="col-sm-7" style={{ paddingLeft: "20px" }}>
+                      <div
+                        className="card card-body mt-5"
+                        style={{ background: "transparent" }}
+                      >
+                        {/* <h2 className="text-center">Update Profile</h2> */}
 
-                <div className="form-group">
-                  <button type="submit" className="btn btn-primary">
-                    Update Profile
-                  </button>
-                </div>
-              </form>
-            </div>
-          )}
+                        <div className="form-group">
+                          <label>Email</label>
+                          <input
+                            type="email"
+                            className="qbox"
+                            name="email"
+                            onChange={this.onChange}
+                            value={email}
+                            spellCheck="false"
+                          />
+                        </div>
+                        <div className="form-group">
+                          <label>First name</label>
+                          <input
+                            type="text"
+                            className=" qbox"
+                            name="first_name"
+                            onChange={this.onChange}
+                            value={first_name}
+                            spellCheck="false"
+                          />
+                        </div>
+                        <div className="form-group">
+                          <label>Last name</label>
+                          <input
+                            type="text"
+                            className=" qbox"
+                            name="last_name"
+                            onChange={this.onChange}
+                            value={last_name}
+                            spellCheck="false"
+                          />
+                        </div>
+
+                        <div className="form-group">
+                          <label>Date of Birth</label>
+                          <input
+                            type="date"
+                            className=" qbox"
+                            name="dob"
+                            onChange={this.onChange}
+                            value={dob}
+                          />
+                        </div>
+                        <div className="form-group">
+                          <label>City</label>
+                          <input
+                            type="text"
+                            className=" qbox"
+                            name="city"
+                            onChange={this.onChange}
+                            value={city}
+                            spellCheck="false"
+                          />
+                        </div>
+
+                        <div className="form-group">
+                          <label>Phone</label>
+                          <input
+                            type="number"
+                            className=" qbox"
+                            name="phone"
+                            onChange={this.onChange}
+                            value={phone}
+                            spellCheck="false"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row" style={{ textAlign: "center" }}>
+                    <div className="col-lg-12">
+                      <button type="submit" className="button button-q">
+                        Update Profile
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     );

@@ -10,6 +10,7 @@ import languages from "./languages";
 import formats from "./formats";
 import snacks from "./snacks";
 import theatres from "./theatre";
+import ticketbookinghistory from "./tickethistory";
 
 export default combineReducers({
   movies: moviesReducer,
@@ -22,5 +23,6 @@ export default combineReducers({
   languages: languages,
   formats: formats,
   snacks: snacks,
-  theatres: theatres
+  theatres: theatres,
+  ticketbookinghistory: ticketbookinghistory
 });

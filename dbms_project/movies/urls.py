@@ -29,5 +29,6 @@ urlpatterns = [
     path('api/movies/snacks/', allSnacksView.as_view()),
     path('api/movies/city_theatre/<int:movie_id>/<int:city_id>/',
          BookingPageCompleteView.as_view()),
+    path('api/history/<int:user_id>/', GetBookingDetails.as_view())
 
 ]

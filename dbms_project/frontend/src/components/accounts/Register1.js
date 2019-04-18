@@ -3,7 +3,6 @@ import { Link, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { register } from "../../actions/auth";
-import './register.css';
 import { createMessage } from "../../actions/messages";
 
 export class Register extends Component {
@@ -88,146 +87,125 @@ export class Register extends Component {
     } = this.state;
 
     return (
-      <div className='background2'>
-      <div className='container' style={{paddingTop:'150px',paddingBottom:'150px'}}>
-        <div className="profile-main1">
-
+      <div className="col-md-6 m-auto">
+        <div className="card card-body mt-5">
+          <h2 className="text-center">Register</h2>
           <form onSubmit={this.onSubmit}>
-          <p style={{fontSize: '30px',color:'#e19536',marginLeft:'130px',marginTop:'30px',fontFamily:'open sans',fontWeight:'bolder'}}>Register </p> <br />
-
             <div className="form-group">
-              <label style={{color:'#e19536'}}>Username</label>
+              <label>Username</label>
               <input
                 type="text"
                 className="form-control"
                 name="username"
                 onChange={this.onChange}
                 value={username}
-                placeholder="Username" style={{backgroundColor: 'transparent',color:'white'}}
               />
             </div>
             <div className="form-group">
-              <label style={{color:'#e19536'}}>Email</label>
+              <label>Email</label>
               <input
                 type="email"
                 className="form-control"
                 name="email"
                 onChange={this.onChange}
                 value={email}
-                placeholder="Enter email" style={{backgroundColor: 'transparent',color:'white'}}
-                spellCheck='false'
               />
             </div>
             <div className="form-group">
-              <label style={{color:'#e19536'}}>First name</label>
+              <label>First name</label>
               <input
                 type="text"
                 className="form-control"
                 name="first_name"
                 onChange={this.onChange}
                 value={first_name}
-                placeholder="First Name" style={{backgroundColor: 'transparent',color:'white'}}
-                spellCheck='false'
               />
             </div>
             <div className="form-group">
-              <label style={{color:'#e19536'}}>Last name</label>
+              <label>Last name</label>
               <input
                 type="text"
                 className="form-control"
                 name="last_name"
                 onChange={this.onChange}
                 value={last_name}
-                placeholder="Last Name" style={{backgroundColor: 'transparent',color:'white'}}
-                spellCheck='false'
               />
             </div>
             <div className="form-group">
-              <label style={{color:'#e19536'}}>Password</label>
+              <label>Password</label>
               <input
                 type="password"
                 className="form-control"
                 name="password"
                 onChange={this.onChange}
                 value={password}
-                placeholder="Enter password" style={{backgroundColor: 'transparent',color:'white'}}
-                spellCheck='false'
               />
             </div>
             <div className="form-group">
-              <label style={{color:'#e19536'}}>Confirm Password</label>
+              <label>Confirm Password</label>
               <input
                 type="password"
                 className="form-control"
                 name="password2"
                 onChange={this.onChange}
                 value={password2}
-                placeholder="Confirm password" style={{backgroundColor: 'transparent',color:'white'}}
-                spellCheck='false'
               />
             </div>
 
             <div className="form-group">
-              <label style={{color:'#e19536'}}>Date of Birth</label>
+              <label>Date of Birth</label>
               <input
                 type="date"
                 className="form-control"
                 name="dob"
                 onChange={this.onChange}
                 value={dob}
-                placeholder="Enter Date of Birth" style={{backgroundColor: 'transparent',color:''}}
               />
             </div>
             <div className="form-group">
-              <label style={{color:'#e19536'}}>City</label>
+              <label>City</label>
               <input
                 type="text"
                 className="form-control"
                 name="city"
                 onChange={this.onChange}
                 value={city}
-                placeholder="Enter city" style={{backgroundColor: 'transparent',color:'white'}}
-                spellCheck='false'
               />
             </div>
 
             <div className="form-group">
-              <label style={{color:'#e19536'}}>Phone</label>
+              <label>Phone</label>
               <input
                 type="number"
                 className="form-control"
                 name="phone"
                 onChange={this.onChange}
                 value={phone}
-                placeholder="Enter Phone Number" style={{backgroundColor: 'transparent',color:'white'}}
               />
             </div>
 
             <div className="form-group">
-              <label style={{color:'#e19536'}}>Image</label>
+              <label>Image</label>
               <input
                 type="file"
                 className="form-control"
                 name="image"
                 onChange={this.onChange}
                 value={image}
-                placeholder="Enter Phone Number" style={{backgroundColor: 'transparent',color:'white'}}
               />
             </div>
 
-            <p style={{marginLeft: '25%',marginTop: '2%',}}>
-              <button type="submit" className="button button-q">
+            <div className="form-group">
+              <button type="submit" className="btn btn-primary">
                 Register
-              </button></p>
-            
-            <p style={{marginRight:'20px'}}>
-            Already have an account? <Link to="/login"><span style={{fontFamily:' Raleway',fontSize:'18px'}}>Login</span></Link>
+              </button>
+            </div>
+            <p>
+              Already have an account? <Link to="/login">Login</Link>
             </p>
           </form>
-          </div>
-</div>
-</div>
-
+        </div>
+      </div>
     );
   }
 }

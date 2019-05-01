@@ -28,6 +28,7 @@ export class TicketHistoryPage extends Component {
           {ticketlist.map(ticket => (
             <table
               className="table table-striped"
+              key={ticket.id}
               style={{
                 width: "35%",
                 backgroundColor: "pink",

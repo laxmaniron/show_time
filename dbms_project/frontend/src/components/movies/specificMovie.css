@@ -15,7 +15,7 @@
   padding-top: 170px;
 }
 .hero h1 {
-  font-family: 'Dosis', sans-serif;
+  font-family: "Dosis", sans-serif;
   font-size: 36px;
   color: #ffffff;
   font-weight: 700;
@@ -31,7 +31,7 @@
 .hero ul.breadcumb li,
 .hero ul.breadcumb a {
   display: inline-block;
-  font-family: 'Nunito', sans-serif;
+  font-family: "Nunito", sans-serif;
   font-size: 14px;
   color: #abb7c4;
   font-weight: 300;
@@ -43,14 +43,15 @@
 }
 .hero:before {
   position: absolute;
-  content: '';
+  content: "";
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.75);
 }
 /*movie single hero*/
 .mv-single-hero {
-  background: url('(http://127.0.0.1:8000/media/profile_image/hero-bg.jpg') no-repeat;
+  background: url("(http://127.0.0.1:8000/media/profile_image/hero-bg.jpg")
+    no-repeat;
   height: 598px;
 }
 
@@ -90,7 +91,7 @@
 }
 .landing-hero h2 {
   color: #fff;
-  font-family: 'Dosis', sans-serif;
+  font-family: "Dosis", sans-serif;
   font-size: 48px;
   line-height: 56px;
 }

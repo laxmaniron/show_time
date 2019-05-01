@@ -268,66 +268,66 @@ def populating_movies(request):
         # city_movie.close()
         # print("city_movie_completed......")
 
-        # populating  theatre_showtimings
-        theatre_showtimings = open(
-            'movies\Dbms_pro\\theatre_showtimings.csv', 'r')
-        theatre_show = csv.reader(theatre_showtimings)
+        # # populating  theatre_showtimings
+        # theatre_showtimings = open(
+        #     'movies\Dbms_pro\\theatre_showtimings.csv', 'r')
+        # theatre_show = csv.reader(theatre_showtimings)
 
-        movies = []
+        # movies = []
 
-        cursor.execute(''' select * from movies_city_theatre ''')
-        city_theatre_list = cursor.fetchall()
+        # cursor.execute(''' select * from movies_city_theatre ''')
+        # city_theatre_list = cursor.fetchall()
 
-        cursor.execute(''' select * from movies_movies ''')
-        movie_list = cursor.fetchall()
+        # cursor.execute(''' select * from movies_movies ''')
+        # movie_list = cursor.fetchall()
 
-        cursor.execute(''' select * from movies_formats ''')
-        format_list = cursor.fetchall()
+        # cursor.execute(''' select * from movies_formats ''')
+        # format_list = cursor.fetchall()
 
-        cursor.execute(''' select * from movies_languages ''')
-        language_list = cursor.fetchall()
+        # cursor.execute(''' select * from movies_languages ''')
+        # language_list = cursor.fetchall()
 
-        cursor.execute(''' select * from movies_cities ''')
-        city_list = cursor.fetchall()
+        # cursor.execute(''' select * from movies_cities ''')
+        # city_list = cursor.fetchall()
 
-        for line in theatre_show:
+        # for line in theatre_show:
 
-            for i in range(0, len(movie_list)):
-                if(line[4] == movie_list[i][1]):
-                    title_id = movie_list[i][0]
-                    break
+        #     for i in range(0, len(movie_list)):
+        #         if(line[4] == movie_list[i][1]):
+        #             title_id = movie_list[i][0]
+        #             break
 
-            for i in range(0, len(format_list)):
-                if(line[6] == format_list[i][1]):
-                    format_id = format_list[i][0]
-                    break
+        #     for i in range(0, len(format_list)):
+        #         if(line[6] == format_list[i][1]):
+        #             format_id = format_list[i][0]
+        #             break
 
-            for i in range(0, len(language_list)):
-                if(line[5] == language_list[i][1]):
-                    language_id = language_list[i][0]
-                    break
+        #     for i in range(0, len(language_list)):
+        #         if(line[5] == language_list[i][1]):
+        #             language_id = language_list[i][0]
+        #             break
 
-            show_timings = line[7]
-            date = line[3]
+        #     show_timings = line[7]
+        #     date = line[3]
 
-            for i in range(0, len(city_list)):
-                if(line[0] == city_list[i][1].lower()):
-                    city_id = city_list[i][0]
-                    break
+        #     for i in range(0, len(city_list)):
+        #         if(line[0] == city_list[i][1].lower()):
+        #             city_id = city_list[i][0]
+        #             break
 
-            for i in range(0, len(city_theatre_list)):
+        #     for i in range(0, len(city_theatre_list)):
 
-                if(city_id == city_theatre_list[i][2] and line[1] == city_theatre_list[i][1]):
-                    citytheatre_id = city_theatre_list[i][0]
+        #         if(city_id == city_theatre_list[i][2] and line[1] == city_theatre_list[i][1]):
+        #             citytheatre_id = city_theatre_list[i][0]
 
-                    break
+        #             break
 
-            cursor.execute(''' insert ignore into movies_theatre_showtimings(citytheatre_id,date,title_id,language_id,format_id,show_timings) values( %s , %s , %s , %s , %s , %s )  ''', [
-                           citytheatre_id, date, title_id, language_id, format_id, show_timings])
+        #     cursor.execute(''' insert ignore into movies_theatre_showtimings(citytheatre_id,date,title_id,language_id,format_id,show_timings) values( %s , %s , %s , %s , %s , %s )  ''', [
+        #                    citytheatre_id, date, title_id, language_id, format_id, show_timings])
 
-        theatre_showtimings.close()
+        # theatre_showtimings.close()
 
-        print("theatre_showtime_completed......")
+        # print("theatre_showtime_completed......")
 
        # Populating reviews
         reviews_file = open('movies\Dbms_pro\movie_reviews.csv', 'r')
@@ -354,6 +354,8 @@ def populating_movies(request):
                 if(line[0] == movie_list[i][1]):
                     movie_id = movie_list[i][0]
                     break
+
+            print(user_id, line[0])
 
             cursor.execute(''' insert ignore into movies_rating(title_id,user_id,ratestatus,rating,comment) values( %s , %s , %s , %s , %s )  ''', [
                            movie_id, user_id, ratestatus, line[2], line[1]])

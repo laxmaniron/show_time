@@ -5,6 +5,7 @@ import { getMovies } from "../../actions/movies";
 import { getGenres } from "../../actions/genres";
 import { getLanguages } from "../../actions/languages";
 import { getFormats } from "../../actions/formats";
+import { getCities } from "../../actions/cities";
 import { Link } from "react-router-dom";
 import "./list1.css";
 import { Card, CardImg, CardBody, CardTitle, CardText } from "reactstrap";
@@ -13,55 +14,33 @@ export class List extends Component {
   state = {
     intheatre: 1,
     city: "chennai",
-    Action: false,
-    Adventure: false,
-    Animation: false,
-    Biography: false,
-    Classic: false,
-    Comedy: false,
-    Crime: false,
-    Dance: false,
-    Drama: false,
-    Family: false,
-    Fantasy: false,
-    History: false,
-    Horror: false,
-    Musical: false,
-    Mystery: false,
-    Period: false,
-    Political: false,
-    Physchological: false,
-    Romance: false,
-    Satire: false,
-    SciFi: false,
-    Sports: false,
-    Suspense: false,
-    Thriller: false,
-    War: false,
-    Bengali: false,
-    Bhojpuri: false,
-    English: false,
-    Gujarati: false,
-    Hindi: false,
-    Kannada: false,
-    Malayalam: false,
-    Marathi: false,
-    Punjabi: false,
-    Tamil: false,
-    Telugu: false
+    search: ""
   };
 
   movie = [];
+  movie_bygenre = [];
+  movie_bylanguage = [];
+  movie_byformats = [];
+
+  genre_select = 0;
+  language_select = 0;
+  format_select = 0;
+
+  updateSearch(event) {
+    this.setState({ search: event.target.value });
+  }
 
   static propTypes = {
     movies: PropTypes.array.isRequired,
     genres: PropTypes.array.isRequired,
     languages: PropTypes.array.isRequired,
     formats: PropTypes.array.isRequired,
+    cities: PropTypes.array.isRequired,
     getMovies: PropTypes.func.isRequired,
     getGenres: PropTypes.func.isRequired,
     getLanguages: PropTypes.func.isRequired,
-    getFormats: PropTypes.func.isRequired
+    getFormats: PropTypes.func.isRequired,
+    getCities: PropTypes.func.isRequired
   };
 
   showInTheatreMovies = e => {
@@ -116,74 +95,235 @@ export class List extends Component {
     this.props.getGenres();
     this.props.getLanguages();
     this.props.getFormats();
+    this.props.getCities();
   }
 
   render() {
     let movies = this.props.movies;
 
-    console.log(this.movie);
-
     let flag = 0;
+
+    if (this.props.genres.length) {
+      for (i = 0; i < this.props.genres.length; i++) {
+        if (this.state[this.props.genres[i]["genre"]]) {
+          this.genre_select = 1;
+          console.log(this.genre_select);
+          break;
+        } else if (i == this.props.genres.length - 1) {
+          this.genre_select = 0;
+        }
+      }
+    }
+
+    if (this.props.languages.length) {
+      for (i = 0; i < this.props.languages.length; i++) {
+        if (this.state[this.props.languages[i]["language"]]) {
+          this.language_select = 1;
+          console.log(this.language_select);
+          break;
+        } else if (i == this.props.languages.length - 1) {
+          this.language_select = 0;
+        }
+      }
+    }
+
+    if (this.props.formats.length) {
+      for (i = 0; i < this.props.formats.length; i++) {
+        if (this.state[this.props.formats[i]["format"]]) {
+          this.format_select = 1;
+          console.log(this.format_select);
+          break;
+        } else if (i == this.props.formats.length - 1) {
+          this.format_select = 0;
+        }
+      }
+    }
 
     if (this.props.movies.length) {
       //console.log(this.props.movies);
       this.movie = [];
-      for (var i = 0; i < this.props.movies.length; i++) {
-        if (this.props.movies[i]["allgenre"]) {
-          for (var j = 0; j < this.props.movies[i]["allgenre"].length; j++) {
-            if (this.state[this.props.movies[i]["allgenre"][j]["genre"]]) {
-              flag = 1;
-              break;
-            }
-          }
-          if (flag) {
-            this.movie = [...this.movie, this.props.movies[i]];
-          }
+      this.movie_bygenre = [];
+      this.movie_bylanguage = [];
+      this.movie_byformats = [];
 
-          flag = 0;
+      if (this.genre_select) {
+        for (var i = 0; i < this.props.movies.length; i++) {
+          if (this.props.movies[i]["allgenre"]) {
+            for (var j = 0; j < this.props.movies[i]["allgenre"].length; j++) {
+              if (this.state[this.props.movies[i]["allgenre"][j]["genre"]]) {
+                flag = 1;
+                break;
+              }
+            }
+            if (flag) {
+              this.movie_bygenre = [
+                ...this.movie_bygenre,
+                this.props.movies[i]
+              ];
+            }
+
+            flag = 0;
+          }
         }
       }
 
-      for (var i = 0; i < this.props.movies.length; i++) {
-        if (this.props.movies[i]["allanguages"]) {
-          for (var j = 0; j < this.props.movies[i]["allanguages"].length; j++) {
-            if (
-              this.state[this.props.movies[i]["allanguages"][j]["language"]]
+      if (this.language_select) {
+        for (var i = 0; i < this.props.movies.length; i++) {
+          if (this.props.movies[i]["allanguages"]) {
+            for (
+              var j = 0;
+              j < this.props.movies[i]["allanguages"].length;
+              j++
             ) {
-              flag = 1;
-              break;
+              if (
+                this.state[this.props.movies[i]["allanguages"][j]["language"]]
+              ) {
+                flag = 1;
+                break;
+              }
             }
-          }
-          if (flag) {
-            this.movie = [...this.movie, this.props.movies[i]];
-          }
+            if (flag) {
+              this.movie_bylanguage = [
+                ...this.movie_bylanguage,
+                this.props.movies[i]
+              ];
+            }
 
-          flag = 0;
+            flag = 0;
+          }
         }
       }
 
-      for (var i = 0; i < this.props.movies.length; i++) {
-        if (this.props.movies[i]["allformats"]) {
-          for (var j = 0; j < this.props.movies[i]["allformats"].length; j++) {
-            if (this.state[this.props.movies[i]["allformats"][j]["format"]]) {
-              flag = 1;
-              break;
+      if (this.language_select) {
+        for (var i = 0; i < this.props.movies.length; i++) {
+          if (this.props.movies[i]["allformats"]) {
+            for (
+              var j = 0;
+              j < this.props.movies[i]["allformats"].length;
+              j++
+            ) {
+              if (this.state[this.props.movies[i]["allformats"][j]["format"]]) {
+                flag = 1;
+                break;
+              }
             }
-          }
-          if (flag) {
-            this.movie = [...this.movie, this.props.movies[i]];
-          }
+            if (flag) {
+              this.movie_byformats = [
+                ...this.movie_byformats,
+                this.props.movies[i]
+              ];
+            }
 
-          flag = 0;
+            flag = 0;
+          }
         }
       }
     }
 
-    if (this.movie.length) {
+    if (this.genre_select || this.language_select || this.format_select) {
+      this.movie = [];
+      if (this.genre_select && !this.language_select && !this.format_select) {
+        for (i = 0; i < this.movie_bygenre.length; i++) {
+          this.movie = [...this.movie, this.movie_bygenre[i]];
+        }
+      } else if (
+        !this.genre_select &&
+        this.language_select &&
+        !this.format_select
+      ) {
+        for (i = 0; i < this.movie_bylanguage.length; i++) {
+          this.movie = [...this.movie, this.movie_bylanguage[i]];
+        }
+      } else if (
+        !this.genre_select &&
+        !this.language_select &&
+        this.format_select
+      ) {
+        for (i = 0; i < this.movie_byformats.length; i++) {
+          this.movie = [...this.movie, this.movie_byformats[i]];
+        }
+      } else if (
+        this.genre_select &&
+        this.language_select &&
+        !this.format_select
+      ) {
+        for (var i = 0; i < this.movie_bygenre.length; i++) {
+          for (var j = 0; j < this.movie_bylanguage.length; j++) {
+            if (
+              this.movie_bygenre[i]["title"] ==
+              this.movie_bylanguage[j]["title"]
+            ) {
+              this.movie = [...this.movie, this.movie_bygenre[i]];
+            }
+          }
+          // this.movie = [...this.movie, this.movie_byformats[i]];
+        }
+      } else if (
+        this.genre_select &&
+        !this.language_select &&
+        this.format_select
+      ) {
+        for (var i = 0; i < this.movie_bygenre.length; i++) {
+          for (var j = 0; j < this.movie_byformats.length; j++) {
+            if (
+              this.movie_bygenre[i]["title"] == this.movie_byformats[j]["title"]
+            ) {
+              this.movie = [...this.movie, this.movie_bygenre[i]];
+            }
+          }
+          // this.movie = [...this.movie, this.movie_byformats[i]];
+        }
+      } else if (
+        !this.genre_select &&
+        this.language_select &&
+        this.format_select
+      ) {
+        for (var i = 0; i < this.movie_bylanguage.length; i++) {
+          for (var j = 0; j < this.movie_byformats.length; j++) {
+            if (
+              this.movie_bylanguage[i]["title"] ==
+              this.movie_byformats[j]["title"]
+            ) {
+              this.movie = [...this.movie, this.movie_bylanguage[i]];
+            }
+          }
+          // this.movie = [...this.movie, this.movie_byformats[i]];
+        }
+      } else if (
+        this.genre_select &&
+        this.language_select &&
+        this.format_select
+      ) {
+        for (var i = 0; i < this.movie_bylanguage.length; i++) {
+          for (var j = 0; j < this.movie_byformats.length; j++) {
+            for (var k = 0; k < this.movie_bygenre.length; k++) {
+              if (
+                this.movie_bylanguage[i]["title"] ==
+                  this.movie_byformats[j]["title"] &&
+                this.movie_bygenre[k]["title"] ==
+                  this.movie_byformats[j]["title"] &&
+                this.movie_bylanguage[i]["title"] ==
+                  this.movie_bygenre[k]["title"]
+              ) {
+                this.movie = [...this.movie, this.movie_bylanguage[i]];
+              }
+            }
+            // this.movie = [...this.movie, this.movie_byformats[i]];
+          }
+        }
+      }
+    }
+
+    if (this.genre_select || this.language_select || this.format_select) {
       movies = this.movie;
+      console.log(`hi iam ok ${this.genre_select}`);
     }
 
     movies.sort((a, b) => b.likes - a.likes);
+
+    movies = movies.filter(movie => {
+      return movie.title.toLocaleLowerCase().indexOf(this.state.search) !== -1;
+    });
 
     return (
       <Fragment>
@@ -221,25 +361,38 @@ export class List extends Component {
             </div>
           </div>
         </div>
-
+        {/* style=
+        {{
+          paddingLeft: "83%",
+          backgroundColor: "#020d18",
+          paddingTop: "30px"
+        }} */}
         <div
-          style={{
-            paddingLeft: "83%",
-            backgroundColor: "#020d18",
-            paddingTop: "30px"
-          }}
+          className="row"
+          style={{ backgroundColor: "#020d18", paddingTop: "30px" }}
         >
-          <select
-            name="city"
-            className="btn btn-dark dropdown-toggle"
-            onChange={this.onChange}
-          >
-            <option value="chennai">chennai</option>
-            <option value="hyderabad">Hyderabad</option>
-            <option value="mumbai">Mumbai</option>
-          </select>
-        </div>
+          <div className="col-sm-3" />
+          <div className="col-sm-7">
+            <input
+              type="text"
+              placeholder="search movies"
+              value={this.state.search}
+              onChange={this.updateSearch.bind(this)}
+            />
+          </div>
 
+          <div className="col-sm-2">
+            <select
+              name="city"
+              className="btn btn-dark dropdown-toggle"
+              onChange={this.onChange}
+            >
+              <option value="chennai">chennai</option>
+              <option value="hyderabad">Hyderabad</option>
+              <option value="mumbai">Mumbai</option>
+            </select>
+          </div>
+        </div>
         <div className="movie-items">
           <div className="container-fluid" style={{}}>
             <div className="row ipad-width">
@@ -389,6 +542,7 @@ export class List extends Component {
                               movie.status ? (
                                 <div
                                   className="row"
+                                  key={movie.id}
                                   style={{
                                     width: "30%",
                                     float: "left",
@@ -396,10 +550,7 @@ export class List extends Component {
                                   }}
                                 >
                                   <div className="slick-multiItem">
-                                    <Link
-                                      to={`/specifics/${movie.id}`}
-                                      key={movie.id}
-                                    >
+                                    <Link to={`/specifics/${movie.id}`}>
                                       <div className="slide-it">
                                         <div className="movie-item">
                                           <div className="mv-img">
@@ -443,6 +594,7 @@ export class List extends Component {
                               !movie.status ? (
                                 <div
                                   className="row"
+                                  key={movie.id}
                                   style={{
                                     width: "30%",
                                     float: "left",
@@ -504,10 +656,11 @@ const mapStateToProps = state => ({
   movies: state.movies.movies,
   genres: state.genres.genres,
   formats: state.formats.formats,
-  languages: state.languages.languages
+  languages: state.languages.languages,
+  cities: state.cities.cities
 });
 
 export default connect(
   mapStateToProps,
-  { getMovies, getGenres, getLanguages, getFormats }
+  { getMovies, getGenres, getLanguages, getFormats, getCities }
 )(List);

@@ -557,7 +557,7 @@ class GetBookingDetails(APIView):
     def get(self, request, user_id):
         with connection.cursor() as cursor:
             cursor.execute(
-                "SELECT b.title,  b.booking_id, b.city, b.theatre, b.cost, b.language, b.dimension, b.category, b.seat_no, b.timings, b.snacks  FROM movies_booking_ticket as b where b.user_id= %s ", [user_id])
+                "SELECT b.title,  b.booking_id, b.city, b.theatre, b.cost, b.language, b.dimension, b.category, b.seat_no, b.timings, b.snacks , b.id FROM movies_booking_ticket as b where b.user_id= %s ", [user_id])
             tupleofbookedtickets = cursor.fetchall()
 
             tickets = {}
@@ -575,9 +575,53 @@ class GetBookingDetails(APIView):
                      ('seat_no', i[8]),
                      ('timings', i[9]),
                      ('snacks', i[10]),
+                     ('id', i[11]),
                      ]
                 )
                 ticketlist.append(bookedticket)
             tickets.update({'tickets': ticketlist})
 
         return Response(tickets)
+
+
+class allGetCities(APIView):
+    def get(self, request):
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "SELECT * FROM movies_cities")
+            tupleofcities = cursor.fetchall()
+
+            allcities = []
+            for i in tupleofcities:
+                city = OrderedDict(
+                    [('id', i[0]),
+                     ('city', i[1]),
+                     ('status', 0),
+                     ]
+                )
+                allcities.append(city)
+
+        return Response(allcities)
+
+
+# class allSnacksView(APIView):
+#     def get(self, request):
+#         with connection.cursor() as cursor:
+#             cursor.execute(
+#                 "SELECT id,snacks,image,cost FROM movies_theatre_snacks")
+#             tupleofsnacks = cursor.fetchall()
+
+#             allsnacks = []
+
+#             for i in tupleofsnacks:
+
+#                 snack = OrderedDict(
+#                     [('id', i[0]),
+#                      ('snacks', i[1]),
+#                      ('image', i[2]),
+#                      ('price', i[3])
+#                      ])
+
+#                 allsnacks.append(snack)
+
+#         return Response(allsnacks)

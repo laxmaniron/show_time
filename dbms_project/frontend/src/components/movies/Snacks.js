@@ -14,11 +14,18 @@ export class Snacks extends Component {
   };
 
   state = {
-    totalmoviecost: 540.0,
+    totalmoviecost: 600.0,
     totalcost: 0.0,
     samosa: 0,
     popcorn: 0,
-    sandwich: 0
+    sandwich: 0,
+    Nachos: 0,
+    Icecream: 0,
+    Burger: 0,
+    coke: 0,
+    Frenchfries: 0,
+    Pizza: 0,
+    ColdCoffee: 0
   };
 
   componentDidMount() {
@@ -34,6 +41,30 @@ export class Snacks extends Component {
     }
     if (name == "sandwich") {
       this.setState({ sandwich: this.state.sandwich + 1 });
+    }
+
+    if (name == "Nachos") {
+      this.setState({ Nachos: this.state.Nachos + 1 });
+    }
+    if (name == "Icecream") {
+      this.setState({ Icecream: this.state.Icecream + 1 });
+    }
+    if (name == "Burger") {
+      this.setState({ Burger: this.state.Burger + 1 });
+    }
+
+    if (name == "coke") {
+      this.setState({ coke: this.state.coke + 1 });
+    }
+    if (name == "Frenchfries") {
+      this.setState({ Frenchfries: this.state.Frenchfries + 1 });
+    }
+    if (name == "Pizza") {
+      this.setState({ Pizza: this.state.Pizza + 1 });
+    }
+
+    if (name == "ColdCoffee") {
+      this.setState({ ColdCoffee: this.state.ColdCoffee + 1 });
     }
 
     this.setState({ totalcost: this.state.totalcost + parseFloat(price) });
@@ -70,6 +101,76 @@ export class Snacks extends Component {
         });
       }
     }
+
+    if (name == "Nachos") {
+      if (this.state.Nachos > 0) {
+        this.setState({ Nachos: this.state.Nachos - 1 });
+        this.setState({ totalcost: this.state.totalcost - parseFloat(price) });
+        this.setState({
+          totalmoviecost: this.state.totalmoviecost - parseFloat(price)
+        });
+      }
+    }
+
+    if (name == "Icecream") {
+      if (this.state.Icecream > 0) {
+        this.setState({ Icecream: this.state.Icecream - 1 });
+        this.setState({ totalcost: this.state.totalcost - parseFloat(price) });
+        this.setState({
+          totalmoviecost: this.state.totalmoviecost - parseFloat(price)
+        });
+      }
+    }
+
+    if (name == "Burger") {
+      if (this.state.Burger > 0) {
+        this.setState({ Burger: this.state.Burger - 1 });
+        this.setState({ totalcost: this.state.totalcost - parseFloat(price) });
+        this.setState({
+          totalmoviecost: this.state.totalmoviecost - parseFloat(price)
+        });
+      }
+    }
+
+    if (name == "coke") {
+      if (this.state.coke > 0) {
+        this.setState({ coke: this.state.coke - 1 });
+        this.setState({ totalcost: this.state.totalcost - parseFloat(price) });
+        this.setState({
+          totalmoviecost: this.state.totalmoviecost - parseFloat(price)
+        });
+      }
+    }
+
+    if (name == "Frenchfries") {
+      if (this.state.Frenchfries > 0) {
+        this.setState({ Frenchfries: this.state.Frenchfries - 1 });
+        this.setState({ totalcost: this.state.totalcost - parseFloat(price) });
+        this.setState({
+          totalmoviecost: this.state.totalmoviecost - parseFloat(price)
+        });
+      }
+    }
+
+    if (name == "Pizza") {
+      if (this.state.Pizza > 0) {
+        this.setState({ Pizza: this.state.Pizza - 1 });
+        this.setState({ totalcost: this.state.totalcost - parseFloat(price) });
+        this.setState({
+          totalmoviecost: this.state.totalmoviecost - parseFloat(price)
+        });
+      }
+    }
+
+    if (name == "ColdCoffee") {
+      if (this.state.ColdCoffee > 0) {
+        this.setState({ ColdCoffee: this.state.ColdCoffee - 1 });
+        this.setState({ totalcost: this.state.totalcost - parseFloat(price) });
+        this.setState({
+          totalmoviecost: this.state.totalmoviecost - parseFloat(price)
+        });
+      }
+    }
   };
 
   transactionError = () => {};
@@ -80,6 +181,9 @@ export class Snacks extends Component {
 
   render() {
     const useridbook = 36;
+
+    let state = this.state;
+
     return (
       <Fragment>
         <div className="backgroundsnacks">
@@ -132,7 +236,7 @@ export class Snacks extends Component {
                             <div className="card-body">
                               <h6 className="card-title">{snack.snacks}</h6>
                               <p className="card-text">
-                                {snack.price}/- per plate{" "}
+                                {snack.price}/- per plate / unit{" "}
                               </p>
                               <p className="card-text">
                                 <span>
@@ -161,7 +265,7 @@ export class Snacks extends Component {
                                       snack.price
                                     )}
                                   >
-                                    Subtract
+                                    Remove
                                   </div>
                                 </span>
                               </p>
@@ -187,69 +291,96 @@ export class Snacks extends Component {
                 <div className="bookingsummary">
                   <div className="bookingsummaryrates">
                     <table width="100%">
-                      <tr>
-                        <td style={{ padding: "16px", color: "aliceblue" }}>
-                          {" "}
-                          <span style={{ fontSize1: "16px" }}>
-                            PH 67,68
-                            <span style={{ fontSize1: "12px" }}>
-                              (2 tickets)
+                      <tbody>
+                        <tr>
+                          <td style={{ padding: "16px", color: "aliceblue" }}>
+                            {" "}
+                            <span style={{ fontSize1: "16px" }}>
+                              PH 67,68
+                              <span style={{ fontSize1: "12px" }}>
+                                (2 tickets)
+                              </span>
                             </span>
-                          </span>
-                        </td>
-                        <td
-                          style={{
-                            textAlign: "right",
-                            padding: "16px",
-                            color: "aliceblue"
-                          }}
-                        >
-                          {" "}
-                          {`${this.state.totalmoviecost -
-                            this.state.totalcost}`}
-                          /-
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style={{ color: "aliceblue" }}> Snacks</td>
-                        <td
-                          style={{
-                            textAlign: "right",
-                            padding: "16px",
-                            color: "aliceblue"
-                          }}
-                        >
-                          {this.state.totalcost}
-                        </td>
-                      </tr>
-                    </table>
-                  </div>
-                  <div className="bookingsummarytotalamount">
-                    <table width="100%">
-                      <tr>
-                        <td>
-                          {" "}
-                          <span
+                          </td>
+                          <td
                             style={{
-                              fontSize1: "18px",
+                              textAlign: "right",
                               padding: "16px",
                               color: "aliceblue"
                             }}
                           >
-                            Total
-                          </span>
-                        </td>
-                        <td
-                          style={{
-                            textAlign: "right",
-                            padding: "16px",
-                            color: "aliceblue"
-                          }}
-                        >
-                          {" "}
-                          {this.state.totalmoviecost}
-                        </td>
-                      </tr>
+                            {" "}
+                            {`${this.state.totalmoviecost -
+                              this.state.totalcost}`}
+                            /-
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style={{ color: "aliceblue" }}> Snacks</td>
+                          <td
+                            style={{
+                              textAlign: "right",
+                              padding: "16px",
+                              color: "aliceblue"
+                            }}
+                          >
+                            {this.state.totalcost}
+                          </td>
+                        </tr>
+
+                        {/* here */}
+                        {this.props.snacks.map(snack => (
+                          <div key={snack.id}>
+                            {this.state[snack.snacks] ? (
+                              <tr>
+                                <td style={{ color: "aliceblue" }}>
+                                  {snack.snacks} * {this.state[snack.snacks]}
+                                </td>
+
+                                <td
+                                  style={{
+                                    textAlign: "right",
+                                    padding: "16px",
+                                    color: "aliceblue"
+                                  }}
+                                >
+                                  {snack.price * this.state[snack.snacks]}
+                                </td>
+                              </tr>
+                            ) : null}
+                          </div>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="bookingsummarytotalamount">
+                    <table width="100%">
+                      <tbody>
+                        <tr>
+                          <td>
+                            {" "}
+                            <span
+                              style={{
+                                fontSize1: "18px",
+                                padding: "16px",
+                                color: "aliceblue"
+                              }}
+                            >
+                              Total
+                            </span>
+                          </td>
+                          <td
+                            style={{
+                              textAlign: "right",
+                              padding: "16px",
+                              color: "aliceblue"
+                            }}
+                          >
+                            {" "}
+                            {this.state.totalmoviecost}
+                          </td>
+                        </tr>
+                      </tbody>
                     </table>
                   </div>
                   <div className="bookingsummarysubmit">

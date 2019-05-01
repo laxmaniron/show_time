@@ -5,6 +5,7 @@ export class seats extends Component {
   state = {
     stateplanning: 0,
     totalprice: 0,
+    noofseatsbooked: 0,
 
     seatplan1: {
       rowA: [
@@ -1402,8 +1403,6 @@ export class seats extends Component {
   statusChange = (row, seatno) => {
     let p = 0;
 
-    console;
-
     for (var i = 0; i < this.state.seatplan1[row].length; i++) {
       if (this.state.seatplan1[row][i]["seatno"] == seatno) {
         p = i;
@@ -1418,15 +1417,17 @@ export class seats extends Component {
     } else if (this.state.seatplan1[row][p]["status"] == 1) {
       let a = this.state.seatplan1;
       a[row][p]["status"] = 0;
-      a[row][p]["bgColor"] = "green";
+      a[row][p]["bgColor"] = "#404048de";
       this.setState({ seatplan1: a });
       this.setState({ totalprice: this.state.totalprice - 150 });
+      this.setState({ noofseatsbooked: this.state.noofseatsbooked - 1 });
     } else if (this.state.seatplan1[row][p]["status"] == 0) {
       let a = this.state.seatplan1;
       a[row][p]["status"] = 1;
-      a[row][p]["bgColor"] = "#404048de";
+      a[row][p]["bgColor"] = "green";
       this.setState({ seatplan1: a });
       this.setState({ totalprice: this.state.totalprice + 150 });
+      this.setState({ noofseatsbooked: this.state.noofseatsbooked + 1 });
     }
   };
   render() {
@@ -1527,68 +1528,170 @@ export class seats extends Component {
               <center>
                 <tr>
                   {this.state.seatplan1.rowD.map(seat => (
-                    <td key={seat.seatno.slice(1)}>{seat.seatno.slice(1)}</td>
+                    <td
+                      key={seat.seatno.slice(1)}
+                      style={{ backgroundColor: seat.bgColor }}
+                      onClick={this.statusChange.bind(
+                        this,
+                        "rowD",
+                        seat.seatno
+                      )}
+                    >
+                      {seat.seatno.slice(1)}
+                    </td>
                   ))}
                 </tr>
               </center>
               <center>
                 <tr>
                   {this.state.seatplan1.rowE.map(seat => (
-                    <td key={seat.seatno.slice(1)}>{seat.seatno.slice(1)}</td>
+                    <td
+                      key={seat.seatno.slice(1)}
+                      style={{ backgroundColor: seat.bgColor }}
+                      onClick={this.statusChange.bind(
+                        this,
+                        "rowE",
+                        seat.seatno
+                      )}
+                    >
+                      {seat.seatno.slice(1)}
+                    </td>
                   ))}
                 </tr>
               </center>
               <center>
                 <tr>
                   {this.state.seatplan1.rowF.map(seat => (
-                    <td key={seat.seatno.slice(1)}>{seat.seatno.slice(1)}</td>
+                    <td
+                      key={seat.seatno.slice(1)}
+                      style={{ backgroundColor: seat.bgColor }}
+                      onClick={this.statusChange.bind(
+                        this,
+                        "rowF",
+                        seat.seatno
+                      )}
+                    >
+                      {seat.seatno.slice(1)}
+                    </td>
                   ))}
                 </tr>
               </center>
               <center>
                 <tr>
                   {this.state.seatplan1.rowG.map(seat => (
-                    <td key={seat.seatno.slice(1)}>{seat.seatno.slice(1)}</td>
+                    <td
+                      key={seat.seatno.slice(1)}
+                      style={{ backgroundColor: seat.bgColor }}
+                      onClick={this.statusChange.bind(
+                        this,
+                        "rowG",
+                        seat.seatno
+                      )}
+                    >
+                      {seat.seatno.slice(1)}
+                    </td>
                   ))}
                 </tr>
               </center>
               <center>
                 <tr>
                   {this.state.seatplan1.rowH.map(seat => (
-                    <td key={seat.seatno.slice(1)}>{seat.seatno.slice(1)}</td>
+                    <td
+                      key={seat.seatno.slice(1)}
+                      style={{ backgroundColor: seat.bgColor }}
+                      onClick={this.statusChange.bind(
+                        this,
+                        "rowH",
+                        seat.seatno
+                      )}
+                    >
+                      {seat.seatno.slice(1)}
+                    </td>
                   ))}
                 </tr>
               </center>
               <center>
                 <tr>
                   {this.state.seatplan1.rowI.map(seat => (
-                    <td key={seat.seatno.slice(1)}>{seat.seatno.slice(1)}</td>
+                    <td
+                      key={seat.seatno.slice(1)}
+                      style={{ backgroundColor: seat.bgColor }}
+                      onClick={this.statusChange.bind(
+                        this,
+                        "rowI",
+                        seat.seatno
+                      )}
+                    >
+                      {seat.seatno.slice(1)}
+                    </td>
                   ))}
                 </tr>
               </center>
               <center>
                 <tr>
                   {this.state.seatplan1.rowJ.map(seat => (
-                    <td key={seat.seatno.slice(1)}>{seat.seatno.slice(1)}</td>
+                    <td
+                      key={seat.seatno.slice(1)}
+                      style={{ backgroundColor: seat.bgColor }}
+                      onClick={this.statusChange.bind(
+                        this,
+                        "rowJ",
+                        seat.seatno
+                      )}
+                    >
+                      {seat.seatno.slice(1)}
+                    </td>
                   ))}
                 </tr>
               </center>
               <center>
                 <tr>
                   {this.state.seatplan1.rowK.map(seat => (
-                    <td key={seat.seatno.slice(1)}>{seat.seatno.slice(1)}</td>
+                    <td
+                      key={seat.seatno.slice(1)}
+                      style={{ backgroundColor: seat.bgColor }}
+                      onClick={this.statusChange.bind(
+                        this,
+                        "rowK",
+                        seat.seatno
+                      )}
+                    >
+                      {seat.seatno.slice(1)}
+                    </td>
                   ))}
                 </tr>
               </center>
               <center>
                 <tr>
                   {this.state.seatplan1.rowL.map(seat => (
-                    <td key={seat.seatno.slice(1)}>{seat.seatno.slice(1)}</td>
+                    <td
+                      key={seat.seatno.slice(1)}
+                      style={{ backgroundColor: seat.bgColor }}
+                      onClick={this.statusChange.bind(
+                        this,
+                        "rowL",
+                        seat.seatno
+                      )}
+                    >
+                      {seat.seatno.slice(1)}
+                    </td>
                   ))}
                 </tr>
               </center>
             </tbody>
           </table>
+        </div>
+        <div
+          className="container"
+          style={{
+            backgroundColor: "white",
+            margin: "10%",
+            paddingLeft: "30%"
+          }}
+        >
+          totalprice:&nbsp;{this.state.totalprice} &nbsp;&nbsp;&nbsp;
+          noofseats:&nbsp;
+          {this.state.noofseatsbooked}
         </div>
       </div>
     );

@@ -201,12 +201,12 @@ export class SpecificMovie extends Component {
                         </Link>
                       </div>
                       <div>
-                        <Link
+                        <a
                           to="https://www.youtube.com/embed/o-0hcF97wy0"
                           className="item item-2 redbtn fancybox-media hvr-grow"
                         >
                           <i className="ion-play" />
-                        </Link>
+                        </a>
                       </div>
                     </div>
                     <div className="btn-transform transform-vertical">

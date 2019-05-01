@@ -62,7 +62,7 @@ export class SpecificMovie extends Component {
   };
 
   componentDidMount() {
-    const { id } = this.props.match.params;
+    const { id, city_id } = this.props.match.params;
     this.props.getSpecificMovie(id);
   }
 
@@ -177,6 +177,8 @@ export class SpecificMovie extends Component {
       console.log(currentuserreview.length);
     }
 
+    const { city_id } = this.props.match.params;
+
     return (
       <div>
         <div className="hero mv-single-hero">
@@ -202,7 +204,7 @@ export class SpecificMovie extends Component {
                       </div>
                       <div>
                         <a
-                          to="https://www.youtube.com/embed/o-0hcF97wy0"
+                          href={specificmovie.trailer_link}
                           className="item item-2 redbtn fancybox-media hvr-grow"
                         >
                           <i className="ion-play" />
@@ -216,7 +218,7 @@ export class SpecificMovie extends Component {
                         <a
                           href={`http://127.0.0.1:8000/frontend/#/theatre/${
                             specificmovie.id
-                          }/3`}
+                          }/${city_id}`}
                         >
                           Buy ticket
                         </a>

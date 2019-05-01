@@ -54,7 +54,15 @@ export class List extends Component {
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
 
-    this.props.getMovies(this.state.city);
+    let id = 79;
+
+    for (var i = 0; i < this.props.cities.length; i++) {
+      if (this.props.cities[i]["city"] == e.target.value) {
+        id = this.props.cities[i]["id"];
+        this.props.getMovies(id);
+        break;
+      }
+    }
   };
 
   doFormatFilter = e => {
@@ -91,17 +99,27 @@ export class List extends Component {
   };
 
   componentDidMount() {
-    this.props.getMovies(this.state.city);
     this.props.getGenres();
     this.props.getLanguages();
     this.props.getFormats();
     this.props.getCities();
+    this.props.getMovies(3);
   }
 
   render() {
     let movies = this.props.movies;
 
     let flag = 0;
+
+    let city_id = 0;
+
+    for (var i = 0; i < this.props.cities.length; i++) {
+      if (this.props.cities[i]["city"] == this.state.city) {
+        city_id = this.props.cities[i]["id"];
+        console.log(city_id);
+        break;
+      }
+    }
 
     if (this.props.genres.length) {
       for (i = 0; i < this.props.genres.length; i++) {
@@ -550,7 +568,9 @@ export class List extends Component {
                                   }}
                                 >
                                   <div className="slick-multiItem">
-                                    <Link to={`/specifics/${movie.id}`}>
+                                    <Link
+                                      to={`/specifics/${movie.id}/${city_id}`}
+                                    >
                                       <div className="slide-it">
                                         <div className="movie-item">
                                           <div className="mv-img">
@@ -603,7 +623,7 @@ export class List extends Component {
                                 >
                                   <div className="slick-multiItem">
                                     <Link
-                                      to={`/specifics/${movie.id}`}
+                                      to={`/specifics/${movie.id}/${city_id}`}
                                       key={movie.id}
                                     >
                                       <div className="slide-it">

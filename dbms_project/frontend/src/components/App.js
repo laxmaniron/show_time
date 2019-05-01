@@ -57,7 +57,7 @@ class App extends Component {
                   <Route exact path="/login" component={Login} />
                   <Route
                     exact
-                    path="/specifics/:id"
+                    path="/specifics/:id/:city_id"
                     component={SpecificMovie}
                   />
 
@@ -72,7 +72,11 @@ class App extends Component {
                     path="/theatre/:movie_id/:city_id"
                     component={TheatrePage}
                   />
-                  <Route exact path="/theatre/seats" component={Seats} />
+                  <Route
+                    exact
+                    path="/theatre/seats/:show_id/:theatre_id/:city/:theatre_name"
+                    component={Seats}
+                  />
                   <Route
                     exact
                     path="/history/:user_id"

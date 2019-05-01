@@ -56,7 +56,7 @@ for city_iteration in range(0,len(city_list)):
     for movie_card in soup.find_all('div',class_='card-container wow fadeIn movie-card-container'):
 
         img_src=movie_card.find('img',class_='__poster __animated')['data-src']
-        movie_title=movie_card.find('div',class_='card-title').h4.text
+        movie_title=movie_card.find('div',class_='card-title').h4.text.strip()
         # language=movie_card.find('div',class_='card-tag').span.li.text.strip().split(',')
 
         #Obtaining trailer link
@@ -248,7 +248,7 @@ for city_iteration in range(0,len(city_list)):
     num_coming_soon=1
     for movie_card in soup.find_all('aside',class_='wow card-container movie-card-container'):
         img_src=movie_card.find('img',class_='__poster __animated')['data-src']
-        movie_title=movie_card.find('div',class_='card-title').h4.text
+        movie_title=movie_card.find('div',class_='card-title').h4.text.strip()
 #         language=movie_card.find('div',class_='card-tag').span.li.text.strip().split(',')
         releasing_year=movie_card['data-year']    
         

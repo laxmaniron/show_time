@@ -19,17 +19,11 @@ import random
 
 class MoviesView(APIView):
     def get(self, request, pk):
-        if pk == 1:
-            city = "hyderabad"
-        if pk == 2:
-            city = "mumbai"
-        if pk == 3:
-            city = "chennai"
         with connection.cursor() as cursor:
             cursor.execute(
                 "SELECT * FROM movies_movies")
             cursor.execute(
-                "select movies_movies.id,movies_movies.title,movies_movies.release_date,movies_movies.censor_rating,movies_movies.image_source,movies_movies.synopsis,movies_movies.trailer_link,movies_movies.time_duration,movies_movies.likes,movies_movies.status from movies_city_movie inner join movies_cities on movies_city_movie.city_id=movies_cities.id inner join movies_movies on movies_city_movie.movie_title_id=movies_movies.id where city=%s ", [city])
+                "select movies_movies.id,movies_movies.title,movies_movies.release_date,movies_movies.censor_rating,movies_movies.image_source,movies_movies.synopsis,movies_movies.trailer_link,movies_movies.time_duration,movies_movies.likes,movies_movies.status from movies_city_movie inner join movies_cities on movies_city_movie.city_id=movies_cities.id inner join movies_movies on movies_city_movie.movie_title_id=movies_movies.id where movies_city_movie.city_id=%s ", [pk])
             tupleofmovies = cursor.fetchall()
 
             listofmovies = []
@@ -449,13 +443,14 @@ class BookingPageCompleteView(APIView):
 
         with connection.cursor() as cursor:
             cursor.execute(
-                "select m.title, m.image_source, m.time_duration from movies_movies as m where m.id=%s", [movie_id])
+                "select m.title, m.image_source, m.time_duration, m.likes from movies_movies as m where m.id=%s", [movie_id])
             tupleofmovie = cursor.fetchone()
 
             movie = OrderedDict(
                 [('movie', tupleofmovie[0]),
                  ('image_source', tupleofmovie[1]),
-                 ('time_duration', tupleofmovie[2])
+                 ('time_duration', tupleofmovie[2]),
+                 ('likes', tupleofmovie[3])
                  ])
 
             with connection.cursor() as cursor:
@@ -525,13 +520,15 @@ class BookingPageCompleteView(APIView):
 
                     with connection.cursor() as cursor:
                         cursor.execute(
-                            " select s.show_timings from movies_theatre_showtimings as s inner join movies_city_theatre as t on t.id = s.citytheatre_id inner join movies_cities as c on c.id=t.city_id and c.id= %s inner join movies_movies as m on m.id = s.title_id and m.id = %s inner join movies_formats as f on f.id=s.format_id and s.citytheatre_id=%s where  s.date=%s", [city_id, movie_id, i[0], i[3]])
+                            " select s.id,s.show_timings from movies_theatre_showtimings as s inner join movies_city_theatre as t on t.id = s.citytheatre_id inner join movies_cities as c on c.id=t.city_id and c.id= %s inner join movies_movies as m on m.id = s.title_id and m.id = %s inner join movies_formats as f on f.id=s.format_id and s.citytheatre_id=%s where  s.date=%s", [city_id, movie_id, i[0], i[3]])
                         tupleoftimings = cursor.fetchall()
                         timings = []
                         for j in tupleoftimings:
                             timing = OrderedDict(
-                                [('time', j[0]),
-                                 ])
+                                [
+                                    ('show_id', j[0]),
+                                    ('time', j[1]),
+                                ])
 
                             timings.append(timing)
 
@@ -625,3 +622,146 @@ class allGetCities(APIView):
 #                 allsnacks.append(snack)
 
 #         return Response(allsnacks)
+
+# class GetSpecificTheatreShowtimings(APIView):
+#     def get(self, request, pk):
+#         with connection.cursor() as cursor:
+#             cursor.execute(
+#                 "SELECT ,image,cost FROM movies_theatre_snacks")
+#             tupleofsnacks = cursor.fetchall()
+
+#             allsnacks = []
+
+#             for i in tupleofsnacks:
+
+#                 snack = OrderedDict(
+#                     [('id', i[0]),
+#                      ('snacks', i[1]),
+#                      ('image', i[2]),
+#                      ('price', i[3])
+#                      ])
+
+#                 allsnacks.append(snack)
+
+#         return Response(allsnacks)
+
+
+class ChatBotMoviesCompleteView(APIView):
+    def get(self, request, pk):
+
+        print(pk)
+        print(type(pk))
+
+        pk = "%"+pk+"%"
+
+        print(pk)
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "SELECT * FROM movies_movies where title like %s", [pk])
+            tupleofmovie = cursor.fetchone()
+
+            movie_id = tupleofmovie[0]
+
+            moviecompletedetail = OrderedDict(
+                [('id', tupleofmovie[0]),
+                 ('title', tupleofmovie[1]),
+                 ('release_date', tupleofmovie[2]),
+                 ('censor_rating', tupleofmovie[3]),
+                 ('image_source', tupleofmovie[4]),
+                 ('synopsis', tupleofmovie[5]),
+                 ('trailer_link', tupleofmovie[6]),
+                 ('time_duration', tupleofmovie[7]),
+                 ('likes', tupleofmovie[8]),
+                 ('status', tupleofmovie[9])
+                 ])
+
+            cursor.execute(
+                "SELECT movies_cast_crew.id,castname,image FROM movies_cast_crew INNER JOIN movies_cast_crew_movie on movies_cast_crew.id = movies_cast_crew_movie.cast_crew_id WHERE title_id = %s", [movie_id])
+            tupleofcast = cursor.fetchall()
+
+            completecast = []
+
+            for i in tupleofcast:
+                cast = OrderedDict(
+                    [('id', i[0]),
+                     ('cast', i[1]),
+                     ('image', i[2])
+                     ])
+
+                completecast.append(cast)
+
+            moviecompletedetail.update({"completecast": completecast})
+
+            cursor.execute(
+                "SELECT movies_genre.id,genre FROM movies_genre INNER JOIN movies_genre_movie on movies_genre.id = movies_genre_movie.movie_genre_id WHERE title_id = %s", [movie_id])
+            tupleofgenre = cursor.fetchall()
+
+            allgenre = []
+
+            for i in tupleofgenre:
+                genre = OrderedDict(
+                    [('id', i[0]),
+                     ('genre', i[1]),
+                     ])
+
+                allgenre.append(genre)
+
+            moviecompletedetail.update({"allgenre": allgenre})
+
+            cursor.execute(
+                "SELECT movies_languages.id,language FROM movies_languages INNER JOIN movies_language_movie on movies_languages.id = movies_language_movie.movie_language_id  WHERE title_id = %s", [movie_id])
+            tupleoflanguages = cursor.fetchall()
+
+            allanguages = []
+
+            for i in tupleoflanguages:
+                language = OrderedDict(
+                    [('id', i[0]),
+                     ('language', i[1]),
+                     ])
+
+                allanguages.append(language)
+
+            moviecompletedetail.update({"allanguages": allanguages})
+
+            cursor.execute(
+                "SELECT movies_formats.id,mformat FROM movies_formats INNER JOIN movies_format_movie on movies_formats.id = movies_format_movie.movie_format_id  WHERE title_id = %s", [movie_id])
+            tupleofformats = cursor.fetchall()
+
+            allformats = []
+
+            for i in tupleofformats:
+                format = OrderedDict(
+                    [('id', i[0]),
+                     ('format', i[1]),
+                     ])
+
+                allformats.append(format)
+
+            moviecompletedetail.update({"allformats": allformats})
+
+            cursor.execute(
+                "SELECT id,user_id,ratestatus,rating,comment FROM movies_rating WHERE title_id = %s", [movie_id])
+            tupleofcomment = cursor.fetchall()
+
+            allcomments = []
+
+            for i in tupleofcomment:
+                cursor.execute(
+                    "SELECT username FROM auth_user WHERE id = %s", [i[1]])
+                username = cursor.fetchone()
+
+                comment = OrderedDict(
+                    [('id', i[0]),
+                     ('user', username[0]),
+                     ('ratestatus', i[2]),
+                     ('rating', i[3]),
+                     ('comment', i[4]),
+                     ])
+
+                allcomments.append(comment)
+
+            moviecompletedetail.update({"allcomments": allcomments})
+
+        return Response(moviecompletedetail)

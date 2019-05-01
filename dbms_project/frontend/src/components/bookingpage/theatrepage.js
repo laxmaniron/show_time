@@ -43,12 +43,24 @@ export class TheatrePage extends Component {
   }
 
   render() {
-    if (!this.props.theatres["theatreDetails"]) {
-      return (
-        <Fragment>
-          <h1>No Theatre Found</h1>
-        </Fragment>
-      );
+    // if (!this.props.theatres["theatreDetails"]) {
+    //   return (
+    //     <Fragment>
+    //       <h1>No Theatre Found</h1>
+    //     </Fragment>
+    //   );
+    // }
+
+    let city_id = this.props.match.params.city_id;
+
+    let city = "chennai";
+
+    for (var i = 0; i < this.props.cities.length; i++) {
+      if (this.props.cities[i]["id"] == city_id) {
+        city = this.props.cities[i]["city"];
+        console.log(city_id);
+        break;
+      }
     }
 
     let onlytheatres = [];
@@ -91,6 +103,7 @@ export class TheatrePage extends Component {
 
     const movie_name = this.props.theatres.movie;
     const duration = this.props.theatres.time_duration;
+    const movie_likes = this.props.theatres.likes;
     const image = this.props.theatres.image_source;
     const castslist = this.props.theatres.castDetails;
     const genreslist = this.props.theatres.genreDetails;
@@ -209,9 +222,11 @@ export class TheatrePage extends Component {
                   <div className="col-sm-8">
                     <div className="movietime">
                       {theatre.timing.map(time => (
-                        <div className="timebox">
+                        <div className="timebox" key={time.show_id}>
                           <Link
-                            to="/snacks"
+                            to={`/theatre/seats/${time.show_id}/${
+                              theatre.theatre_id
+                            }/${city}/${theatre.theatre}`}
                             style={{
                               cursor: "pointer",
                               textDecoration: "none"
@@ -258,7 +273,8 @@ export class TheatrePage extends Component {
 }
 
 const mapStateToProps = state => ({
-  theatres: state.theatres.theatres
+  theatres: state.theatres.theatres,
+  cities: state.cities.cities
 });
 
 export default connect(

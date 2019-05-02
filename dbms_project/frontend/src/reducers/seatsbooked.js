@@ -1,17 +1,17 @@
-import { GET_TICKET_BOOKING_HISTORY, BOOK_HISTORY } from "../actions/types";
+import { GET_SEATS_BOOKED, IN_BOOKING } from "../actions/types";
 
 const initialState = {
-  ticketbookinghistory: {}
+  seatsbooked: []
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case GET_TICKET_BOOKING_HISTORY:
+    case GET_SEATS_BOOKED:
       return {
         ...state,
-        ticketbookinghistory: action.payload
+        seatsbooked: action.payload
       };
-    case BOOK_HISTORY:
+    case IN_BOOKING:
       return state;
     default:
       return state;

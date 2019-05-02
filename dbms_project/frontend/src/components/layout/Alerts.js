@@ -48,6 +48,9 @@ export class Alerts extends Component {
       } else if (message.movieReview) {
         alert.info(message.movieReview);
       }
+      if (message.noseatselected) {
+        alert.error(message.noseatselected);
+      }
     }
   }
 

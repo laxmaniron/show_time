@@ -31,6 +31,35 @@ urlpatterns = [
     path('api/movies/city_theatre/<int:movie_id>/<int:city_id>/',
          BookingPageCompleteView.as_view()),
     path('api/history/<int:user_id>/', GetBookingDetails.as_view()),
-    path('api/movies/chatbot/<str:pk>/', ChatBotMoviesCompleteView.as_view())
+    path('api/movies/chatbot/<str:pk>/', ChatBotMoviesCompleteView.as_view()),
+    path('api/movies/specific_show/<int:pk>/',
+         GetSpecificTheatreShowtimings.as_view()),
+    path('api/movies/bookedseats/<int:pk>/',
+         BookedSeats.as_view()),
+    path('api/movies/yettobook/',
+         PostaSeatView.as_view()),
+    path('api/movies/yourbookingpost/',
+         YourBookingPost.as_view()),
+
+
 
 ]
+
+
+# {
+# "posting":{
+#  "booking_id":"PAYPAL1234567",
+#  "title":"avengers end game",
+# "city":"hyderabad",
+# "theatre":"abcd",
+# "cost":270.00,
+# "language":"eng",
+# "dimension":"4D",
+# "category":"A",
+# "seat_no":"C78",
+# "timings":"ABCD",
+# "snacks":"samosa",
+# "user_id":9
+
+# }
+# }

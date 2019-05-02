@@ -62,7 +62,7 @@ export class SpecificMovie extends Component {
   };
 
   componentDidMount() {
-    const { id, city_id } = this.props.match.params;
+    const { id } = this.props.match.params;
     this.props.getSpecificMovie(id);
   }
 
@@ -177,8 +177,6 @@ export class SpecificMovie extends Component {
       console.log(currentuserreview.length);
     }
 
-    const { city_id } = this.props.match.params;
-
     return (
       <div>
         <div className="hero mv-single-hero">
@@ -195,46 +193,40 @@ export class SpecificMovie extends Component {
                 <div className="movie-img sticky-sb">
                   <img src={specificmovie.image_source} alt="" />
                   <div className="movie-btn">
-                    <div className="btn-transform transform-vertical red">
-                      <div>
-                        <Link to="#" className="item item-1 redbtn">
-                          {" "}
-                          <i className="ion-play" /> Watch Trailer
-                        </Link>
-                      </div>
+                    <div className="btn-transform  buyticketbutton1">
+                      <div />
                       <div>
                         <a
+                          style={{ textDecoration: "none", color: "white" }}
                           href={specificmovie.trailer_link}
-                          className="item item-2 redbtn fancybox-media hvr-grow"
                         >
-                          <i className="ion-play" />
+                          Watch Trailer
                         </a>
                       </div>
                     </div>
-                    <div className="btn-transform transform-vertical">
+                    <div className="btn-transform  buyticketbutton">
                       <div>
                         {" "}
-                        <i className="ion-card" />{" "}
+                        <i className="ion-card " />{" "}
                         <a
+                          style={{ textDecoration: "none", color: "white" }}
                           href={`http://127.0.0.1:8000/frontend/#/theatre/${
                             specificmovie.id
-                          }/${city_id}`}
+                          }/3`}
                         >
                           Buy ticket
                         </a>
-                      </div>
-                      <div>
-                        <Link to="#" className="item item-2 yellowbtn">
-                          <i className="ion-card" />
-                        </Link>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
               <div className="col-md-8 col-sm-12 col-xs-12">
-                <div className="movie-single-ct main-content">
-                  <h1 className="bd-hd">
+                <div
+                  className="movie-single-ct main-content"
+                  style={{ paddingTop: "75px" }}
+                >
+                  <h1 className="bd-hd" style={{ textAlign: "left" }}>
                     {specificmovie.title} <span>2018</span>
                   </h1>
                   <div className="movie-rate">
@@ -373,43 +365,60 @@ export class SpecificMovie extends Component {
                                 className="col-md-4 col-xs-12 col-sm-12"
                                 style={{ fontSize: "18px" }}
                               >
-                                <div className="sb-it">
-                                  <h6>Genre: </h6>
-                                  <p>
-                                    {specificmovie.allgenre
-                                      ? specificmovie.allgenre.map(genre => (
-                                          <span key={genre.id}>
-                                            {genre.genre} &nbsp; &nbsp;
-                                          </span>
-                                        ))
-                                      : null}
-                                  </p>
-                                </div>
-                                <div className="sb-it">
-                                  <h6>Languages: </h6>
-                                  <p>
-                                    {specificmovie.allanguages
-                                      ? specificmovie.allanguages.map(
-                                          language => (
-                                            <span key={language.id}>
-                                              {language.language} &nbsp; &nbsp;
+                                <div
+                                  style={{
+                                    border: "1px solid white",
+                                    borderRadius: "7px",
+                                    height: "auto",
+                                    padding: "21px",
+                                    marginTop: "100px",
+                                    paddingTop: "26px"
+                                  }}
+                                >
+                                  <div className="sb-it">
+                                    <h6>Genre: </h6>
+                                    <p>
+                                      {specificmovie.allgenre
+                                        ? specificmovie.allgenre.map(genre => (
+                                            <span key={genre.id}>
+                                              {genre.genre} &nbsp; &nbsp;
                                             </span>
+                                          ))
+                                        : null}
+                                    </p>
+                                  </div>
+                                  <div className="sb-it">
+                                    <h6>Languages: </h6>
+                                    <p>
+                                      {specificmovie.allanguages
+                                        ? specificmovie.allanguages.map(
+                                            language => (
+                                              <span key={language.id}>
+                                                {language.language} &nbsp;
+                                                &nbsp;
+                                              </span>
+                                            )
                                           )
-                                        )
-                                      : null}
-                                  </p>
-                                </div>
-                                <div className="sb-it">
-                                  <h6>Available in Formats: </h6>
-                                  <p>
-                                    {specificmovie.allformats
-                                      ? specificmovie.allformats.map(format => (
-                                          <span key={format.id}>
-                                            {format.format} &nbsp; &nbsp;
-                                          </span>
-                                        ))
-                                      : null}
-                                  </p>
+                                        : null}
+                                    </p>
+                                  </div>
+                                  <div
+                                    className="sb-it"
+                                    style={{ marginBottom: "0px" }}
+                                  >
+                                    <h6>Available in Formats: </h6>
+                                    <p>
+                                      {specificmovie.allformats
+                                        ? specificmovie.allformats.map(
+                                            format => (
+                                              <span key={format.id}>
+                                                {format.format} &nbsp; &nbsp;
+                                              </span>
+                                            )
+                                          )
+                                        : null}
+                                    </p>
+                                  </div>
                                 </div>
                               </div>
                             </div>

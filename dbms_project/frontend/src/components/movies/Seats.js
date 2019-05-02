@@ -1,7 +1,62 @@
 import React, { Component, Fragment } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { getShowDetails } from "../../actions/showdetails";
+import { getSeatsBooked } from "../../actions/seatsbooked";
+import { getSelectedSeats } from "../../actions/selectedseats";
+import { createMessage } from "../../actions/messages";
+import { Route, Redirect } from "react-router-dom";
+import ReactTimeout from "react-timeout";
+import { Link } from "react-router-dom";
 import "./seat.css";
 
 export class seats extends Component {
+  static propTypes = {
+    showdetails: PropTypes.object.isRequired,
+    getShowDetails: PropTypes.func.isRequired,
+    getShowDetails: PropTypes.func.isRequired,
+    seatsbooked: PropTypes.array.isRequired,
+    selectedseats: PropTypes.array.isRequired,
+    getSelectedSeats: PropTypes.func.isRequired
+  };
+
+  changeStatusseatsBooked = id => {
+    if (this.props.seatsbooked) {
+      for (var i = 0; i < this.props.seatsbooked.length; i++) {
+        console.log(this.props.seatsbooked[i]);
+        let row = "row" + String(this.props.seatsbooked[i]["seatno"][0]);
+        this.props.seatsbooked[i]["seatno"] = String(
+          this.props.seatsbooked[i]["seatno"]
+        );
+        let seat_no = this.props.seatsbooked[i]["seatno"].slice(
+          1,
+          this.props.seatsbooked[i].length
+        );
+
+        console.log(seat_no);
+        seat_no = parseInt(seat_no, 10);
+
+        let a = this.state.seatplan1;
+        a[row][seat_no]["status"] = 2;
+        a[row][seat_no]["bgColor"] = "rgb(141, 137, 25)";
+
+        this.setState({ seatplan1: a });
+
+        console.log("I am not laxman");
+      }
+    } else {
+      console.log("I am Laxman");
+    }
+  };
+
+  componentDidMount() {
+    const { show_id, theatre_id, city, theatre_name } = this.props.match.params;
+    this.props.getShowDetails(show_id);
+    this.props.getSeatsBooked(show_id);
+    this.props.setTimeout(this.changeStatusseatsBooked.bind(this, 23), 200);
+    this.changeStatusseatsBooked.bind(this, 23);
+  }
+
   state = {
     stateplanning: 0,
     totalprice: 0,
@@ -1413,7 +1468,6 @@ export class seats extends Component {
     console.log(p);
 
     if (this.state.seatplan1[row][p]["status"] == 2) {
-      a[row][p]["bgColor"] = "red";
     } else if (this.state.seatplan1[row][p]["status"] == 1) {
       let a = this.state.seatplan1;
       a[row][p]["status"] = 0;
@@ -1424,16 +1478,62 @@ export class seats extends Component {
     } else if (this.state.seatplan1[row][p]["status"] == 0) {
       let a = this.state.seatplan1;
       a[row][p]["status"] = 1;
-      a[row][p]["bgColor"] = "green";
+      a[row][p]["bgColor"] = "rgb(239, 176, 34)";
       this.setState({ seatplan1: a });
       this.setState({ totalprice: this.state.totalprice + 150 });
       this.setState({ noofseatsbooked: this.state.noofseatsbooked + 1 });
+    }
+  };
+
+  carryForward = () => {
+    let rows = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"];
+    let selectedseats = [];
+
+    let count = 0;
+
+    for (var i = 0; i < rows.length; i++) {
+      let currow = "row" + rows[i];
+
+      for (var j = 0; j < this.state.seatplan1[currow].length; j++) {
+        if (this.state.seatplan1[currow][j]["status"] == 1) {
+          count = count + 1;
+          selectedseats = [
+            ...selectedseats,
+            this.state.seatplan1[currow][j]["seatno"]
+          ];
+        }
+      }
+    }
+
+    console.log(count);
+    console.log(selectedseats);
+
+    if (count == 0) {
+      this.props.createMessage({
+        noseatselected: "You need to select at least 1 seat to continue booking"
+      });
+    } else {
+      this.props.getSelectedSeats(selectedseats);
     }
   };
   render() {
     let { seatplanning } = this.state.seatplan1;
 
     let rows = 12;
+
+    console.log(this.props.seatsbooked);
+    console.log(this.props.showdetails);
+
+    if (this.props.seatsbooked) {
+      this.changeStatusseatsBooked.bind(this, 23);
+      console.log("hi");
+    }
+
+    // :show_id/:theatre_id/:city/:theatre_name
+
+    let { show_id, theatre_id, city, theatre_name } = this.props.match.params;
+
+    console.log(theatre_name);
 
     return (
       <div style={{ backgroundColor: "#404048de", height: "1080px" }}>
@@ -1683,19 +1783,133 @@ export class seats extends Component {
         </div>
         <div
           className="container"
-          style={{
-            backgroundColor: "white",
-            margin: "10%",
-            paddingLeft: "30%"
-          }}
+          style={{ minHeight: "300px", marginTop: "40px", marginLeft: "276px" }}
         >
-          totalprice:&nbsp;{this.state.totalprice} &nbsp;&nbsp;&nbsp;
-          noofseats:&nbsp;
-          {this.state.noofseatsbooked}
+          <div className="row">
+            <div className="col-sm-12 entryexit">
+              <table style={{ width: "115%", height: "50px" }}>
+                <tbody>
+                  <tr>
+                    <td style={{ float: "left" }}>
+                      <div
+                        style={{
+                          height: "80px",
+                          color: "white",
+                          backgroundColor: "grey",
+                          width: "40px",
+                          textAlign: "center",
+                          paddingTop: "30px",
+                          fontWeight: "bolder"
+                        }}
+                      >
+                        Exit
+                      </div>
+                    </td>
+                    <td style={{ float: "right" }}>
+                      <div
+                        style={{
+                          height: "80px",
+                          color: "white",
+                          backgroundColor: "grey",
+                          width: "40px",
+                          textAlign: "center",
+                          paddingTop: "30px",
+                          fontWeight: "bolder"
+                        }}
+                      >
+                        Exit
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div className="row " style={{ paddingLeft: "160px" }}>
+            <div
+              className="col-sm-12 "
+              style={{
+                height: "20px",
+                backgroundColor: "#f1d581",
+                textAlign: "center",
+                color: "dark",
+                fontWeight: "bold"
+              }}
+            >
+              Screen this side
+            </div>
+          </div>
+          <div className="row" style={{ paddingLeft: "160px" }}>
+            <div
+              className="col-sm-12"
+              style={{
+                height: "50px",
+                backgroundColor: "white",
+                textAlign: "center",
+                color: "dark",
+                fontWeight: "bold",
+                marginTop: "50px",
+                padding: "15px"
+              }}
+            >
+              totalprice:&nbsp;{this.state.totalprice} &nbsp;&nbsp;&nbsp;
+              noofseats:&nbsp;
+              {this.state.noofseatsbooked}
+            </div>
+          </div>
+          <div className="row " style={{ paddingLeft: "160px" }}>
+            <div
+              className="col-sm-12 "
+              style={{
+                height: "100px",
+                textAlign: "center",
+                paddingLeft: "2%",
+                paddingTop: "30px"
+              }}
+            >
+              <button
+                className="submit1"
+                style={{
+                  height: "50px",
+                  width: "187px",
+                  padding: "10px",
+                  backgroundColor: "#f57a15",
+                  color: "white",
+                  fontWeight: "bolder",
+                  borderRadius: "7px"
+                }}
+                onClick={this.carryForward}
+              >
+                <Link
+                  to={`/snacks/${city}/${theatre_name}/${
+                    this.state.totalprice
+                  }`}
+                  style={{
+                    textDecoration: "none",
+                    color: "white",
+                    cursor: "pointer"
+                  }}
+                >
+                  Book tickets
+                </Link>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     );
   }
 }
 
-export default seats;
+const mapStateToProps = state => ({
+  showdetails: state.showdetails.showdetails,
+  seatsbooked: state.seatsbooked.seatsbooked,
+  selectedseats: state.selectedseats.selectedseats
+});
+
+export default ReactTimeout(
+  connect(
+    mapStateToProps,
+    { getShowDetails, getSeatsBooked, getSelectedSeats, createMessage }
+  )(seats)
+);

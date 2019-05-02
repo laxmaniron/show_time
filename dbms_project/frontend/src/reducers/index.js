@@ -12,6 +12,9 @@ import snacks from "./snacks";
 import theatres from "./theatre";
 import ticketbookinghistory from "./tickethistory";
 import cities from "./cities";
+import showdetails from "./showdetails";
+import seatsbooked from "./seatsbooked";
+import selectedseats from "./selectedseats";
 
 export default combineReducers({
   movies: moviesReducer,
@@ -26,5 +29,8 @@ export default combineReducers({
   snacks: snacks,
   theatres: theatres,
   ticketbookinghistory: ticketbookinghistory,
-  cities: cities
+  cities: cities,
+  showdetails: showdetails,
+  seatsbooked: seatsbooked,
+  selectedseats: selectedseats
 });

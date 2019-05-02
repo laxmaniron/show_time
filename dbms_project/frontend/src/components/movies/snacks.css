@@ -36,7 +36,7 @@
   width: 500px;
   border-radius: 10px;
   box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.1);
-  position: fixed;
+  position: absolute;
 }
 
 .snackshead {
@@ -107,6 +107,6 @@
 
 .bookingsummarysubmit {
   height: 10%;
-  padding-top: 20px;
+  padding-top: 10px;
   padding-bottom: 30px;
 }

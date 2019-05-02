@@ -2,6 +2,8 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getSnacks } from "../../actions/snacks";
+import { bookaSeat } from "../../actions/seatsbooked";
+import { postTicketHistory } from "../../actions/tickethistory";
 import { Link } from "react-router-dom";
 import Paypal from "../pages/Paypal";
 import "./snacks.css";
@@ -30,6 +32,10 @@ export class Snacks extends Component {
 
   componentDidMount() {
     this.props.getSnacks();
+
+    const { ticket_price } = this.props.match.params;
+
+    this.setState({ totalmoviecost: parseFloat(ticket_price) });
   }
 
   addItems = (name, price) => {
@@ -173,6 +179,46 @@ export class Snacks extends Component {
     }
   };
 
+  bookTickets = () => {
+    let showdetailsid = this.props.showdetails.id;
+
+    for (var i = 0; i < this.props.selectedseats.length; i++) {
+      let data = {
+        seatno: this.props.selectedseats[i],
+        show_time_no_id: showdetailsid
+      };
+
+      let seat = {
+        posting: data
+      };
+
+      this.props.bookaSeat(seat);
+    }
+
+    const { city, theatre_name } = this.props.match.params;
+
+    let ticket = {
+      booking_id: "PAYPAL$%123",
+      title: this.props.showdetails.title,
+      city: city,
+      theatre: theatre_name,
+      cost: this.state.totalmoviecost,
+      language: this.props.showdetails.language,
+      dimension: this.props.showdetails.format,
+      category: "A",
+      seat_no: String(this.props.selectedseats),
+      timings: this.props.showdetails.show_timings,
+      snacks: "samosa",
+      user_id: this.props.auth.user.id
+    };
+
+    let poster = {
+      posting: ticket
+    };
+
+    this.props.postTicketHistory(poster);
+  };
+
   transactionError = () => {};
 
   transactionCanceled = () => {};
@@ -181,6 +227,8 @@ export class Snacks extends Component {
 
   render() {
     const useridbook = 36;
+
+    const { city, theatre_name } = this.props.match.params;
 
     let state = this.state;
 
@@ -294,12 +342,104 @@ export class Snacks extends Component {
                       <tbody>
                         <tr>
                           <td style={{ padding: "16px", color: "aliceblue" }}>
+                            Movie:
+                          </td>
+                          <td
+                            style={{
+                              textAlign: "right",
+                              padding: "16px",
+                              color: "aliceblue"
+                            }}
+                          >
+                            {" "}
+                            {this.props.showdetails.title}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style={{ padding: "16px", color: "aliceblue" }}>
+                            Theatre:
+                          </td>
+                          <td
+                            style={{
+                              textAlign: "right",
+                              padding: "16px",
+                              color: "aliceblue"
+                            }}
+                          >
+                            {" "}
+                            {theatre_name}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style={{ padding: "16px", color: "aliceblue" }}>
+                            Language:
+                          </td>
+                          <td
+                            style={{
+                              textAlign: "right",
+                              padding: "16px",
+                              color: "aliceblue"
+                            }}
+                          >
+                            {" "}
+                            {this.props.showdetails.language}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style={{ padding: "16px", color: "aliceblue" }}>
+                            Format:
+                          </td>
+                          <td
+                            style={{
+                              textAlign: "right",
+                              padding: "16px",
+                              color: "aliceblue"
+                            }}
+                          >
+                            {" "}
+                            {this.props.showdetails.format}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style={{ padding: "16px", color: "aliceblue" }}>
+                            Show_Timings:
+                          </td>
+                          <td
+                            style={{
+                              textAlign: "right",
+                              padding: "16px",
+                              color: "aliceblue"
+                            }}
+                          >
+                            {" "}
+                            {this.props.showdetails.show_timings}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style={{ padding: "16px", color: "aliceblue" }}>
+                            City:
+                          </td>
+                          <td
+                            style={{
+                              textAlign: "right",
+                              padding: "16px",
+                              color: "aliceblue"
+                            }}
+                          >
+                            {" "}
+                            {city}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style={{ padding: "16px", color: "aliceblue" }}>
                             {" "}
                             <span style={{ fontSize1: "16px" }}>
-                              PH 67,68
-                              <span style={{ fontSize1: "12px" }}>
-                                (2 tickets)
-                              </span>
+                              Seats: &nbsp;
+                              {this.props.selectedseats.map(seat => (
+                                <span style={{ fontSize1: "12px" }}>
+                                  {seat}&nbsp;&nbsp;
+                                </span>
+                              ))}
                             </span>
                           </td>
                           <td
@@ -397,10 +537,20 @@ export class Snacks extends Component {
                   </div>
                   <div>
                     <Link
-                      to={`/history/${useridbook}`}
+                      to={`/history/${this.props.auth.user.id}`}
                       className="btn btn-dark"
+                      style={{
+                        height: "50px",
+                        width: "187px",
+                        padding: "10px",
+                        backgroundColor: "#f57a15",
+                        color: "white",
+                        fontWeight: "bolder",
+                        borderRadius: "7px"
+                      }}
+                      onClick={this.bookTickets}
                     >
-                      Booking History
+                      Book Tickets
                     </Link>
                   </div>
                 </div>
@@ -414,10 +564,13 @@ export class Snacks extends Component {
 }
 
 const mapStateToProps = state => ({
-  snacks: state.snacks.snacks
+  snacks: state.snacks.snacks,
+  selectedseats: state.selectedseats.selectedseats,
+  showdetails: state.showdetails.showdetails,
+  auth: state.auth
 });
 
 export default connect(
   mapStateToProps,
-  { getSnacks }
+  { getSnacks, bookaSeat, postTicketHistory }
 )(Snacks);

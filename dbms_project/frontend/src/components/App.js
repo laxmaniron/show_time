@@ -61,7 +61,11 @@ class App extends Component {
                     component={SpecificMovie}
                   />
 
-                  <Route exact path="/snacks" component={Snacks} />
+                  <Route
+                    exact
+                    path="/snacks/:city/:theatre_name/:ticket_price"
+                    component={Snacks}
+                  />
                   <PrivateRoute
                     exact
                     path="/editprofile"

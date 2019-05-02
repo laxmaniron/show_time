@@ -623,27 +623,138 @@ class allGetCities(APIView):
 
 #         return Response(allsnacks)
 
-# class GetSpecificTheatreShowtimings(APIView):
-#     def get(self, request, pk):
+class GetSpecificTheatreShowtimings(APIView):
+    def get(self, request, pk):
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "SELECT date,title_id,language_id,format_id,show_timings,id FROM movies_theatre_showtimings WHERE id=%s", [pk])
+            tupleoftheatre = cursor.fetchone()
+
+            # allshow = []
+
+            cursor.execute(
+                "SELECT title FROM movies_movies WHERE id=%s", [tupleoftheatre[1]])
+            tupleofmovie = cursor.fetchone()
+
+            cursor.execute(
+                "SELECT language FROM movies_languages WHERE id=%s", [tupleoftheatre[2]])
+            tupleoflanguage = cursor.fetchone()
+
+            cursor.execute(
+                "SELECT mformat FROM movies_formats WHERE id=%s", [tupleoftheatre[3]])
+            tupleofformat = cursor.fetchone()
+
+            # for i in tupleofsnacks:
+
+            show = OrderedDict(
+                [('date', tupleoftheatre[0]),
+                 ('title', tupleofmovie[0]),
+                 ('language', tupleoflanguage[0]),
+                 ('format', tupleofformat[0]),
+                 ('show_timings', tupleoftheatre[4]),
+                 ('id', tupleoftheatre[5])
+                 ])
+
+        return Response(show)
+
+
+class BookedSeats(APIView):
+    def get(self, request, pk):
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "SELECT id,seatno FROM movies_theatre_seats WHERE show_time_no_id=%s", [pk])
+            tupleofbookedseats = cursor.fetchall()
+
+            allbooks = []
+
+            for i in tupleofbookedseats:
+
+                snack = OrderedDict(
+                    [('id', i[0]),
+                     ('seatno', i[1])
+                     ])
+
+                allbooks.append(snack)
+
+        return Response(allbooks)
+
+# class PostRatingView(APIView):
+#     def post(self, request):
+#         data = request.data.get('rating')
+#         ratestatus = 1
+
 #         with connection.cursor() as cursor:
 #             cursor.execute(
-#                 "SELECT ,image,cost FROM movies_theatre_snacks")
-#             tupleofsnacks = cursor.fetchall()
+#                 "SELECT * FROM movies_rating WHERE title_id = %s and  user_id= %s", [data['title'], data['user']])
 
-#             allsnacks = []
+#             rating = cursor.fetchone()
 
-#             for i in tupleofsnacks:
+#             if(rating):
+#                 type(rating)
 
-#                 snack = OrderedDict(
-#                     [('id', i[0]),
-#                      ('snacks', i[1]),
-#                      ('image', i[2]),
-#                      ('price', i[3])
-#                      ])
+#             else:
+#                 cursor.execute(
+#                     "INSERT INTO movies_rating (title_id,user_id,ratestatus,rating,comment) VALUES( %s, %s,%s, %s,%s)", [data['title'], data['user'], ratestatus, data['rating'], data['comment']])
+#                 cursor.execute(
+#                     "SELECT * FROM movies_rating WHERE title_id = %s and  user_id= %s", [data['title'], data['user']])
 
-#                 allsnacks.append(snack)
+#                 rating = cursor.fetchone()
 
-#         return Response(allsnacks)
+#             print(rating)
+
+#             insertedrating = OrderedDict(
+#                 [('id', rating[0]),
+#                  ('ratestatus', rating[1]),
+#                  ('rating', rating[2]),
+#                  ('comment', rating[3]),
+#                  ('title_id', rating[4]),
+#                  ('user_id', rating[5]),
+#                  ])
+
+#         return Response(insertedrating)
+
+
+class PostaSeatView(APIView):
+    def post(self, request):
+        data = request.data.get('posting')
+
+        with connection.cursor() as cursor:
+
+            cursor.execute(
+                "INSERT INTO movies_theatre_seats (seatno,show_time_no_id) VALUES( %s, %s)", [data['seatno'], data['show_time_no_id']])
+            cursor.execute(
+                "SELECT * FROM movies_theatre_seats WHERE seatno = %s and  show_time_no_id= %s", [data['seatno'], data['show_time_no_id']])
+
+            rating = cursor.fetchone()
+
+            print(rating)
+
+            insertedposting = OrderedDict(
+                [('id', rating[0]),
+                 ('seatno', rating[1]),
+                 ('show_time_no_id', rating[2])
+                 ])
+
+        return Response(insertedposting)
+
+
+class YourBookingPost(APIView):
+    def post(self, request):
+        data = request.data.get('posting')
+
+        print(data)
+
+        with connection.cursor() as cursor:
+
+            cursor.execute(
+                "INSERT INTO movies_booking_ticket (booking_id,title,city,theatre,cost,language,dimension,category,seat_no,timings,snacks,user_id) VALUES( %s, %s,%s, %s,%s, %s,%s, %s,%s, %s,%s, %s)", [data['booking_id'], data['title'], data['city'],data['theatre'],data['cost'],data['language'],data['dimension'],data['category'],data['seat_no'],data['timings'],data['snacks'],data['user_id']])
+            cursor.execute(
+                "SELECT * FROM movies_booking_ticket")
+
+            rating = cursor.fetchone()
+
+           
+        return Response({"response":"response is awesome"})
 
 
 class ChatBotMoviesCompleteView(APIView):

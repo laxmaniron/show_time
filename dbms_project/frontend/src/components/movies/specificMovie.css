@@ -111,3 +111,24 @@
 .landing-hero .redbtn:hover {
   color: #fff;
 }
+
+.buyticketbutton {
+  background-color: #d2eb33;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 20px;
+  font-weight: bolder;
+}
+
+.btn-transform .buyticketbutton1:hover {
+  background-color: red;
+}
+
+.sb-it {
+  margin-bottom: 25px;
+  margin-left: 25px;
+}
+
+/* href={`http://127.0.0.1:8000/frontend/#/theatre/${
+  specificmovie.id
+}/${city_id}`} */

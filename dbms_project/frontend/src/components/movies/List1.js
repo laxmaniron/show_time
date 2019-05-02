@@ -212,7 +212,7 @@ export class List extends Component {
         }
       }
 
-      if (this.language_select) {
+      if (this.format_select) {
         for (var i = 0; i < this.props.movies.length; i++) {
           if (this.props.movies[i]["allformats"]) {
             for (
@@ -346,10 +346,94 @@ export class List extends Component {
     return (
       <Fragment>
         <div className="slider movie-items">
-          <div className="container">
+          <div
+            className="container-fluid"
+            style={{ marginLeft: "500px", marginRight: "125px" }}
+          >
             <div className="row">
-              <div className="slick-multiItemSlider">
-                <div className="movie-item">
+              <div
+                className="slick-multiItemSlider"
+                style={{ padddingLeft: "100px" }}
+              >
+                <div className="movie-item" style={{ float: "left" }}>
+                  <div className="mv-img">
+                    <Link to="#">
+                      <img
+                        src="http://127.0.0.1:8000/media/profile_image/alexander-andrews-340055-unsplash_zRvaz6g.jpg"
+                        alt=""
+                        width="285"
+                        height="437"
+                      />
+                    </Link>
+                  </div>
+                  <div className="title-in">
+                    <div className="cate">
+                      <span className="blue">
+                        <Link to="#">Sci-fi</Link>
+                      </span>
+                    </div>
+                    <h6>
+                      <Link to="#">Interstellar</Link>
+                    </h6>
+                    <p>
+                      <i className="ion-android-star" />
+                      <span>7.4</span> /10
+                    </p>
+                  </div>
+                </div>
+                <div className="movie-item" style={{ float: "left" }}>
+                  <div className="mv-img">
+                    <Link to="#">
+                      <img
+                        src="http://127.0.0.1:8000/media/profile_image/avengers.jpg"
+                        alt=""
+                        width="285"
+                        height="437"
+                      />
+                    </Link>
+                  </div>
+                  <div className="title-in">
+                    <div className="cate">
+                      <span className="blue">
+                        <Link to="#">Sci-fi</Link>
+                      </span>
+                    </div>
+                    <h6>
+                      <Link to="#">Avengers:Endgame</Link>
+                    </h6>
+                    <p>
+                      <i className="ion-android-star" />
+                      <span>7.4</span> /10
+                    </p>
+                  </div>
+                </div>
+                <div className="movie-item" style={{ float: "left" }}>
+                  <div className="mv-img">
+                    <Link to="#">
+                      <img
+                        src="http://127.0.0.1:8000/media/profile_image/movie-single.jpg"
+                        alt=""
+                        width="285"
+                        height="437"
+                      />
+                    </Link>
+                  </div>
+                  <div className="title-in">
+                    <div className="cate">
+                      <span className="blue">
+                        <Link to="#">Sci-fi</Link>
+                      </span>
+                    </div>
+                    <h6>
+                      <Link to="#">Skyfall</Link>
+                    </h6>
+                    <p>
+                      <i className="ion-android-star" />
+                      <span>7.4</span> /10
+                    </p>
+                  </div>
+                </div>
+                <div className="movie-item" style={{ float: "left" }}>
                   <div className="mv-img">
                     <Link to="#">
                       <img
@@ -367,7 +451,7 @@ export class List extends Component {
                       </span>
                     </div>
                     <h6>
-                      <Link to="#">Interstellar</Link>
+                      <Link to="#">Oblivion</Link>
                     </h6>
                     <p>
                       <i className="ion-android-star" />
@@ -392,6 +476,7 @@ export class List extends Component {
           <div className="col-sm-3" />
           <div className="col-sm-7">
             <input
+              className="searchbar"
               type="text"
               placeholder="search movies"
               value={this.state.search}
@@ -423,7 +508,6 @@ export class List extends Component {
                 }}
               >
                 {/* <!-- <img src="images/uploads/ads1.png" alt="" width="336" height="296"> --> */}
-
                 <div className="row" style={{ paddingLeft: "10%" }}>
                   <div
                     className="col-sm-12"
@@ -584,15 +668,29 @@ export class List extends Component {
                                             <div className="title-in">
                                               <h6
                                                 style={{
-                                                  color: "white",
+                                                  color: "#f1e000",
                                                   fontSize: "20px"
                                                 }}
                                               >
                                                 {movie.title}
                                               </h6>
                                               <p>
-                                                <i className="ion-android-star" />
-                                                <span>{movie.likes} likes</span>
+                                                <i
+                                                  style={{
+                                                    fontSize: "16px",
+                                                    color: "red"
+                                                  }}
+                                                >
+                                                  &#10084;
+                                                </i>
+                                                <span
+                                                  style={{
+                                                    color: "#f1e000",
+                                                    fontSize: "20px"
+                                                  }}
+                                                >
+                                                  {movie.likes} likes
+                                                </span>
                                               </p>
                                             </div>
                                           </div>
@@ -639,15 +737,29 @@ export class List extends Component {
                                             <div className="title-in">
                                               <h6
                                                 style={{
-                                                  color: "white",
+                                                  color: "#f1e000",
                                                   fontSize: "20px"
                                                 }}
                                               >
                                                 {movie.title}
                                               </h6>
                                               <p>
-                                                <i className="ion-android-star" />
-                                                <span>{movie.likes} likes</span>
+                                                <i
+                                                  style={{
+                                                    fontSize: "16px",
+                                                    color: "red"
+                                                  }}
+                                                >
+                                                  &#10084;
+                                                </i>
+                                                <span
+                                                  style={{
+                                                    color: "#f1e000",
+                                                    fontSize: "20px"
+                                                  }}
+                                                >
+                                                  {movie.likes} likes
+                                                </span>
                                               </p>
                                             </div>
                                           </div>

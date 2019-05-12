@@ -1,20 +1,20 @@
-# show_time
+# Show_time
 
 A movie booking website
 
-#Quick Start
+# Quick Start
 
-pull it and keep it in a python virtualenv
+clone it and keep it in a python virtualenv
 
-#Install React dependencies--
+# Install React dependencies
 
 npm install
 
-#Python dependencies
+# Install Python dependencies
 pip install --
 
 django,
 djangorestframework,
 Pillow,
 django-rest-knox,
-python-connector-mysql
+mysql-connector-python

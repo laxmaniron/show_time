@@ -23,7 +23,8 @@ django-rest-knox,
 
 mysql-connector-python
 
-# Search movies by name and filter by genre,language,format
+# Search movies by name 
+# Filter movies by Genre,Language
 
 
 ![](images/Screenshot%20(446).png)

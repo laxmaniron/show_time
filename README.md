@@ -14,7 +14,17 @@ npm install
 pip install --
 
 django,
+
 djangorestframework,
+
 Pillow,
+
 django-rest-knox,
+
 mysql-connector-python
+
+# Search movies by name and filter by genre,language,format
+
+
+![](images/Screenshot%20(446).png)
+

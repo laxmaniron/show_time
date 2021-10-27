@@ -1,4 +1,4 @@
-# Show_time
+# It's Show Time
 
 A movie booking website
 
